@@ -19,9 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko-KR" suppressHydrationWarning={true}>
-      <body>
+      <body className="container mx-auto">
         <Header />
-        <main className="flex h-auto w-auto flex-col items-center justify-center">
+        <main className="flex h-auto w-auto flex-col items-center">
           {children}
         </main>
         <Footer />
