@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       backgroundImage: {},
       screens: {
-        mobile: { max: "727px" },
+        mobile: { min: "360px", max: "727px" },
         tablet: { min: "728px", max: "1280px" },
         desktop: { min: "1281px", max: "1920px" },
       },
