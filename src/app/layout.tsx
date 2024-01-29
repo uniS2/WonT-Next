@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="ko-KR" suppressHydrationWarning={true}>
       <body className="container mx-auto">
         <Header />
-        <main className="flex h-auto w-auto flex-col items-center">
+        <main className="flex h-auto w-auto flex-col items-center bg-secondary">
           {children}
         </main>
         <Footer />
