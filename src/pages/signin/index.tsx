@@ -1,12 +1,13 @@
+import Image from "next/image";
 import SignInLayout from "@/app/signin/layout";
 import SignInput from "@/components/sign/SignInput";
-import Image from "next/image";
+import SignButton from "@/components/sign/SignButton";
 
 function SignInPage() {
   return (
     <SignInLayout>
-      <div className="pt-[5.25rem]">
-        <div className="flex flex-col justify-center items-center gap-10">
+      <div className="pt-[5.25rem] flex flex-col">
+        <div className="flex flex-col justify-center items-center gap-5">
           <Image
             src="/svg/logo.svg"
             alt="wont 로고"
@@ -25,7 +26,7 @@ function SignInPage() {
             placeholder="비밀번호를 입력해주세요"
           />
         </div>
-
+        <SignButton text="로그인" />
         <div className="snslogin"></div>
       </div>
     </SignInLayout>
