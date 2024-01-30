@@ -8,8 +8,8 @@ function SignInLayout({
 }>) {
   return (
     <>
-      <HeaderSign />
-      <section className="flex h-auto w-auto flex-col items-center">
+      <section className="flex h-auto w-auto flex-col">
+        <HeaderSign />
         {children}
       </section>
     </>
