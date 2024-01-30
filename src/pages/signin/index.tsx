@@ -20,12 +20,12 @@ function SignInPage() {
           <SignInput
             type="email"
             text="이메일 주소"
-            placeholder="이메일 주소를 입력해주세요"
+            placeholder="이메일 주소를 입력해 주세요"
           />
           <SignInput
             type="password"
             text="비밀번호"
-            placeholder="비밀번호를 입력해주세요"
+            placeholder="비밀번호를 입력해 주세요"
           />
           <SignButton text="로그인" />
           <SignBox />

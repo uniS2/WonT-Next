@@ -3,7 +3,7 @@ import React from "react";
 interface SignInputProps {
   text: string;
   placeholder: string;
-  type: "email" | "password";
+  type: "email" | "password" | "text";
 }
 
 const SignInput: React.FC<SignInputProps> = ({ text, placeholder, type }) => {
