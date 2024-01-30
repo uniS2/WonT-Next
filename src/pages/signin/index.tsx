@@ -1,4 +1,5 @@
 import SignInLayout from "@/app/signin/layout";
+import SignInput from "@/components/signin/SignInput";
 import Image from "next/image";
 
 function SignInPage() {
@@ -13,16 +14,16 @@ function SignInPage() {
             height={50}
             priority
           />
-          <div className="pt-[3.125rem] min-w-[18.75rem] sm:min-w-[31.25rem] lg:min-w-[43.75rem] 2xl:min-w-[56.25rem] flex flex-col gap-3 border-b-2 border-primary mx-auto pb-[0.313rem]">
-            <p className="text-[1rem] sm:text-[1.25rem] lg:text-[1.563rem]">
-              이메일 주소
-            </p>
-            <input
-              type="email"
-              placeholder="이메일 주소 입력"
-              className="text-[1rem] sm:text-[1.25rem] lg:text-[1.563rem]"
-            />
-          </div>
+          <SignInput
+            type="email"
+            text="이메일 주소"
+            placeholder="이메일 주소를 입력해주세요"
+          />
+          <SignInput
+            type="password"
+            text="비밀번호"
+            placeholder="비밀번호를 입력해주세요"
+          />
         </div>
 
         <div className="snslogin"></div>
