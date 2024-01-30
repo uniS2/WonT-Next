@@ -2,6 +2,7 @@ import Image from "next/image";
 import SignInLayout from "@/app/signin/layout";
 import SignInput from "@/components/sign/SignInput";
 import SignButton from "@/components/sign/SignButton";
+import SignBox from "@/components/sign/SignBox";
 
 function SignInPage() {
   return (
@@ -25,8 +26,9 @@ function SignInPage() {
             text="비밀번호"
             placeholder="비밀번호를 입력해주세요"
           />
+          <SignButton text="로그인" />
+          <SignBox />
         </div>
-        <SignButton text="로그인" />
         <div className="snslogin"></div>
       </div>
     </SignInLayout>
