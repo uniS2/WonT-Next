@@ -3,6 +3,7 @@ import SignInLayout from "@/app/signin/layout";
 import SignInput from "@/components/sign/SignInput";
 import SignButton from "@/components/sign/SignButton";
 import SignBox from "@/components/sign/SignBox";
+import SignSns from "@/components/sign/SignSns";
 
 function SignInPage() {
   return (
@@ -28,8 +29,13 @@ function SignInPage() {
           />
           <SignButton text="로그인" />
           <SignBox />
+          <div className="w-[320px] flex items-center justify-center mt-[100px] mb-[30px]">
+            <div className="border-b border-gray-300 w-[90px] mr-2"></div>
+            <div className="text-gray-600">SNS 간편 로그인</div>
+            <div className="border-b border-gray-300 w-[90px] ml-2"></div>
+          </div>
+          <SignSns />
         </div>
-        <div className="snslogin"></div>
       </div>
     </SignInLayout>
   );
