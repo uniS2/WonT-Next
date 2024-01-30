@@ -1,5 +1,5 @@
 import SignInLayout from "@/app/signin/layout";
-import SignInput from "@/components/signin/SignInput";
+import SignInput from "@/components/sign/SignInput";
 import Image from "next/image";
 
 function SignInPage() {
