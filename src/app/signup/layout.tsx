@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import HeaderSign from "@/components/header/HeaderSign";
 import Head from "next/head";
 
-function SignInLayout({
+function SignUpLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,4 +25,4 @@ function SignInLayout({
   );
 }
 
-export default SignInLayout;
+export default SignUpLayout;
