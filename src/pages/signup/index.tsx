@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SignUpLayout from "@/app/signup/layout";
+import SignUpLayout from "@/layout/signup/layout";
 import SignInput from "@/components/sign/SignInput";
 import SignButton from "@/components/sign/SignButton";
 
