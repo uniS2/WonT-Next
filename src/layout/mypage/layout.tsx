@@ -2,16 +2,14 @@ import HeaderMypage from "@/components/header/HeaderMypage";
 import "@/styles/globals.css";
 import Head from "next/head";
 
-
-
 function MyPageLayout({
-  children, 
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <>
-    <Head>
+      <Head>
         <title>Sign In - WonT</title>
         <meta
           name="description"
@@ -19,15 +17,10 @@ function MyPageLayout({
         />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-    <HeaderMypage />
-    <section>
-      {children}
-    </section>
+      <HeaderMypage />
+      <section>{children}</section>
     </>
-  )
+  );
 }
 
-
 export default MyPageLayout;
-
-

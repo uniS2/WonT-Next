@@ -1,7 +1,7 @@
-import DefaultProfile from "@/app/mypage/components/DefaultProfile";
-import MyPageTab from "@/app/mypage/components/MyPageTab";
-import MyPlan from "@/app/mypage/components/MyPlan";
-import MyPageLayout from "@/app/mypage/layout";
+import DefaultProfile from "@/components/mypage/DefaultProfile";
+import MyPageTab from "@/components/mypage/MyPageTab";
+import MyPlan from "@/components/mypage/MyPlan";
+import MyPageLayout from "@/layout/mypage/layout";
 import { TbSettings } from "react-icons/tb";
 
 function Mypage() {
