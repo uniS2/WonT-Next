@@ -5,10 +5,10 @@ function MyReview() {
   return (
     <div>
       <MyPageTitle text="여행 리뷰" />
-      <div className="grid grid-cols-2 my-5 gap-3 ">
+      <ul className="grid grid-cols-2 my-5 gap-3 ">
         <ReviewFeed />
         <ReviewFeed />
-      </div>
+      </ul>
     </div>
   );
 }

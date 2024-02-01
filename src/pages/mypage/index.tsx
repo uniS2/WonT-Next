@@ -5,8 +5,23 @@ import MyBookmark from "@/components/mypage/MyBookmark";
 import MyPlan from "@/components/mypage/MyPlan";
 import MyReview from "@/components/mypage/MyReview";
 import { TbSettings } from "react-icons/tb";
+import { useState } from "react";
+import { useTabTitleStore } from "@/lib/store/useTabTitleStore";
 
 function Mypage() {
+  const { tabTitle, setTabTitle } = useTabTitleStore();
+
+  const handleTab = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget.querySelector("span");
+    const tabText = target?.textContent;
+    console.log(tabText);
+    if (tabText) {
+      setTabTitle(tabText);
+    }
+  };
+
+  console.log(tabTitle);
+
   return (
     <MyPageLayout>
       <div className="bg-primary w-100% h-[220px] rounded-b-[40px] flex justify-center items-center flex-col gap-2">
@@ -20,15 +35,19 @@ function Mypage() {
         </button>
       </div>
       <div className="flex justify-evenly mx-auto mt-6">
-        <MyPageTab tab="나의 일정" />
-        <MyPageTab tab="여행 리뷰" />
-        <MyPageTab tab="북마크" />
+        <MyPageTab tab="나의 일정" onClick={handleTab} />
+        <MyPageTab tab="여행 리뷰" onClick={handleTab} />
+        <MyPageTab tab="북마크" onClick={handleTab} />
       </div>
       <hr className="border-[#D0CFD7]" />
-      <section className="bg-[#EFF0F0] p-5">
-        <MyPlan />
-        <MyReview />
-        <MyBookmark />
+      <section className="bg-[#EFF0F0] h-screen p-5">
+        {tabTitle === "나의 일정" ? (
+          <MyPlan />
+        ) : tabTitle === "여행 리뷰" ? (
+          <MyReview />
+        ) : (
+          <MyBookmark />
+        )}
       </section>
     </MyPageLayout>
   );
