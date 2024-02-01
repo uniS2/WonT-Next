@@ -1,6 +1,6 @@
 import Image from "next/image";
 import myPlanDefaultImage from "/public/mypage/myPlanDefaultImage.jpg";
-import MyPageTitle from "../../../components/mypage/MyPageTitle";
+import MyPageTitle from "./MyPageTitle";
 
 function MyPlan() {
   return (

@@ -1,11 +1,10 @@
 import DefaultProfile from "@/components/mypage/DefaultProfile";
 import MyPageTab from "@/components/mypage/MyPageTab";
-import MyPageTitle from "@/components/mypage/MyPageTitle";
-import MyPlan from "@/layout/mypage/pages/MyPlan";
 import MyPageLayout from "@/layout/mypage/layout";
+import MyBookmark from "@/components/mypage/MyBookmark";
+import MyPlan from "@/components/mypage/MyPlan";
+import MyReview from "@/components/mypage/MyReview";
 import { TbSettings } from "react-icons/tb";
-import MyReview from "@/layout/mypage/pages/MyReview";
-import MyBookmark from "@/layout/mypage/pages/MyBookmark";
 
 function Mypage() {
   return (
