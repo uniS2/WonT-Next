@@ -1,7 +1,5 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
 
 export const metadata: Metadata = {
   title: "WonT",
@@ -19,12 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko-KR" suppressHydrationWarning={true}>
-      <body className="container mx-auto">
-        <Header />
-        <main className="flex h-auto w-auto flex-col items-center bg-secondary">
-          {children}
-        </main>
-        <Footer />
+      <body>
+        <main>{children}</main>
       </body>
     </html>
   );
