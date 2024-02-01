@@ -1,5 +1,6 @@
 import DefaultProfile from "@/components/mypage/DefaultProfile";
 import MyPageTab from "@/components/mypage/MyPageTab";
+import MyPageTitle from "@/components/mypage/MyPageTitle";
 import MyPlan from "@/components/mypage/MyPlan";
 import MyPageLayout from "@/layout/mypage/layout";
 import { TbSettings } from "react-icons/tb";
@@ -24,6 +25,7 @@ function Mypage() {
       </div>
       <hr className="border-[#D0CFD7]" />
       <section className="bg-[#EFF0F0] p-5">
+        <MyPageTitle text="나의 일정" />
         <MyPlan />
       </section>
     </MyPageLayout>
