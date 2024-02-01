@@ -15,14 +15,14 @@ function DefaultProfile() {
         stroke="#63D4F2"
         strokeWidth="3"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M21.79 55.5117C21.79 55.5117 33.5121 67.0724 45.9925 57.6681"
         stroke="#63D4F2"
         strokeWidth="3"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M39.5 34C40.8807 34 42 32.8807 42 31.5C42 30.1193 40.8807 29 39.5 29C38.1193 29 37 30.1193 37 31.5C37 32.8807 38.1193 34 39.5 34Z"
