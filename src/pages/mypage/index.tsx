@@ -1,9 +1,11 @@
 import DefaultProfile from "@/components/mypage/DefaultProfile";
 import MyPageTab from "@/components/mypage/MyPageTab";
 import MyPageTitle from "@/components/mypage/MyPageTitle";
-import MyPlan from "@/components/mypage/MyPlan";
+import MyPlan from "@/layout/mypage/pages/MyPlan";
 import MyPageLayout from "@/layout/mypage/layout";
 import { TbSettings } from "react-icons/tb";
+import MyReview from "@/layout/mypage/pages/MyReview";
+import MyBookmark from "@/layout/mypage/pages/MyBookmark";
 
 function Mypage() {
   return (
@@ -25,8 +27,9 @@ function Mypage() {
       </div>
       <hr className="border-[#D0CFD7]" />
       <section className="bg-[#EFF0F0] p-5">
-        <MyPageTitle text="나의 일정" />
         <MyPlan />
+        <MyReview />
+        <MyBookmark />
       </section>
     </MyPageLayout>
   );
