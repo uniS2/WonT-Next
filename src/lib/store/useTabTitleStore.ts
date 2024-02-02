@@ -6,6 +6,6 @@ interface useTabTitleStoreType {
 }
 
 export const useTabTitleStore = create<useTabTitleStoreType>((set) => ({
-  tabTitle: "",
+  tabTitle: "나의 일정",
   setTabTitle: (text: string) => set({ tabTitle: text }),
 }));
