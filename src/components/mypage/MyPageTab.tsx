@@ -1,4 +1,3 @@
-import { ReactEventHandler } from "react";
 import MyBookmarkIcon from "./MyBookmarkIcon";
 import MyPlanIcon from "./MyPlanIcon";
 import MyReviewIcon from "./MyReviewIcon";

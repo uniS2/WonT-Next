@@ -1,6 +1,6 @@
 import { AiOutlineHome } from "react-icons/ai";
-import { PiUser } from "react-icons/pi";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { PiUserCircle } from "react-icons/pi";
 
 function HeaderMypage() {
   return (
@@ -11,10 +11,10 @@ function HeaderMypage() {
         </button>
         <div className="flex gap-3">
           <button>
-            <AiOutlineHome size="30px" color="#363636" />
+            <AiOutlineHome size="28px" color="#363636" />
           </button>
           <button>
-            <PiUser size="30px" color="#363636" />
+            <PiUserCircle size="30px" color="#363636" />
           </button>
         </div>
       </nav>
