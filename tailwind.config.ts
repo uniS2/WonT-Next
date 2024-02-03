@@ -17,6 +17,7 @@ module.exports = {
         error: "#E76761",
         point: "#5F8CEA",
         button: "#C9D9F8",
+        "white-opacity-50": "rgba(255, 255, 255, 0.5)",
       },
       fontFamily: {
         suit: ["suit"],
