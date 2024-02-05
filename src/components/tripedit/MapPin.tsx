@@ -1,4 +1,4 @@
-function MapPin() {
+function MapPin({ color }: { color: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +11,8 @@ function MapPin() {
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M9.99993 17.6571L10.6009 16.9799C11.2828 16.199 11.8961 15.458 12.4418 14.7532L12.8923 14.159C14.7733 11.6247 15.7142 9.61324 15.7142 8.12657C15.7142 4.95324 13.1561 2.38086 9.99993 2.38086C6.84374 2.38086 4.28564 4.95324 4.28564 8.12657C4.28564 9.61324 5.2266 11.6247 7.10755 14.159L7.55803 14.7532C8.33654 15.7508 9.15104 16.7187 9.99993 17.6571Z"
-        fill="#63D4F2"
-        stroke="#63D4F2"
+        fill={color}
+        stroke={color}
         stroke-linecap="round"
         stroke-linejoin="round"
       />
