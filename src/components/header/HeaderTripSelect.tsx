@@ -1,5 +1,5 @@
 import CloseButton from "@/components/header/CloseButton";
-import UserButton from "@/components/header/userButton";
+import UserButton from "@/components/header/UserButton";
 
 const HeaderTripSelect = () => {
   return (
