@@ -1,8 +1,8 @@
-import HeaderMypage from "@/components/header/HeaderMypage";
-import "@/styles/globals.css";
+import HeaderDetailPage from "@/components/header/HeaderDetailPage";
 import Head from "next/head";
+import "@/styles/globals.css";
 
-function MyPageLayout({
+function DetailPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -10,21 +10,17 @@ function MyPageLayout({
   return (
     <>
       <Head>
-
-        <title>My Page - WonT</title>
-
-        <title>DetailPage - WonT</title>
-
+        <title>MyPage - WonT</title>
         <meta
           name="description"
           content="행복한 여행을 위한 여행일정 플랫폼입니다."
         />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <HeaderMypage />
+      <HeaderDetailPage />
       <section>{children}</section>
     </>
   );
 }
 
-export default MyPageLayout;
+export default DetailPageLayout;

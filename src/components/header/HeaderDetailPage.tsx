@@ -2,6 +2,11 @@ import React from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MyBookmarkIcon from "@/components/mypage/MyBookmarkIcon";
 
+
+import Image from "next/image";
+import detailPlaceDefault from "/public/detailpage/detailPlaceDefault.jpg";
+
+
 function HeaderDetailPage() {
   return (
     <header className="bg-white p-5">
