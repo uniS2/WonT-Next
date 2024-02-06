@@ -4,10 +4,7 @@ import myPlanDefaultImage from "/public/mypage/myPlanDefaultImage.jpg";
 
 function TripReviewFeed() {
   return (
-    <a
-      href=""
-      className="flex flex-col  h-[520px] w-[320px] border-[#EDF2F2] border-[1px] mx-auto"
-    >
+    <a href="" className="flex flex-col w-100% border-[#EDF2F2] border-[1px]">
       <Image
         src={myPlanDefaultImage}
         alt="Plan Image"
@@ -24,7 +21,7 @@ function TripReviewFeed() {
           24.01.20 - 24.01.22
         </span>
       </div>
-      <button className="self-end  mb-4 px-3 my-auto">
+      <button className="self-end px-3 my-auto mb-7">
         <EnterButton />
       </button>
     </a>
