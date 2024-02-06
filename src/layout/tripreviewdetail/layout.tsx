@@ -2,7 +2,7 @@ import Head from "next/head";
 import "@/styles/globals.css";
 import HeaderEditProfile from "@/components/header/HeaderEditProfile";
 
-function EditProfileLayout({
+function TripReviewDetailLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -10,7 +10,7 @@ function EditProfileLayout({
   return (
     <>
       <Head>
-        <title>Edit Profile - WonT</title>
+        <title>Trip Review Detail - WonT</title>
         <meta
           name="description"
           content="행복한 여행을 위한 여행일정 플랫폼입니다."
@@ -23,4 +23,4 @@ function EditProfileLayout({
   );
 }
 
-export default EditProfileLayout;
+export default TripReviewDetailLayout;
