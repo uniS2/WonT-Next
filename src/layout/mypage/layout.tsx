@@ -10,7 +10,11 @@ function MyPageLayout({
   return (
     <>
       <Head>
+
+        <title>My Page - WonT</title>
+
         <title>DetailPage - WonT</title>
+
         <meta
           name="description"
           content="행복한 여행을 위한 여행일정 플랫폼입니다."

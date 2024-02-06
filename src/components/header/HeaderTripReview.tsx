@@ -1,13 +1,10 @@
 import React from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MyBookmarkIcon from "@/components/mypage/MyBookmarkIcon";
-
-
 import Image from "next/image";
 import detailPlaceDefault from "/public/detailpage/detailPlaceDefault.jpg";
 
-
-function HeaderDetailPage() {
+function HeaderTripReview() {
   return (
     <header className="bg-white p-5">
       <nav className="flex justify-between gap-3">
@@ -25,4 +22,4 @@ function HeaderDetailPage() {
   );
 }
 
-export default HeaderDetailPage;
+export default HeaderTripReview;
