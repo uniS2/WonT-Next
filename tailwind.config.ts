@@ -8,6 +8,11 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {},
+      screens: {
+        mobile: { min: "360px", max: "727px" },
+        tablet: { min: "728px", max: "1280px" },
+        desktop: { min: "1281px", max: "1920px" },
+      },
       colors: {
         primary: "#63D4F2",
         secondary: "#E1FF01",
