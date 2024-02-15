@@ -1,12 +1,31 @@
 import React from "react";
 import Image from "next/image";
-
+import { signInWithGoogle, signInWithKakao } from "@/lib/supabase/supabase";
 function SignSns() {
+  const handleGoogleSignIn = async () => {
+    try {
+      const userData = await signInWithGoogle();
+      console.log("로그인이 된거여 ??", userData);
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  };
+
+  const handleKakaoSignIn = async () => {
+    try {
+      const userData = await signInWithKakao();
+      console.log("카카오로 로그인한 사용자 정보:", userData);
+    } catch (error) {
+      console.error("Kakao sign-in error:", error);
+    }
+  };
+
   return (
     <div className="flex justify-between w-[280px]">
       <button
         type="button"
         className="flex flex-col item-center justify-center gap-3"
+        onClick={handleKakaoSignIn}
       >
         <Image
           src="/svg/kakao-login.svg"
@@ -39,6 +58,7 @@ function SignSns() {
       <button
         type="button"
         className="flex flex-col item-center justify-center gap-3"
+        onClick={handleGoogleSignIn}
       >
         <Image
           src="/svg/google-login.svg"
