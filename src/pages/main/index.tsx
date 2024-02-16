@@ -1,7 +1,16 @@
 import React from "react";
+import MainLayout from "@/layout/main/layout";
+import MakePlan from "@/components/main/MakePlan";
+import RecommandRegion from "@/components/main/RecommandRegion";
+import BestTravels from "@/components/main/BestTravels";
 
-function index() {
-  return <div>main페이지입니다</div>;
+function MainPage() {
+  return (
+    <MainLayout>
+      <MakePlan />
+      <RecommandRegion />
+      <BestTravels />
+    </MainLayout>
+  );
 }
-
-export default index;
+export default MainPage;
