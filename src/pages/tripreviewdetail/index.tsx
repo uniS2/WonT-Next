@@ -2,6 +2,7 @@ import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";
 import DetailReviewFeed from "@/components/tripreviewdetail/DetailReviewFeed";
+import TripDetailMap from "@/components/tripreviewdetail/TripDetailMap";
 import TripReviewDetailLayout from "@/layout/tripreviewdetail/layout";
 
 function index() {
@@ -10,7 +11,7 @@ function index() {
       <div className="w-[560px] mx-auto">
         <DetailReviewFeed />
         <div>
-          <TripEditMap />
+          <TripDetailMap />
           <div className="w-full h-[80px] bg-contentSecondary flex justify-between items-center px-5">
             <div className="flex flex-col">
               <span className="text-white">제주</span>
