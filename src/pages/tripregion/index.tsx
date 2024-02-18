@@ -4,8 +4,11 @@ import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripTitle from "@/components/tripselect/TripTitle";
 import ButtonLarge from "@/components/tripselect/ButtonLarge";
 import RegionItem from "@/components/tripregion/RegionItem";
+import { RegionStore } from "@/store/RegionStore";
 
 function TripRegionPage() {
+  const { selectedRegionName, setRegionName } = RegionStore();
+
   return (
     <TripRegionLayout>
       <div className="flex flex-col items-center gap-y-[1.875rem] mb-[1.875rem]">
