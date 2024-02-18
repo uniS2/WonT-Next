@@ -6,7 +6,7 @@ import MyPlan from "@/components/mypage/MyPlan";
 import MyReview from "@/components/mypage/MyReview";
 import { TbSettings } from "react-icons/tb";
 import { useState } from "react";
-import { useTabTitleStore } from "@/lib/store/useTabTitleStore";
+import { useTabTitleStore } from "@/store/useTabTitleStore";
 
 function Mypage() {
   const { tabTitle, setTabTitle } = useTabTitleStore();
