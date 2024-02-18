@@ -1,8 +1,8 @@
 type ButtonLargePropType = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
-const ButtonLarge = ({ children }: ButtonLargePropType) => {
+const ButtonLarge = ({ children = "선택 완료" }: ButtonLargePropType) => {
   return (
     <button
       type="button"
