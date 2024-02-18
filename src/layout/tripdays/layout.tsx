@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 
-function TripDaysLayout({
+const TripDaysLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <>
       <Head>
@@ -14,13 +14,13 @@ function TripDaysLayout({
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <section
-        className="flex flex-col items-center min-h-[50rem] mx-5 mb-[1.875rem]
+        className="flex flex-col items-center gap-y-[1.875rem] px-5 mb-[1.875rem]
       "
       >
         {children}
       </section>
     </>
   );
-}
+};
 
 export default TripDaysLayout;
