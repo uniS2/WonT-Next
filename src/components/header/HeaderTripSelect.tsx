@@ -3,7 +3,7 @@ import UserButton from "@/components/header/UserButton";
 
 const HeaderTripSelect = () => {
   return (
-    <nav className="flex items-center justify-between w-full px-5 py-[15px]">
+    <nav className="flex items-center justify-between w-full py-[15px]">
       <CloseButton />
       <UserButton />
     </nav>
