@@ -2,7 +2,7 @@ import Image from "next/image";
 import TripRegionLayout from "@/layout/tripregion/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripTitle from "@/components/tripselect/TripTitle";
-import ButtonLarge from "@/components/ButtonLarge";
+import ButtonLarge from "@/components/tripselect/ButtonLarge";
 import RegionItem from "@/components/tripregion/RegionItem";
 
 function TripRegionPage() {
