@@ -1,0 +1,108 @@
+/* Nav: 좌우 버튼 및 현재 날짜 */
+.react-calendar__navigation {
+  display: flex;
+  margin-bottom: 0.5387rem;
+  font-size: 1.0781rem;
+  font-weight: 700;
+}
+
+.react-calendar__navigation abbr {
+  text-decoration: none;
+}
+
+.react-calendar__navigation button {
+  width: 2.0625rem;
+  height: 2.0625rem;
+}
+
+.react-calendar__navigation button:enabled:hover {
+  border-radius: 1rem;
+  background: #5f8cea99;
+  color: white;
+}
+
+/* 텍스트 영역 */
+abbr[title] {
+  text-decoration: none;
+}
+
+/* 월 선택 범위 */
+.react-calendar__year-view__months {
+  margin-top: 1rem;
+}
+
+.react-calendar__year-view__months__month abbr {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Nav: 요일 */
+.react-calendar__month-view__weekdays {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 2.875rem;
+  text-align: center;
+}
+
+.react-calendar__month-view__weekdays abbr {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* 날짜 */
+.react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6875rem 0 0.6875rem 0;
+  border: 0.045rem solid #d7e6ee;
+  border-radius: 50%;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 0.6289rem;
+}
+
+/*hover, focus, 선택됐을 시 */
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+  border-radius: 50%;
+  background: #5f8cea;
+  color: white;
+}
+
+/* 현재 날짜 */
+.react-calendar__tile--now {
+  border-width: 0.72;
+  border-radius: 50%;
+  background: #63d4f2;
+  color: white;
+}
+
+/* 이전달, 다음달 날짜 */
+.react-calendar__month-view__days__day--neighboringMonth {
+  border: 0.0449rem solid #d7d7d7;
+  border-radius: 2.9197rem;
+  background: #f7f7f7;
+  color: #b2b2b2;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-align: center;
+  font-size: 0.6289rem;
+}
+
+/* 선택 기간 내 날짜 */
+.react-calendar__tile--range {
+  border-radius: 50%;
+  background: #5f8cea99;
+  color: white;
+}
+
+/* 선택 날짜: 여행지 도착, 여행지 출발 */
+.react-calendar__tile--rangeStart,
+.react-calendar__tile--rangeEnd {
+  border-radius: 50%;
+  background: #5f8cea;
+  color: white;
+}
