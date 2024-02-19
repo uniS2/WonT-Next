@@ -1,13 +1,13 @@
 import { create } from "zustand";
 // import { persist } from "zustand/middleware";
 
-type RegionStoreState = {
+type RegionStoreType = {
   selectedRegionName: string;
   setRegionName: (name: string) => void;
 };
 
-export const RegionStore = create<RegionStoreState>((set) => ({
+export const RegionStore = create<RegionStoreType>((set) => ({
   selectedRegionName: "",
-  setRegionName: (name) => set({ selectedRegionName: name }),
+  setRegionName: (name: string) => set({ selectedRegionName: name }),
   resetRegionName: () => set({ selectedRegionName: "" }),
 }));

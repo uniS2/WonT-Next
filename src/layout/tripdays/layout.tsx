@@ -1,26 +1,26 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 
-function TripRegionLayout({
+const TripDaysLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <>
       <Head>
-        <title>TripRegion - WonT</title>
-        <meta name="description" content="여행 지역 선택 페이지입니다." />
+        <title>TripDays - WonT</title>
+        <meta name="description" content="여행 기간 선택 페이지입니다." />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <section
-        className="flex flex-col items-center px-5 gap-y-[1.875rem] min-h-screen
+        className="flex flex-col items-center gap-y-[1.875rem] px-5 mb-[1.875rem]
       "
       >
         {children}
       </section>
     </>
   );
-}
+};
 
-export default TripRegionLayout;
+export default TripDaysLayout;
