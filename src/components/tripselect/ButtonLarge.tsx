@@ -1,15 +1,43 @@
+import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+
 type ButtonLargePropType = {
-  children: React.ReactNode;
+  isSelected?: boolean;
+  href?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  children?: React.ReactNode;
 };
 
-const ButtonLarge = ({ children }: ButtonLargePropType) => {
+const ButtonLarge = ({
+  isSelected = false,
+  href,
+  onClick,
+  children = "선택 완료",
+}: ButtonLargePropType) => {
+  const buttonClasses = "w-80 h-16 rounded-[0.625rem] font-bold text-white";
+
+  if (isSelected && href) {
+    return (
+      <Link
+        href={href}
+        className={`${buttonClasses} bg-point text-center align-middle leading-[4rem]`}
+      >
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <button
-      type="button"
-      className={`w-80 h-16 rounded-[0.625rem] bg-primary font-bold text-white`}
-    >
-      {children}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={onClick}
+        className={`${buttonClasses} bg-primary`}
+      >
+        {children}
+      </button>
+      <ToastContainer />
+    </>
   );
 };
 
