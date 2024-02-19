@@ -176,6 +176,99 @@ function TripEditMap() {
         );
 
         /* -------------------------------------------------------------------------- */
+        var first_positions = [
+          {
+            content: "<div>카카오 스페이스 닷원</div>",
+
+            latlng: new window.kakao.maps.LatLng(
+              33.45066473510417,
+              126.57067214493566,
+            ),
+          },
+
+          {
+            content: "<div>제주 테크노파크 에너지융합센터</div>",
+
+            latlng: new window.kakao.maps.LatLng(
+              33.45076072887628,
+              126.57236027708245,
+            ),
+          },
+
+          {
+            content: "<div>에이바우트 커피</div>",
+
+            latlng: new window.kakao.maps.LatLng(
+              33.452155848772605,
+              126.57167582561753,
+            ),
+          },
+        ];
+
+        for (var i = 0; i < first_positions.length; i++) {
+          // 마커를 생성합니다
+
+          var marker = new window.kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+
+            position: first_positions[i].latlng, // 마커의 위치// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          });
+
+          // 마커에 표시할 인포윈도우를 생성합니다
+
+          var infowindow = new window.kakao.maps.InfoWindow({
+            content: first_positions[i].content, // 인포윈도우에 표시할 내용
+
+            removable: true,
+          });
+
+          window.kakao.maps.event.addListener(
+            marker,
+            "click",
+            marker_click(map, marker, infowindow),
+          );
+        }
+
+        function marker_click(
+          map: any,
+          marker: any,
+          infowindow: { open: (arg0: any, arg1: any) => void },
+        ) {
+          return function () {
+            infowindow.open(map, marker);
+          };
+        }
+
+        // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+
+        var first_polyline = [
+          new window.kakao.maps.LatLng(33.45066473510417, 126.57067214493566),
+
+          new window.kakao.maps.LatLng(33.45076072887628, 126.57236027708245),
+
+          new window.kakao.maps.LatLng(33.452155848772605, 126.57167582561753),
+        ];
+
+        // 지도에 표시할 선을 생성합니다
+
+        var first_linePath = new window.kakao.maps.Polyline({
+          path: first_polyline, // 선을 구성하는 좌표배열 입니다
+
+          strokeWeight: 3, // 선의 두께 입니다
+
+          strokeColor: "#63D4F2", // 선의 색깔입니다
+
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+
+          strokeStyle: "solid", // 선의 스타일입니다
+        });
+
+        // 지도에 선을 표시합니다
+
+        first_linePath.setMap(map);
+
+        /* -------------------------------------------------------------------------- */
+
         window.kakao.maps.event.addListener(
           map,
           "click",
