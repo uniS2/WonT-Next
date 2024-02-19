@@ -4,7 +4,7 @@ import myPlanDefaultImage from "/public/mypage/myPlanDefaultImage.jpg";
 
 function TripReviewFeed() {
   return (
-    <a href="" className="flex flex-col w-100% border-[#EDF2F2] border-[1px]">
+    <a href="" className="flex flex-col w-100%  border-[#EDF2F2] border-[1px]">
       <Image
         src={myPlanDefaultImage}
         alt="Plan Image"
