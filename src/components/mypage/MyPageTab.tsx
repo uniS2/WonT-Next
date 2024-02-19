@@ -1,7 +1,7 @@
 import MyBookmarkIcon from "./MyBookmarkIcon";
 import MyPlanIcon from "./MyPlanIcon";
 import MyReviewIcon from "./MyReviewIcon";
-import { useTabTitleStore } from "@/lib/store/useTabTitleStore";
+import { useTabTitleStore } from "@/store/useTabTitleStore";
 
 interface MyPageTabProps {
   tab: string;

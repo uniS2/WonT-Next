@@ -33,19 +33,19 @@ const RegionItem = ({ regionName = "지역이름" }) => {
             {regionName}
           </dd>
         </dl>
+        {toggle && (
+          <div className="flex flex-col gap-[0.625rem] mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
+            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+              <dt className="text-contentSecondary">지역정보</dt>
+              <dd>지역 설명 텍스트입니다.</dd>
+            </dl>
+            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+              <dt className="text-contentSecondary">관광지도</dt>
+              <dd>궁금한 주제를 선택해 보세요. (?)</dd>
+            </dl>
+          </div>
+        )}
       </button>
-      {toggle && (
-        <div className="flex flex-col gap-[0.625rem] mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
-          <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-            <dt className="text-contentSecondary">지역정보</dt>
-            <dd>지역 설명 텍스트입니다.</dd>
-          </dl>
-          <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-            <dt className="text-contentSecondary">관광지도</dt>
-            <dd>궁금한 주제를 선택해 보세요. (?)</dd>
-          </dl>
-        </div>
-      )}
     </>
   );
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 const CloseButton = () => {
   return (
     <Link href="/main">
-      <Image src="/svg/closeIcon.svg" width={26} height={26} alt="닫기" />
+      <Image src="/svg/closeIcon.svg" width={30} height={30} alt="닫기" />
     </Link>
   );
 };
