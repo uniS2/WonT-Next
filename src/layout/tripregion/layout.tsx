@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 
-function TripRegionLayout({
+const TripRegionLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <>
       <Head>
@@ -21,6 +21,6 @@ function TripRegionLayout({
       </section>
     </>
   );
-}
+};
 
 export default TripRegionLayout;
