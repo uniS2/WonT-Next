@@ -13,7 +13,7 @@ const RegionItem = ({ regionName = "지역이름" }) => {
   };
 
   return (
-    <>
+    <li className="list-none">
       <button
         type="button"
         onClick={selectRegion}
@@ -50,7 +50,7 @@ const RegionItem = ({ regionName = "지역이름" }) => {
       ) : (
         <></>
       )}
-    </>
+    </li>
   );
 };
 
