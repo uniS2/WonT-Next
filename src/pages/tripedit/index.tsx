@@ -7,6 +7,8 @@ function TripEdit() {
   const tripDate = new Date();
   console.log(tripDate);
 
+  const testTripPlan = ["새별오름", "성산일출봉", "카멜리아 힐"];
+
   return (
     <TripEditLayout>
       <div>
@@ -22,7 +24,11 @@ function TripEdit() {
         </div>
         <section>
           <div className="mt-7 mb-10">
-            <TripDays days="Day 1" date="24.01.20" />
+            <TripDays
+              days="Day 1"
+              date="24.01.20"
+              testTripPlan={testTripPlan}
+            />
             <TripDays days="Day 2" date="24.01.21" />
             <TripDays days="Day 3" date="24.01.22" />
             <TripDays days="Day 4" date="24.01.23" />
