@@ -1,15 +1,19 @@
 import Image from "next/image";
 import { RegionStore } from "@/store/RegionStore";
-import { useState } from "react";
+import { RegionToggleStore } from "@/store/RegionToggleStore";
 
 const RegionItem = ({ regionName = "지역이름" }) => {
   const { selectedRegionName, setRegionName, resetRegionName } = RegionStore();
-  const [toggle, setToggle] = useState(false);
+  const { setToggleRegionName } = RegionToggleStore();
 
   const selectRegion = () => {
-    setToggle(() => !toggle);
-    if (!selectedRegionName) setRegionName(regionName);
-    else resetRegionName();
+    if (!selectedRegionName) {
+      setRegionName(regionName);
+      setToggleRegionName(regionName);
+    } else {
+      resetRegionName();
+      setToggleRegionName(null);
+    }
   };
 
   return (
@@ -35,21 +39,6 @@ const RegionItem = ({ regionName = "지역이름" }) => {
           </dd>
         </dl>
       </button>
-      {toggle ? (
-        <div className="flex flex-col gap-[0.625rem] mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
-          <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-            <dt className="text-contentSecondary">지역정보</dt>
-            <dd>지역 설명 텍스트입니다.</dd>
-            {selectedRegionName}
-          </dl>
-          <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-            <dt className="text-contentSecondary">관광지도</dt>
-            <dd>궁금한 주제를 선택해 보세요. (?)</dd>
-          </dl>
-        </div>
-      ) : (
-        <></>
-      )}
     </li>
   );
 };

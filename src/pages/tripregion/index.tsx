@@ -8,9 +8,13 @@ import TripTitle from "@/components/tripselect/TripTitle";
 import ButtonLarge from "@/components/tripselect/ButtonLarge";
 import RegionItem from "@/components/tripregion/RegionItem";
 import { RegionStore } from "@/store/RegionStore";
+import { RegionToggleStore } from "@/store/RegionToggleStore";
+import { useEffect, useState } from "react";
 
 function TripRegionPage() {
   const { selectedRegionName } = RegionStore();
+  const { toggleRegionName } = RegionToggleStore();
+  const [isToggle, setIsToggle] = useState(false);
 
   const inSelectedTripRegion = () => {
     toast.error("여행 장소를 선택해 주세요!", {
@@ -18,6 +22,11 @@ function TripRegionPage() {
       autoClose: 2500,
     });
   };
+
+  useEffect(() => {
+    if (toggleRegionName)
+      setIsToggle(toggleRegionName == selectedRegionName ? true : false);
+  }, [toggleRegionName, selectedRegionName]);
 
   return (
     <TripRegionLayout>
@@ -41,6 +50,21 @@ function TripRegionPage() {
           <RegionItem regionName="지역이름3" />
           <RegionItem regionName="지역이름4" />
         </ul>
+        {isToggle ? (
+          <div className="flex flex-col gap-[0.625rem] mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
+            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+              <dt className="text-contentSecondary">지역정보</dt>
+              <dd>지역 설명 텍스트입니다.</dd>
+              {selectedRegionName}
+            </dl>
+            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+              <dt className="text-contentSecondary">관광지도</dt>
+              <dd>궁금한 주제를 선택해 보세요.</dd>
+            </dl>
+          </div>
+        ) : (
+          <></>
+        )}
         <ButtonLarge
           isSelected={typeof selectedRegionName == "string"}
           href="/tripdays"
