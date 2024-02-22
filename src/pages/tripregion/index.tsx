@@ -24,8 +24,9 @@ function TripRegionPage() {
   };
 
   useEffect(() => {
-    if (toggleRegionName)
-      setIsToggle(toggleRegionName == selectedRegionName ? true : false);
+    if (toggleRegionName.length)
+      setIsToggle(toggleRegionName == selectedRegionName);
+    else setIsToggle(false);
   }, [toggleRegionName, selectedRegionName]);
 
   return (
@@ -66,7 +67,7 @@ function TripRegionPage() {
           <></>
         )}
         <ButtonLarge
-          isSelected={typeof selectedRegionName == "string"}
+          isSelected={Boolean(selectedRegionName)}
           href="/tripdays"
           onClick={inSelectedTripRegion}
         />

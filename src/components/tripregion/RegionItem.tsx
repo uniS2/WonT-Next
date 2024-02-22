@@ -8,11 +8,11 @@ const RegionItem = ({ regionName = "지역이름" }) => {
 
   const selectRegion = () => {
     if (!selectedRegionName) {
-      setRegionName(regionName);
       setToggleRegionName(regionName);
+      setRegionName(regionName);
     } else {
       resetRegionName();
-      setToggleRegionName(null);
+      setToggleRegionName("");
     }
   };
 
