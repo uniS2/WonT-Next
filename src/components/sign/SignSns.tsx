@@ -1,6 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import { signInWithGoogle, signInWithKakao } from "@/lib/supabase/supabase";
+import {
+  signInWithGoogle,
+  signInWithKakao,
+  signInWithGitHub,
+} from "@/lib/supabase/Auth";
+
 function SignSns() {
   const handleGoogleSignIn = async () => {
     try {
@@ -20,8 +25,17 @@ function SignSns() {
     }
   };
 
+  const handleGitHubSignIn = async () => {
+    try {
+      const userData = await signInWithGitHub();
+      console.log("카카오로 로그인한 사용자 정보:", userData);
+    } catch (error) {
+      console.error("Kakao sign-in error:", error);
+    }
+  };
+
   return (
-    <div className="flex justify-center gap-20 w-[280px]">
+    <div className="flex justify-between w-[280px]">
       <button
         type="button"
         className="flex flex-col item-center justify-center gap-3"
@@ -35,7 +49,7 @@ function SignSns() {
           priority
         />
         <div className="text-gray-400">
-          <p className=" ">카카오톡</p>
+          <p>카카오톡</p>
           <p>시작하기</p>
         </div>
       </button>
@@ -53,7 +67,25 @@ function SignSns() {
           priority
         />
         <div className="text-gray-400">
-          <p className=" ">Google</p>
+          <p>Google</p>
+          <p>시작하기</p>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        className="flex flex-col item-center justify-center gap-3"
+        onClick={handleGitHubSignIn}
+      >
+        <Image
+          src="/svg/github-login.svg"
+          alt="카카오톡"
+          width={50}
+          height={50}
+          priority
+        />
+        <div className="text-gray-400">
+          <p>깃허브</p>
           <p>시작하기</p>
         </div>
       </button>
