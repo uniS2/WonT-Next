@@ -14,7 +14,7 @@ function TripRegionLayout({
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <section
-        className="flex flex-col items-center min-h-[50rem] mx-5 mb-[1.875rem] gap-[1.875rem]
+        className="flex flex-col items-center px-5 gap-y-[1.875rem] min-h-screen
       "
       >
         {children}
