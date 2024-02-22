@@ -1,10 +1,14 @@
-import Image from "next/image";
 import Link from "next/link";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const CloseButton = () => {
   return (
     <Link href="/main">
-      <Image src="/svg/closeIcon.svg" width={30} height={30} alt="닫기" />
+      <IoCloseCircleOutline
+        size={"1.875rem"}
+        color="#363636"
+        title="헌재 페이지 닫은 후 메인 페이지 바로가기 /main"
+      />
     </Link>
   );
 };

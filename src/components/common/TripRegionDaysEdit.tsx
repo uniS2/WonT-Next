@@ -1,13 +1,21 @@
+import { DaysStore } from "@/store/DaysStore";
+import { RegionStore } from "@/store/RegionStore";
+import { getTripDateKo } from "@/utils/getTripDay";
+
 const TripRegionDaysEdit = () => {
+  const { selectedRegionName } = RegionStore();
+  const { tripDays } = DaysStore();
+
   // 모달창 구현 예정
   const toggleTripEdit = () => {};
 
   return (
     <aside className="flex justify-between items-center w-full h-20 px-5 bg-contentSecondary">
       <div>
-        <p className="text-white">제주 (*store 로직 구현예정)</p>
+        <p className="text-white">{selectedRegionName || "여행 지역"}</p>
         <p className=" text-white">
-          24.01.20 - 24.01.22(*TripDaysStore 구성 예정)
+          {`${getTripDateKo(tripDays[0])} ~
+          ${getTripDateKo(tripDays[1])}` || "여행 기간"}
         </p>
       </div>
       <button
