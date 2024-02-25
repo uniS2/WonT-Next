@@ -3,7 +3,6 @@ import EditProfileLayout from "@/layout/editprofile/layout";
 import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
 import { uploadUserProfile } from "@/utils/uploadUserProfile";
-
 import { useEffect, useRef, useState } from "react";
 
 function EditProfile() {
@@ -99,8 +98,6 @@ function EditProfile() {
       }
     }
   };
-
-  console.log(imgSrc);
 
   return (
     <EditProfileLayout>
