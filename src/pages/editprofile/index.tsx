@@ -36,11 +36,53 @@ function EditProfile() {
     };
 
     getUserSession();
-  }, []);
+  }, [imgSrc, userNickname]);
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
     setUserNickname(reName);
+  };
+
+  const handleDeleteImage = async (e: React.MouseEvent) => {
+    const target = e.currentTarget;
+    const images = document.querySelector("img");
+    console.log(images);
+    console.log(avatar);
+
+    if (images) {
+      const imageSrc = images.src.split("/");
+      // const fileName = imageSrc[imageSrc.length - 1];
+      const fileName = images.src.split("/").pop();
+
+      console.log(fileName);
+      await supabase.storage.from("avatars").remove([
+        `avatars/detailPlaceDefault.jpg
+      `,
+      ]);
+      // await supabase.storage.from("avatars").remove([`avatars/${fileName}`]);
+
+      // const { data, error } = await supabase.storage
+      //   .from("avatars")
+      //   .remove([`avartar/${fileName}`]);
+      // console.log(data);
+
+      // if (error) {
+      //   console.error(error);
+      // }
+    }
+
+    const updateProfile = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .upsert({ avatar_url: null })
+        .eq("id", userSessionId)
+        .select();
+    };
+
+    setImgFile(undefined);
+    setImgSrc(null);
+
+    updateProfile();
   };
 
   const handleSubmit = async () => {
@@ -100,8 +142,6 @@ function EditProfile() {
     }
   };
 
-  console.log(imgSrc);
-
   return (
     <EditProfileLayout>
       <div className="mx-auto  flex flex-col gap-5 justify-center items-center h-[50vh] ">
@@ -141,7 +181,11 @@ function EditProfile() {
               className="invisible w-0 h-0"
             />
           </label>
-          <button className="bg-content text-error w-full h-12 rounded-md my-2">
+          <button
+            type="button"
+            onClick={(e) => handleDeleteImage(e)}
+            className="bg-content text-error w-full h-12 rounded-md my-2"
+          >
             현재 사진 삭제
           </button>
           <input

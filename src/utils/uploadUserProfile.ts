@@ -9,7 +9,9 @@ export const uploadUserProfile = async (imgFile: File | undefined) => {
 
     const { data: avatarsData, error: avatarsError } = await supabase.storage
       .from("avatars")
-      .upload(`avartar/${imgFile.name}`, imgFile);
+      .upload(`avartar/${imgFile.name}`, imgFile, {
+        upsert: true,
+      });
     if (avatarsError) {
       console.error("파일이 업로드 되지 않습니다.", avatarsError);
       return;
