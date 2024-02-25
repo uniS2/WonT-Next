@@ -8,7 +8,9 @@ function EditProfile() {
   const [userNickname, setUserNickname] = useState<string | null>();
   const { userSession, setUserSession } = useSessionStore();
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
-  // const fileInputRef = useRef();
+  const [imgFile, setImgFile] = useState<File>();
+  const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
+  const imgRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -32,28 +34,10 @@ function EditProfile() {
     getUserSession();
   }, []);
 
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     const { data, error } = await supabase
-  //       .from("profiles")
-  //       .select()
-  //       .eq("id", userSessionId);
-
-  //     console.log(userSessionId);
-  //     console.log("profile", data);
-  //   };
-  //   getUserData();
-  // }, []);
-
-  console.log(userNickname);
-
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
     setUserNickname(reName);
   };
-
-  // console.log("nick", userNickname);
-  // console.log(userSessionId);
 
   const handleSubmit = () => {
     const updateNickname = async () => {
@@ -73,11 +57,36 @@ function EditProfile() {
     updateNickname();
   };
 
+  const previewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files !== null) {
+      let reader = new FileReader();
+      let file = e.target.files[0];
+      console.log(file);
+
+      reader.onloadend = () => {
+        setImgFile(file);
+        setImgSrc(reader.result);
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  console.log(imgSrc);
+
   return (
     <EditProfileLayout>
       <div className="mx-auto  flex flex-col gap-5 justify-center items-center h-[50vh] ">
         <div className="flex justify-center items-center rounded-full border-[#CADDE2] border-[0.0625rem] w-[100px] h-[100px] bg-secondary">
           <DefaultProfile />
+          <img
+            src={imgSrc as string}
+            alt=""
+            className="w-[100px] h-[100px] object-cover rounded-full"
+          />
         </div>
         <form action="" className="w-2/5 h-12 ">
           <p className="w-full h-full my-3 ">
@@ -100,6 +109,7 @@ function EditProfile() {
               name="file"
               id="file"
               accept="image/*"
+              onChange={previewImage}
               className="invisible w-0 h-0"
             />
           </label>
