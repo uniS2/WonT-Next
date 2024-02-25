@@ -2,6 +2,7 @@ import DefaultProfile from "@/components/mypage/DefaultProfile";
 import EditProfileLayout from "@/layout/editprofile/layout";
 import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
+import { uploadUserProfile } from "@/utils/uploadUserProfile";
 import { useEffect, useRef, useState } from "react";
 
 function EditProfile() {
@@ -10,7 +11,7 @@ function EditProfile() {
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
   const [imgFile, setImgFile] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
-  const imgRef = useRef<HTMLInputElement>(null);
+  const [avatar, setavatar] = useState();
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -26,8 +27,10 @@ function EditProfile() {
 
       if (profilesData && profilesData[0].nickname === null) {
         setUserNickname(profilesData[0].full_name);
+        setavatar(profilesData[0].avatar_url);
       } else if (profilesData) {
         setUserNickname(profilesData[0]?.nickname);
+        setavatar(profilesData[0].avatar_url);
       }
     };
 
@@ -39,35 +42,43 @@ function EditProfile() {
     setUserNickname(reName);
   };
 
-  const handleSubmit = () => {
-    const updateNickname = async () => {
-      if (imgFile) {
-        const { data: avatarsData, error: avatarsError } =
-          await supabase.storage
-            .from("avatars")
-            .upload(`avartar/${imgFile.name}`, imgFile);
-        console.log(avatarsData?.path);
-      } else {
-        console.log("선택한 이미지 파일이 없습니다.");
-      }
+  const handleSubmit = async () => {
+    if (imgFile) {
+      const imagePaths = await uploadUserProfile(imgFile);
+      const avatarUrl = imagePaths?.data.publicUrl;
 
-      /* -------------------------------------------------------------------------- */
+      const updateProfile = async () => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .upsert({ nickname: userNickname, avatar_url: avatarUrl })
+          .eq("id", userSessionId)
+          .select();
 
-      const { data, error } = await supabase
-        .from("profiles")
-        .upsert({ nickname: userNickname })
-        .eq("id", userSessionId)
-        .select();
+        alert("프로필이 수정되었습니다.");
 
-      alert("프로필이 수정되었습니다.");
+        if (error) {
+          console.log(error);
+          alert("프로필 수정에 실패했습니다. 다시 시도해주세요.");
+        }
+      };
+      updateProfile();
+    } else {
+      const updateNickname = async () => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .upsert({ nickname: userNickname })
+          .eq("id", userSessionId)
+          .select();
 
-      if (error) {
-        console.log(error);
-        alert("프로필 수정에 실패했습니다. 다시 시도해주세요.");
-      }
-    };
+        alert("프로필이 수정되었습니다.");
 
-    updateNickname();
+        if (error) {
+          console.log(error);
+          alert("프로필 수정에 실패했습니다. 다시 시도해주세요.");
+        }
+      };
+      updateNickname();
+    }
   };
 
   const previewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,12 +105,15 @@ function EditProfile() {
     <EditProfileLayout>
       <div className="mx-auto  flex flex-col gap-5 justify-center items-center h-[50vh] ">
         <div className="flex justify-center items-center rounded-full border-[#CADDE2] border-[0.0625rem] w-[100px] h-[100px] bg-secondary">
-          <DefaultProfile />
-          <img
-            src={imgSrc as string}
-            alt=""
-            className="w-[100px] h-[100px] object-cover rounded-full"
-          />
+          {avatar || imgSrc ? (
+            <img
+              src={(imgSrc as string) || avatar}
+              alt=""
+              className="w-[100px] h-[100px] object-cover rounded-full"
+            />
+          ) : (
+            <DefaultProfile />
+          )}
         </div>
         <form action="" className="w-2/5 h-12 ">
           <p className="w-full h-full my-3 ">
