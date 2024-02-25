@@ -5,11 +5,13 @@ import MyBookmark from "@/components/mypage/MyBookmark";
 import MyPlan from "@/components/mypage/MyPlan";
 import MyReview from "@/components/mypage/MyReview";
 import { TbSettings } from "react-icons/tb";
-import { useState } from "react";
+
+import Link from "next/link";
 import { useTabTitleStore } from "@/store/useTabTitleStore";
 
 function Mypage() {
   const { tabTitle, setTabTitle } = useTabTitleStore();
+
 
   const handleTab = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget.querySelector("span");
@@ -29,10 +31,12 @@ function Mypage() {
           <DefaultProfile />
         </div>
         <span className="font-medium">닉네임</span>
-        <button className="flex gap-1 rounded-xl px-3 py-1 text-xs text-[#898989] bg-[#E9F0F0]">
-          <TbSettings size="16px" />
-          프로필 수정
-        </button>
+        <Link href="/editprofile">
+          <button className="flex gap-1 rounded-xl px-3 py-1 text-xs text-[#898989] bg-[#E9F0F0]">
+            <TbSettings size="16px" />
+            프로필 수정
+          </button>
+        </Link>
       </div>
       <div className="flex justify-evenly mx-auto mt-6">
         <MyPageTab tab="나의 일정" onClick={handleTab} />
