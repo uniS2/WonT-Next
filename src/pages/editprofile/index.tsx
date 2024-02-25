@@ -41,6 +41,18 @@ function EditProfile() {
 
   const handleSubmit = () => {
     const updateNickname = async () => {
+      if (imgFile) {
+        const { data: avatarsData, error: avatarsError } =
+          await supabase.storage
+            .from("avatars")
+            .upload(`avartar/${imgFile.name}`, imgFile);
+        console.log(avatarsData?.path);
+      } else {
+        console.log("선택한 이미지 파일이 없습니다.");
+      }
+
+      /* -------------------------------------------------------------------------- */
+
       const { data, error } = await supabase
         .from("profiles")
         .upsert({ nickname: userNickname })
@@ -54,6 +66,7 @@ function EditProfile() {
         alert("프로필 수정에 실패했습니다. 다시 시도해주세요.");
       }
     };
+
     updateNickname();
   };
 
