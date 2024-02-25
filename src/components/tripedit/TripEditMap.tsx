@@ -1,3 +1,4 @@
+import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { debounce } from "@/utils/debounce";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ declare global {
 }
 
 function TripEditMap() {
+  const { place, setPlace } = useTripPlaceStore();
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
@@ -17,7 +19,7 @@ function TripEditMap() {
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
         // const [center, setCenter] = useState(
-        //   new kakao.maps.LatLng(latitude, longitude),
+        //   new window.kakao.maps.LatLng(latitude, longitude),
         // );
         var container = document.getElementById("map");
         var options = {
@@ -31,8 +33,10 @@ function TripEditMap() {
           // 지도 중심좌표에 마커를 생성합니다
           position: map.getCenter(),
         });
-        // 지도에 마커를 표시합니다
-        marker.setMap(map);
+        if (place.length !== 0) {
+          // 지도에 마커를 표시합니다
+          marker.setMap(map);
+        }
 
         // 지도에 클릭 이벤트를 등록합니다
         // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -100,8 +104,8 @@ function TripEditMap() {
         /* -------------------------------------------------------------------------- */
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-        var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        // var keywords = [null];
+        // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
+        var keywords = place;
         if (keywords) {
           var ps = new window.kakao.maps.services.Places();
           for (var i = 0; i < keywords.length; i++) {
@@ -157,7 +161,7 @@ function TripEditMap() {
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
-  }, []);
+  }, [place]);
 
   return (
     <main className="w-full flex flex-col items-center justify-center ">
