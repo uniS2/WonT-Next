@@ -10,8 +10,20 @@ import RegionItem from "@/components/tripregion/RegionItem";
 import { RegionStore } from "@/store/RegionStore";
 import { RegionToggleStore } from "@/store/RegionToggleStore";
 import { useEffect, useState } from "react";
+import TourCategoryItem from "@/components/tripregion/TourCategoryItem";
 
 function TripRegionPage() {
+  const regionData = [
+    { id: 1, title: "지역이름1" },
+    { id: 2, title: "지역이름2" },
+    { id: 3, title: "지역이름3" },
+    { id: 4, title: "지역이름4" },
+    { id: 5, title: "지역이름5" },
+    { id: 7, title: "지역이름7" },
+    { id: 8, title: "지역이름8" },
+    { id: 9, title: "지역이름9" },
+  ];
+
   const { selectedRegionName } = RegionStore();
   const { toggleRegionName } = RegionToggleStore();
   const [isToggle, setIsToggle] = useState(false);
@@ -45,27 +57,63 @@ function TripRegionPage() {
             className="w-full p-[0.625rem] text-sm font-light outline-none"
           />
         </label>
-        <ul className="flex flex-wrap items-start gap-x-[0.625rem] h-full">
-          <RegionItem regionName="지역이름1" />
-          <RegionItem regionName="지역이름2" />
-          <RegionItem regionName="지역이름3" />
-          <RegionItem regionName="지역이름4" />
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 h-full">
+          <RegionItem key={17} regionName={"이"} />
+          <RegionItem key={16} regionName={"이"} />
+          <RegionItem key={12} regionName={"이"} />
+          <RegionItem key={10} regionName={"이"} />
+          <>
+            {isToggle ? (
+              <section className="grid gap-[0.625rem] place-items-center col-span-2 sm:col-span-3 lg:col-span-4 2xl:col-span-6">
+                <div className="w-full mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
+                  <dl className="flex flex-col gap-[0.625rem] w-full mb-[0.625rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+                    <dt className="text-contentSecondary">지역정보</dt>
+                    <dd>지역 설명 텍스트입니다.</dd>
+                    {selectedRegionName}
+                  </dl>
+                  <div className="flex flex-col gap-[0.625rem] w-full px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+                    <dl>
+                      <dt className="text-contentSecondary">관광지도</dt>
+                      <dd>궁금한 주제를 선택해 보세요.</dd>
+                    </dl>
+                    <div className="flex gap-[0.625rem]">
+                      <TourCategoryItem />
+                      <TourCategoryItem>#숙박</TourCategoryItem>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ) : (
+              <></>
+            )}
+          </>
+          <>
+            {regionData.map((name) => {
+              <RegionItem key={name.id} regionName={name.title} />;
+              /* {
+                isToggle ? (
+                  <section className="grid gap-[0.625rem] place-items-center col-span-2 sm:col-span-3 lg:col-span-4 2xl:col-span-6">
+                    <div className="w-full mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
+                      <dl className="flex flex-col gap-[0.625rem] w-full mb-[0.625rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+                        <dt className="text-contentSecondary">지역정보</dt>
+                        <dd>지역 설명 텍스트입니다.</dd>
+                        {selectedRegionName}
+                      </dl>
+                      <dl className="flex flex-col gap-[0.625rem] w-full px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
+                        <dt className="text-contentSecondary">관광지도</dt>
+                        <dd>궁금한 주제를 선택해 보세요.</dd>
+                      </dl>
+                      <button type="button">#관광지</button>
+                      <button type="button">#숙박</button>
+                    </div>
+                  </section>
+                ) : (
+                  <></>
+                );
+              } */
+            })}
+          </>
         </ul>
-        {isToggle ? (
-          <div className="flex flex-col gap-[0.625rem] mx-auto p-[0.625rem] rounded-[0.625rem] bg-button">
-            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-              <dt className="text-contentSecondary">지역정보</dt>
-              <dd>지역 설명 텍스트입니다.</dd>
-              {selectedRegionName}
-            </dl>
-            <dl className="flex flex-col gap-[0.625rem] w-[18.75rem] px-[0.625rem] py-[0.9375rem] rounded-[0.625rem] bg-white text-contentMuted">
-              <dt className="text-contentSecondary">관광지도</dt>
-              <dd>궁금한 주제를 선택해 보세요.</dd>
-            </dl>
-          </div>
-        ) : (
-          <></>
-        )}
         <ButtonLarge
           isSelected={Boolean(selectedRegionName)}
           href="/tripdays"
