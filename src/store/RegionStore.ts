@@ -1,5 +1,5 @@
 import { create } from "zustand";
-// import { persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 type RegionStoreType = {
   selectedRegionName: null | string;
@@ -7,8 +7,15 @@ type RegionStoreType = {
   resetRegionName: () => void;
 };
 
-export const RegionStore = create<RegionStoreType>((set) => ({
-  selectedRegionName: null,
-  setRegionName: (name: string) => set({ selectedRegionName: name }),
-  resetRegionName: () => set({ selectedRegionName: "" }),
-}));
+export const RegionStore = create(
+  persist<RegionStoreType>(
+    (set) => ({
+      selectedRegionName: null,
+      setRegionName: (name: string) => set({ selectedRegionName: name }),
+      resetRegionName: () => set({ selectedRegionName: "" }),
+    }),
+    {
+      name: "tripRegionStorage",
+    },
+  ),
+);
