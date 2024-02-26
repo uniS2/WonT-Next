@@ -12,7 +12,7 @@ function EditProfile() {
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
   const [imgFile, setImgFile] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
-  const [avatar, setavatar] = useState();
+  const [avatar, setavatar] = useState<string | undefined>();
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -36,53 +36,46 @@ function EditProfile() {
     };
 
     getUserSession();
-  }, [imgSrc, userNickname]);
+  }, [imgSrc, userNickname, imgFile]);
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
     setUserNickname(reName);
   };
 
-  const handleDeleteImage = async (e: React.MouseEvent) => {
-    const target = e.currentTarget;
-    const images = document.querySelector("img");
-    console.log(images);
-    console.log(avatar);
-
-    if (images) {
-      const imageSrc = images.src.split("/");
-      // const fileName = imageSrc[imageSrc.length - 1];
-      const fileName = images.src.split("/").pop();
-
+  const handleDeleteImage = () => {
+    if (avatar !== undefined) {
+      const fileName = avatar?.split("/").pop();
       console.log(fileName);
-      await supabase.storage.from("avatars").remove([
-        `avatars/detailPlaceDefault.jpg
-      `,
-      ]);
-      // await supabase.storage.from("avatars").remove([`avatars/${fileName}`]);
 
-      // const { data, error } = await supabase.storage
-      //   .from("avatars")
-      //   .remove([`avartar/${fileName}`]);
-      // console.log(data);
+      const deleteAvatar = async () => {
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .remove([`avartar/${fileName}`]);
 
-      // if (error) {
-      //   console.error(error);
-      // }
+        console.log(data);
+
+        if (error) {
+          console.error(error);
+          alert("사진 삭제에 실패했습니다.");
+        }
+      };
+
+      const updateProfile = async () => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .upsert({ avatar_url: null })
+          .eq("id", userSessionId)
+          .select();
+      };
+
+      setImgFile(undefined);
+      setImgSrc(null);
+      deleteAvatar();
+      updateProfile();
     }
 
-    const updateProfile = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .upsert({ avatar_url: null })
-        .eq("id", userSessionId)
-        .select();
-    };
-
-    setImgFile(undefined);
-    setImgSrc(null);
-
-    updateProfile();
+    alert("프로필이 수정되었습니다.");
   };
 
   const handleSubmit = async () => {
@@ -98,6 +91,7 @@ function EditProfile() {
           .select();
 
         alert("프로필이 수정되었습니다.");
+        window.location.reload();
 
         if (error) {
           console.log(error);
@@ -183,7 +177,7 @@ function EditProfile() {
           </label>
           <button
             type="button"
-            onClick={(e) => handleDeleteImage(e)}
+            onClick={() => handleDeleteImage()}
             className="bg-content text-error w-full h-12 rounded-md my-2"
           >
             현재 사진 삭제
