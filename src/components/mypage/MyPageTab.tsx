@@ -11,8 +11,6 @@ interface MyPageTabProps {
 function MyPageTab({ tab, onClick }: MyPageTabProps) {
   const { tabTitle } = useTabTitleStore();
 
-  console.log("comp", tabTitle);
-
   return (
     <button
       className="font-extrabold flex flex-col justify-end w-[70px] h-16 items-center "
