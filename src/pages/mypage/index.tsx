@@ -45,7 +45,7 @@ function Mypage() {
     };
     getUserSession();
     fetchUesrData();
-  }, []);
+  }, [userData, userSessionId, setUserData, setUserSession, setUserSessionId]);
 
   const handleTab = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget.querySelector("span");
@@ -71,7 +71,9 @@ function Mypage() {
                 <DefaultProfile />
               )}
             </div>
-            <span className="font-medium">{item.nickname}</span>
+            <span className="font-medium">
+              {item.nickname || item.full_name}
+            </span>
             <Link href="/editprofile">
               <button className="flex gap-1 rounded-xl px-3 py-1 text-xs text-[#898989] bg-[#E9F0F0]">
                 <TbSettings size="16px" />
