@@ -27,7 +27,7 @@ const RegionItem = ({ regionName = "지역이름" }) => {
 
   return (
     <li
-      className={`list-none ${isToggle && "grid col-span-2 sm:col-span-3 lg:col-span-4 2xl:col-span-6 my-3 py-5 border-y-4 border-button"}`}
+      className={`list-none ${isToggle && "grid col-span-2 sm:col-span-3 lg:col-span-4 2xl:col-span-6 my-3 pt-5 pb-6 border-y-4 border-button mx-3"}`}
     >
       <button
         type="button"
