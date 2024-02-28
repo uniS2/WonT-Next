@@ -45,7 +45,7 @@ function Mypage() {
     };
     getUserSession();
     fetchUesrData();
-  }, []);
+  }, [userData, userSessionId, setUserData, setUserSession, setUserSessionId]);
 
   const handleTab = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget.querySelector("span");
