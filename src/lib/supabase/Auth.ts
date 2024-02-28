@@ -7,7 +7,7 @@ export const signInWithGoogle = async () => {
       provider: "google",
       options: {
         queryParams: {
-          redirectTo: "http://localhost:3000/main",
+          redirectTo: "http://localhost:3000/signnickname",
           access_type: "offline",
           prompt: "consent",
         },
@@ -30,7 +30,7 @@ export const signInWithKakao = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
       options: {
-        redirectTo: "http://localhost:3000/main",
+        redirectTo: "http://localhost:3000/signnickname",
         queryParams: {
           access_type: "offline",
           prompt: "consent",
@@ -54,7 +54,7 @@ export const signInWithGitHub = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: "http://localhost:3000/main",
+        redirectTo: "http://localhost:3000/signnickname",
         queryParams: {
           access_type: "offline",
           prompt: "consent",
