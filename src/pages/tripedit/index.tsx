@@ -25,7 +25,7 @@ function TripEdit() {
             <TripDays days="Day 2" date="24.01.21" />
             <TripDays days="Day 3" date="24.01.22" />
             <TripDays days="Day 4" date="24.01.23" />
-            <SaveButton />
+            <SaveButton text="저장" />
           </div>
         </section>
       </div>

@@ -5,7 +5,7 @@ import { AiFillPlusCircle } from "react-icons/ai";
 interface AddPlanButtonProps {
   text?: string;
   place?: string;
-  onDragStart?: (e: any) => void;
+  onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
 }
