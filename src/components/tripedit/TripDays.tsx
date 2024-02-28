@@ -104,81 +104,35 @@ function TripDays({ days, date }: TripDaysProps) {
     setPlace(testTripPlan);
   }, []);
 
-  const dragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
-    dragItem.current = position;
-    console.log((dragItem.current = position));
+  const dragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    dragItem.current = index;
+    console.log((dragItem.current = index));
   };
 
-  const dragEnter = (e: React.DragEvent<HTMLDivElement>, position: number) => {
-    dragOverItem.current = position;
-    console.log((dragOverItem.current = position));
+  const dragEnter = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    dragOverItem.current = index;
+    console.log((dragOverItem.current = index));
   };
 
   const drop = (e: React.DragEvent<HTMLDivElement>) => {
-    // e.preventDefault();
-    // const copyListItems = [Object.values(place)[0]];
-    // console.log(copyListItems);
-    // const dragItemContent = copyListItems[dragItem.current as number];
-    // copyListItems.splice(dragItem.current as number, 1);
-    // dragItem.current = null;
-    // dragOverItem.current = null;
-    // let dropList = [...place, copyListItems[0]];
-    // console.log(dropList);
-    // setPlace(dropList);
-
     const copyListItems = [...place];
-    console.log("copy", copyListItems);
+    // console.log("copy", copyListItems);
 
     const dragItemContent = copyListItems[dragItem.current as number];
     console.log("copydrag", dragItemContent);
 
     copyListItems.splice(dragItem.current as number, 1);
     copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
+    dragItem.current = dragOverItem.current;
     dragItem.current = null;
     dragOverItem.current = null;
     setPlace(copyListItems);
   };
 
-  // const drop = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.preventDefault();
-  //   const copyListItems = [place];
-
-  //   const dragItemContent = copyListItems[dragItem.current as number];
-  //   copyListItems.splice(dragItem.current as number, 1);
-  //   copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
-  //   dragItem.current = null;
-  //   dragOverItem.current = null;
-  //   console.log(copyListItems);
-  //   // setPlace(copyListItems);
-  // };
-
-  console.log("place", place);
+  // console.log("place", place);
 
   return (
     <ul className="flex flex-col  my-5 gap-[10px]">
-      {/* {Object.entries(place).map(([dayKey, places], dayIndex) => (
-        <React.Fragment key={dayKey}>
-          <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
-            {dayKey}{" "}
-            <span className="font-light text-contentMuted">| {date}</span>
-          </p>
-          {places.map((place, index) => (
-            <>
-              <div
-                key={place}
-                draggable
-                onDragStart={(e) => dragStart(e, index)}
-                onDragEnter={(e) => dragEnter(e, index)}
-                onDragEnd={drop}
-                onDragOver={(e) => e.preventDefault()}
-                className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
-              >
-                <AddPlanButton text="장소" place={place} key={index} />
-              </div>
-            </>
-          ))}
-        </React.Fragment>
-      ))} */}
       {place.map((item, index) => (
         <React.Fragment key={index}>
           <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
@@ -193,6 +147,7 @@ function TripDays({ days, date }: TripDaysProps) {
                 onDragStart={(e) => dragStart(e, index)}
                 onDragEnter={(e) => dragEnter(e, index)}
                 onDragEnd={drop}
+                // onDragEnd={(e) => drop(e, index)}
                 onDragOver={(e) => e.preventDefault()}
                 className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
               >
