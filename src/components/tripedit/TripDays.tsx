@@ -7,6 +7,87 @@ interface TripDaysProps {
   date?: string;
 }
 
+// function TripDays({ days, date }: TripDaysProps) {
+//   const { place, setPlace } = useTripPlaceStore();
+//   const { day, setDay } = useDayStore();
+//   const dragItem = useRef<number | null>(null);
+//   const dragOverItem = useRef<number | null>(null);
+
+//   useEffect(() => {
+//     const testDay1 = ["새별오름", "성산일출봉", "카멜리아 힐"];
+//     const testDay2 = ["새별오름", "성산일출봉", "카멜리아 힐"];
+//     const testDay3 = ["새별오름", "성산일출봉", "카멜리아 힐"];
+//     setDay(3);
+//     setPlace(testDay1);
+//     setPlace(testDay2);
+//     setPlace(testDay3);
+//   }, []);
+
+//   const dragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+//     dragItem.current = position;
+//     console.log((dragItem.current = position));
+
+//     // console.log((e.target as HTMLDivElement).innerHTML);
+//   };
+
+//   const dragEnter = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+//     dragOverItem.current = position;
+//     console.log((dragOverItem.current = position));
+
+//     // console.log((e.target as HTMLDivElement).innerHTML);
+//   };
+
+//   const drop = (e: React.DragEvent<HTMLDivElement>) => {
+//     const copyListItems = [...place];
+//     console.log("copy", copyListItems);
+
+//     const dragItemContent = copyListItems[dragItem.current as number];
+//     console.log("copydrag", dragItemContent);
+
+//     copyListItems.splice(dragItem.current as number, 1);
+//     copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
+//     dragItem.current = null;
+//     dragOverItem.current = null;
+//     setPlace(copyListItems);
+//   };
+
+//   console.log(place);
+
+//   return (
+//     <ul className="flex flex-col  my-5 gap-[10px]">
+//       <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
+//         {days} <span className="font-light text-contentMuted">| {date}</span>
+//       </p>
+//       {place.length !== 0 ? (
+//         <>
+//           {place.map((item, index) => (
+//             <React.Fragment key={index}>
+//               <div
+//                 draggable
+//                 onDragStart={(e) => dragStart(e, index)}
+//                 onDragEnter={(e) => dragEnter(e, index)}
+//                 onDragEnd={drop}
+//                 onDragOver={(e) => e.preventDefault()}
+//                 className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
+//               >
+//                 <AddPlanButton text="장소" place={item} key={item} />
+//               </div>
+//             </React.Fragment>
+//           ))}
+//         </>
+//       ) : (
+//         <>
+//           <AddPlanButton text="장소" />
+//           <AddPlanButton text="숙소" />
+//         </>
+//       )}
+//     </ul>
+//   );
+// }
+
+// export default TripDays;
+/* -------------------------------------------------------------------------- */
+
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
   const { day, setDay } = useDayStore();
@@ -14,91 +95,113 @@ function TripDays({ days, date }: TripDaysProps) {
   const dragOverItem = useRef<number | null>(null);
 
   useEffect(() => {
-    // const testTripPlan = ["새별오름", "성산일출봉", "카멜리아 힐"];
     setDay(3);
-    const testTripPlan = {
-      day1: ["새별오름", "성산일출봉", "카멜리아 힐"],
-      day2: ["오설록", "스누피가든", "용머리해안"],
-      day3: ["금오름", "쇠소깍", "정방폭포"],
-    };
+    const testTripPlan = [
+      { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
+      { places: ["오설록", "스누피가든", "용머리해안"] },
+      { places: ["금오름", "쇠소깍", "정방폭포"] },
+    ];
     setPlace(testTripPlan);
   }, []);
 
-  const dragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    // placeIndex: number,
-    position: number,
-  ) => {
-    // dragItem.current = placeIndex;
+  const dragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
     dragItem.current = position;
+    console.log((dragItem.current = position));
   };
 
-  const dragEnter = (
-    e: React.DragEvent<HTMLDivElement>,
-    // placeIndex: number,
-    position: number,
-  ) => {
-    // dragOverItem.current = placeIndex;
+  const dragEnter = (e: React.DragEvent<HTMLDivElement>, position: number) => {
     dragOverItem.current = position;
+    console.log((dragOverItem.current = position));
   };
 
   const drop = (e: React.DragEvent<HTMLDivElement>) => {
-    const targetPlace = Object.entries(place);
-    console.log(targetPlace);
-    const copyListItems = [...targetPlace];
+    // e.preventDefault();
+    // const copyListItems = [Object.values(place)[0]];
+    // console.log(copyListItems);
+    // const dragItemContent = copyListItems[dragItem.current as number];
+    // copyListItems.splice(dragItem.current as number, 1);
+    // dragItem.current = null;
+    // dragOverItem.current = null;
+    // let dropList = [...place, copyListItems[0]];
+    // console.log(dropList);
+    // setPlace(dropList);
+
+    const copyListItems = [...place];
+    console.log("copy", copyListItems);
+
     const dragItemContent = copyListItems[dragItem.current as number];
-    console.log(dragItemContent);
+    console.log("copydrag", dragItemContent);
 
     copyListItems.splice(dragItem.current as number, 1);
     copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
     dragItem.current = null;
     dragOverItem.current = null;
-    console.log(copyListItems);
-
-    // setPlace(copyListItems);
+    setPlace(copyListItems);
   };
 
-  console.log(place);
-  console.log(Object.entries(place));
+  // const drop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   const copyListItems = [place];
+
+  //   const dragItemContent = copyListItems[dragItem.current as number];
+  //   copyListItems.splice(dragItem.current as number, 1);
+  //   copyListItems.splice(dragOverItem.current as number, 0, dragItemContent);
+  //   dragItem.current = null;
+  //   dragOverItem.current = null;
+  //   console.log(copyListItems);
+  //   // setPlace(copyListItems);
+  // };
+
+  console.log("place", place);
 
   return (
     <ul className="flex flex-col  my-5 gap-[10px]">
-      {place ? (
-        <>
-          {Object.entries(place).map(([dayKey, dayData]) => (
-            <React.Fragment key={dayKey}>
-              <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
-                {dayKey}{" "}
-                <span className="font-light text-contentMuted">| {date}</span>
-              </p>
-              <div key={dayKey}>
-                {dayData.map((place, placeIndex) => (
-                  <div
-                    key={placeIndex}
-                    draggable
-                    onDragStart={(e) => dragStart(e, placeIndex)}
-                    onDragEnter={(e) => dragEnter(e, placeIndex)}
-                    onDragEnd={drop}
-                    onDragOver={(e) => e.preventDefault()}
-                    className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
-                  >
-                    <AddPlanButton text="장소" place={place} />
-                  </div>
-                ))}
-              </div>
-            </React.Fragment>
-          ))}
-        </>
-      ) : (
-        <>
+      {/* {Object.entries(place).map(([dayKey, places], dayIndex) => (
+        <React.Fragment key={dayKey}>
           <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
-            {days}{" "}
+            {dayKey}{" "}
             <span className="font-light text-contentMuted">| {date}</span>
           </p>
-          <AddPlanButton text="장소" />
-          <AddPlanButton text="숙소" />
-        </>
-      )}
+          {places.map((place, index) => (
+            <>
+              <div
+                key={place}
+                draggable
+                onDragStart={(e) => dragStart(e, index)}
+                onDragEnter={(e) => dragEnter(e, index)}
+                onDragEnd={drop}
+                onDragOver={(e) => e.preventDefault()}
+                className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
+              >
+                <AddPlanButton text="장소" place={place} key={index} />
+              </div>
+            </>
+          ))}
+        </React.Fragment>
+      ))} */}
+      {place.map((item, index) => (
+        <React.Fragment key={index}>
+          <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
+            {index}{" "}
+            <span className="font-light text-contentMuted">| {date}</span>
+          </p>
+          {item.places.map((place, index) => (
+            <>
+              <div
+                key={place}
+                draggable
+                onDragStart={(e) => dragStart(e, index)}
+                onDragEnter={(e) => dragEnter(e, index)}
+                onDragEnd={drop}
+                onDragOver={(e) => e.preventDefault()}
+                className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
+              >
+                <AddPlanButton text="장소" place={place} key={index} />
+              </div>
+            </>
+          ))}
+        </React.Fragment>
+      ))}
     </ul>
   );
 }
