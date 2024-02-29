@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddPlanButton from "./AddPlanButton";
 import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
 
@@ -96,6 +96,7 @@ function TripDays({ days, date }: TripDaysProps) {
   const { day, setDay } = useDayStore();
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
+  const [dragTripPlan, setDragTripPlan] = useState<string[]>([]);
 
   useEffect(() => {
     setDay(3);
@@ -110,30 +111,56 @@ function TripDays({ days, date }: TripDaysProps) {
   const dragStart = (
     e: React.DragEvent<HTMLDivElement>,
     index: number,
-    itemIndex: string[],
+    itemList: string[],
   ) => {
-    const numberItemIndex = itemIndex;
-    console.log("dragstart", numberItemIndex);
+    setDragTripPlan(itemList);
+    console.log("dragstart", itemList);
 
-    // dragItem.current = { index, itemIndex };
+    dragItem.current = index;
   };
 
-  const dragEnter = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+  const dragEnter = (
+    e: React.DragEvent<HTMLDivElement>,
+    index: number,
+    itemList: string[],
+  ) => {
     dragOverItem.current = index;
     console.log("dragEnter", (dragOverItem.current = index));
   };
 
-  // const drop = (e: React.DragEvent<HTMLDivElement>, itemIndex: number) => {
-  //   const copyListItems = [...place];
+  // const drop = (
+  //   e: React.DragEvent<HTMLDivElement>,
+  //   index: number,
+  //   itemList: string[],
+  // ) => {
+  //   // console.log(dragTripPlan);
+  //   const copyListItems = [...dragTripPlan];
   //   const dragItemContent = copyListItems[dragItem.current as number];
+  //   console.log(dragItem);
 
-  //   copyListItems.splice(dragItem?.current?.itemIndex, 1);
-  //   copyListItems.splice(itemIndex, 0, dragItemContent);
-
+  //   copyListItems.splice(dragItem.current as number, 1);
+  //   copyListItems.splice(index, 0, dragItemContent);
   //   dragItem.current = null;
   //   dragOverItem.current = null;
-  //   setPlace(copyListItems);
+  //   console.log(dragItemContent);
   // };
+
+  const drop = (
+    e: React.DragEvent<HTMLDivElement>,
+    itemIndex: number,
+    itemList: string[],
+  ) => {
+    const copyListItems = [...itemList];
+    const dragItemContent = copyListItems[dragItem.current as number];
+    console.log(dragItemContent);
+
+    copyListItems.splice(dragItem.current as number, 1);
+    copyListItems.splice(itemIndex, 0, dragItemContent);
+
+    dragItem.current = null;
+    dragOverItem.current = null;
+    // setPlace(copyListItems);
+  };
 
   // console.log("place", place);
   // console.log(place.map((item) => item));
@@ -146,15 +173,15 @@ function TripDays({ days, date }: TripDaysProps) {
             {index}{" "}
             <span className="font-light text-contentMuted">| {date}</span>
           </p>
-          {item.places.map((place, index, itemIndex) => (
+          {item.places.map((place, index, itemList) => (
             <>
               <div
                 key={place}
                 draggable
-                onDragStart={(e) => dragStart(e, index, itemIndex)}
-                onDragEnter={(e) => dragEnter(e, index)}
-                // onDragEnd={(e) => drop(e, itemIndex)}
+                onDragStart={(e) => dragStart(e, index, itemList)}
+                onDragEnter={(e) => dragEnter(e, index, itemList)}
                 // onDragEnd={(e) => drop(e, index)}
+                onDragEnd={(e) => drop(e, index, itemList)}
                 onDragOver={(e) => e.preventDefault()}
                 className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
               >
