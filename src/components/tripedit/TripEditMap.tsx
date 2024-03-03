@@ -72,11 +72,6 @@ function TripEditMap() {
             message += "경도는 " + latlng.getLng() + " 입니다";
 
             console.log(message);
-
-            // var resultDiv = document.getElementById("clickLatlng");
-            // if (resultDiv) {
-            //   resultDiv.innerHTML = message;
-            // }
           },
         );
         /* -------------------------------------------------------------------------- */
@@ -95,23 +90,10 @@ function TripEditMap() {
                 result[0].x,
               );
 
-              // // 결과값으로 받은 위치를 마커로 표시합니다
-              // var marker = new window.kakao.maps.Marker({
-              //   map: map,
-              //   position: coords,
-              // });
-
               const categoryOptions = {
                 location: coords,
                 radius: 10000,
               };
-
-              // 인포윈도우로 장소에 대한 설명을 표시합니다
-              // var infowindow = new window.kakao.maps.InfoWindow({
-              //   content:
-              //     '<div style="width:150px;text-align:center;padding:6px 0;">여기</div>',
-              // });
-              // infowindow.open(map, marker);
 
               // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
               map.setCenter(coords);
@@ -123,17 +105,16 @@ function TripEditMap() {
 
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-        const setMapLatLng = (newLatLng: { y: any; x: any }) => {
-          setMapLatLngArray((prevArray) => [...prevArray, newLatLng]);
-        };
+        // const setMapLatLng = (newLatLng: { y: any; x: any }) => {
+        //   setMapLatLngArray((prevArray) => [...prevArray, newLatLng]);
+        // };
+        console.log(mapLatLng);
+        console.log(mapPlace);
 
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
         if (mapPlace !== undefined) {
           var ps = new window.kakao.maps.services.Places();
-          // for (var i = 0; i < keywords.length; i++) {
-          //   ps.keywordSearch(keywords[i], placesSearchCB);
-          // }
-          for (var i = 0; i <= 0; i++) {
+          for (var i = 0; i < mapPlace.length; i++) {
             ps.keywordSearch(mapPlace[i], placesSearchCB);
           }
 
@@ -147,19 +128,12 @@ function TripEditMap() {
               // LatLngBounds 객체에 좌표를 추가합니다
               var bounds = new window.kakao.maps.LatLngBounds();
 
-              // for (var i = 0; i < data.length; i++) {
-              //   displayMarker(data[0]);
-              //   bounds.extend(
-              //     new window.kakao.maps.LatLng(data[0].y, data[0].x),
-              //   );
-
-              // }
-              for (var i = 0; (i = 0); i++) {
+              for (var i = 0; i < data.length; i++) {
                 displayMarker(data[i]);
                 bounds.extend(
                   new window.kakao.maps.LatLng(data[i].y, data[i].x),
                 );
-                setMapLatLng({ y: data[i].y, x: data[i].x });
+                // setMapLatLng({ y: data[i].y, x: data[i].x });
               }
 
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -190,9 +164,6 @@ function TripEditMap() {
             });
           }
           // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-
-          // var first_polyline = [mapLatLng];
-          // console.log(mapLatLng);
 
           // 지도에 표시할 선을 생성합니다
 
