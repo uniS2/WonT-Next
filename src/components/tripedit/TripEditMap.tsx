@@ -10,6 +10,22 @@ declare global {
 
 function TripEditMap() {
   const { place, setPlace } = useTripPlaceStore();
+  const [mapPlace, setMapPlace] = useState<string[]>();
+
+  useEffect(() => {
+    const testTripPlan = [
+      { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
+      { places: ["오설록", "스누피가든", "용머리해안"] },
+      { places: ["금오름", "쇠소깍", "정방폭포"] },
+    ];
+    setPlace(testTripPlan.map((item) => item.places));
+  }, []);
+
+  useEffect(() => {
+    setMapPlace(place.flatMap((item) => item));
+  }, [place, setPlace]);
+  console.log(mapPlace);
+
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
@@ -105,11 +121,12 @@ function TripEditMap() {
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        var keywords = place;
+        var keywords = mapPlace;
         if (keywords) {
           var ps = new window.kakao.maps.services.Places();
           for (var i = 0; i < keywords.length; i++) {
             ps.keywordSearch(keywords[i], placesSearchCB);
+            // ps.keywordSearch(keywords[0], placesSearchCB);
           }
 
           function placesSearchCB(
@@ -123,9 +140,9 @@ function TripEditMap() {
               var bounds = new window.kakao.maps.LatLngBounds();
 
               for (var i = 0; i < data.length; i++) {
-                displayMarker(data[i]);
+                displayMarker(data[0]);
                 bounds.extend(
-                  new window.kakao.maps.LatLng(data[i].y, data[i].x),
+                  new window.kakao.maps.LatLng(data[0].y, data[0].x),
                 );
               }
 
