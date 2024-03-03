@@ -1,7 +1,3 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import AddPlanButton from "./AddPlanButton";
-import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
-
 interface TripDaysProps {
   days?: string;
   date?: string;
@@ -91,13 +87,119 @@ interface TripDaysProps {
 // export default TripDays;
 /* -------------------------------------------------------------------------- */
 // #배열일 경우
+// import {
+//   DragDropContext,
+//   Droppable,
+//   Draggable,
+//   DropResult,
+// } from "react-beautiful-dnd";
+// import AddPlanButton from "./AddPlanButton";
+// import React, { useCallback, useEffect } from "react";
+// import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
+
+// function TripDays({ days, date }: TripDaysProps) {
+//   const { place, setPlace } = useTripPlaceStore();
+//   const { day, setDay } = useDayStore();
+
+//   useEffect(() => {
+//     setDay(3);
+//     const testTripPlan = [
+//       { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
+//       { places: ["오설록", "스누피가든", "용머리해안"] },
+//       { places: ["금오름", "쇠소깍", "정방폭포"] },
+//     ];
+//     setPlace(testTripPlan.map((item) => item.places));
+//   }, []);
+
+//   // const onDragEnd = useCallback(
+//   //   (result: { destination: { index: any }; source: { index: any } }) => {
+//   //     if (!result.destination) return;
+
+//   //     const sourceIndex = result.source.index;
+//   //     const destinationIndex = result.destination.index;
+
+//   //     const copiedPlace = Array.from(place);
+//   //     const [removed] = copiedPlace.splice(sourceIndex, 1);
+//   //     copiedPlace.splice(destinationIndex, 0, removed);
+
+//   //     setPlace(copiedPlace);
+//   //   },
+//   //   [place, setPlace],
+//   // );
+//   const onDragEnd = useCallback(
+//     (result: DropResult) => {
+//       if (!result.destination) return;
+
+//       const sourceIndex = result.source.index;
+//       const destinationIndex = result.destination.index;
+
+//       const copiedPlace = Array.from(place);
+//       console.log(copiedPlace);
+
+//       const [removed] = copiedPlace.splice(sourceIndex, 1);
+//       copiedPlace.splice(destinationIndex, 0, removed);
+
+//       setPlace(copiedPlace);
+//     },
+//     [place, setPlace],
+//   );
+//   console.log(place);
+
+//   return (
+//     <DragDropContext onDragEnd={onDragEnd}>
+//       <ul className="flex flex-col my-5 gap-[10px]">
+//         {place.map((item, index) => (
+//           <React.Fragment key={index}>
+//             <p className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold">
+//               <span className="font-light text-contentMuted">| {date}</span>
+//             </p>
+//             <Droppable droppableId={`day-${index}`}>
+//               {(provided) => (
+//                 <div {...provided.droppableProps} ref={provided.innerRef}>
+//                   {item.map((place, index) => (
+//                     <Draggable key={place} draggableId={place} index={index}>
+//                       {(provided) => (
+//                         <div
+//                           ref={provided.innerRef}
+//                           {...provided.draggableProps}
+//                           {...provided.dragHandleProps}
+//                           className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+//                         >
+//                           <AddPlanButton
+//                             text="장소"
+//                             place={place}
+//                             key={index}
+//                           />
+//                         </div>
+//                       )}
+//                     </Draggable>
+//                   ))}
+//                   {provided.placeholder}
+//                 </div>
+//               )}
+//             </Droppable>
+//           </React.Fragment>
+//         ))}
+//       </ul>
+//     </DragDropContext>
+//   );
+// }
+
+// export default TripDays;
+/* -------------------------------------------------------------------------- */
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
+import AddPlanButton from "./AddPlanButton";
+import React, { useCallback, useEffect } from "react";
+import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
+
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
   const { day, setDay } = useDayStore();
-  const dragItem = useRef<number | null>(null);
-  const dragOverItem = useRef<number | null>(null);
-  const [dragTripPlan, setDragTripPlan] = useState<string[]>([]);
-  const onDragEnd = useCallback((result: any) => {}, []);
 
   useEffect(() => {
     setDay(3);
@@ -109,33 +211,65 @@ function TripDays({ days, date }: TripDaysProps) {
     setPlace(testTripPlan.map((item) => item.places));
   }, []);
 
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) return;
+
+      const { source, destination } = result;
+
+      // Moving within the same list
+      if (source.droppableId === destination.droppableId) {
+        const listIndex = parseInt(source.droppableId.split("-")[1]);
+        const copiedPlace = [...place];
+        const items = copiedPlace[listIndex];
+        const [removed] = items.splice(source.index, 1);
+        items.splice(destination.index, 0, removed);
+        setPlace(copiedPlace);
+      } else {
+        // Moving to a different list
+        // Implementation for this scenario depends on your use case
+      }
+    },
+    [place, setPlace],
+  );
+
   return (
-    <ul className="flex flex-col  my-5 gap-[10px]">
-      {place.map((item, index) => (
-        <React.Fragment key={index}>
-          <p className="bg-secondary flex items-center h-14  px-5 gap-2 font-semibold">
-            {index}{" "}
-            <span className="font-light text-contentMuted">| {date}</span>
-          </p>
-          {item.places.map((place, index, itemList) => (
-            <>
-              <div
-                key={place}
-                draggable
-                onDragStart={(e) => dragStart(e, index, itemList)}
-                onDragEnter={(e) => dragEnter(e, index, itemList)}
-                // onDragEnd={(e) => drop(e, index)}
-                onDragEnd={(e) => drop(e, index, itemList)}
-                onDragOver={(e) => e.preventDefault()}
-                className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5"
-              >
-                <AddPlanButton text="장소" place={place} key={index} />
-              </div>
-            </>
-          ))}
-        </React.Fragment>
-      ))}
-    </ul>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <ul className="flex flex-col my-5 gap-[10px]">
+        {place.map((item, index) => (
+          <React.Fragment key={index}>
+            <p className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold">
+              <span className="font-light text-contentMuted">| {date}</span>
+            </p>
+            <Droppable droppableId={`day-${index}`}>
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {item.map((place, index) => (
+                    <Draggable key={place} draggableId={place} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+                        >
+                          <AddPlanButton
+                            text="장소"
+                            place={place}
+                            key={index}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </React.Fragment>
+        ))}
+      </ul>
+    </DragDropContext>
   );
 }
 
