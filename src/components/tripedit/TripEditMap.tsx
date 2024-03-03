@@ -12,6 +12,7 @@ function TripEditMap() {
   const { place, setPlace } = useTripPlaceStore();
   const [mapPlace, setMapPlace] = useState<string[]>();
   const [mapLatLng, setMapLatLng] = useState();
+  const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
 
   useEffect(() => {
     const testTripPlan = [
@@ -122,13 +123,18 @@ function TripEditMap() {
 
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
+        const setMapLatLng = (newLatLng: { y: any; x: any }) => {
+          setMapLatLngArray((prevArray) => [...prevArray, newLatLng]);
+        };
+
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        var keywords = mapPlace;
-        if (keywords) {
+        if (mapPlace !== undefined) {
           var ps = new window.kakao.maps.services.Places();
-          for (var i = 0; i < keywords.length; i++) {
-            ps.keywordSearch(keywords[i], placesSearchCB);
-            // ps.keywordSearch(keywords[0], placesSearchCB);
+          // for (var i = 0; i < keywords.length; i++) {
+          //   ps.keywordSearch(keywords[i], placesSearchCB);
+          // }
+          for (var i = 0; i <= 0; i++) {
+            ps.keywordSearch(mapPlace[i], placesSearchCB);
           }
 
           function placesSearchCB(
@@ -140,20 +146,20 @@ function TripEditMap() {
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
               // LatLngBounds 객체에 좌표를 추가합니다
               var bounds = new window.kakao.maps.LatLngBounds();
-              var mapLatLngArray = [];
 
-              for (var i = 0; i < data.length; i++) {
-                displayMarker(data[0]);
+              // for (var i = 0; i < data.length; i++) {
+              //   displayMarker(data[0]);
+              //   bounds.extend(
+              //     new window.kakao.maps.LatLng(data[0].y, data[0].x),
+              //   );
+
+              // }
+              for (var i = 0; (i = 0); i++) {
+                displayMarker(data[i]);
                 bounds.extend(
-                  new window.kakao.maps.LatLng(data[0].y, data[0].x),
+                  new window.kakao.maps.LatLng(data[i].y, data[i].x),
                 );
-
-                // 배열에 데이터 추가
-                mapLatLngArray.push({
-                  y: data[0].y,
-                  x: data[0].x,
-                });
-                setMapLatLng(mapLatLngArray);
+                setMapLatLng({ y: data[i].y, x: data[i].x });
               }
 
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -185,13 +191,13 @@ function TripEditMap() {
           }
           // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
 
-          var first_polyline = [mapLatLng];
-          console.log(mapLatLng);
+          // var first_polyline = [mapLatLng];
+          // console.log(mapLatLng);
 
           // 지도에 표시할 선을 생성합니다
 
           var first_linePath = new window.kakao.maps.Polyline({
-            path: first_polyline, // 선을 구성하는 좌표배열 입니다
+            path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
 
             strokeWeight: 5, // 선의 두께 입니다
 
