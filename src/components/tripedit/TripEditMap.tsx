@@ -11,6 +11,7 @@ declare global {
 function TripEditMap() {
   const { place, setPlace } = useTripPlaceStore();
   const [mapPlace, setMapPlace] = useState<string[]>();
+  const [mapLatLng, setMapLatLng] = useState();
 
   useEffect(() => {
     const testTripPlan = [
@@ -118,6 +119,7 @@ function TripEditMap() {
         );
 
         /* -------------------------------------------------------------------------- */
+
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
@@ -138,12 +140,20 @@ function TripEditMap() {
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
               // LatLngBounds 객체에 좌표를 추가합니다
               var bounds = new window.kakao.maps.LatLngBounds();
+              var mapLatLngArray = [];
 
               for (var i = 0; i < data.length; i++) {
                 displayMarker(data[0]);
                 bounds.extend(
                   new window.kakao.maps.LatLng(data[0].y, data[0].x),
                 );
+
+                // 배열에 데이터 추가
+                mapLatLngArray.push({
+                  y: data[0].y,
+                  x: data[0].x,
+                });
+                setMapLatLng(mapLatLngArray);
               }
 
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -173,6 +183,28 @@ function TripEditMap() {
               infowindow.open(map, marker);
             });
           }
+          // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+
+          var first_polyline = [mapLatLng];
+          console.log(mapLatLng);
+
+          // 지도에 표시할 선을 생성합니다
+
+          var first_linePath = new window.kakao.maps.Polyline({
+            path: first_polyline, // 선을 구성하는 좌표배열 입니다
+
+            strokeWeight: 5, // 선의 두께 입니다
+
+            strokeColor: "#63D4F2", // 선의 색깔입니다
+
+            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+
+            strokeStyle: "solid", // 선의 스타일입니다
+          });
+
+          // 지도에 선을 표시합니다
+
+          first_linePath.setMap(map);
         }
       });
     };
