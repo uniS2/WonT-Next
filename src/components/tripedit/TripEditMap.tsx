@@ -10,8 +10,10 @@ declare global {
 
 function TripEditMap() {
   const { place, setPlace } = useTripPlaceStore();
-  const [mapPlace, setMapPlace] = useState<string[]>();
-  const [mapLatLng, setMapLatLng] = useState();
+  // const [mapPlace, setMapPlace] = useState<string[]>();
+  // const [mapLatLng, setMapLatLng] = useState();
+  const [mapLatLng, setMapLatLng] = useState({ y: 0, x: 0 });
+  const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ function TripEditMap() {
   useEffect(() => {
     setMapPlace(place.flatMap((item) => item));
   }, [place, setPlace]);
+
   console.log(mapPlace);
 
   useEffect(() => {
@@ -51,10 +54,10 @@ function TripEditMap() {
           // 지도 중심좌표에 마커를 생성합니다
           position: map.getCenter(),
         });
-        if (place.length !== 0) {
-          // 지도에 마커를 표시합니다
-          marker.setMap(map);
-        }
+        // if (place.length !== 0) {
+        //   // 지도에 마커를 표시합니다
+        //   marker.setMap(map);
+        // }
 
         // 지도에 클릭 이벤트를 등록합니다
         // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -105,19 +108,16 @@ function TripEditMap() {
 
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-        // const setMapLatLng = (newLatLng: { y: any; x: any }) => {
+        // const setMapLatLng = (newLatLng: any) => {
         //   setMapLatLngArray((prevArray) => [...prevArray, newLatLng]);
         // };
-        console.log(mapLatLng);
-        console.log(mapPlace);
 
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        if (mapPlace !== undefined) {
+        if (mapPlace) {
           var ps = new window.kakao.maps.services.Places();
           for (var i = 0; i < mapPlace.length; i++) {
             ps.keywordSearch(mapPlace[i], placesSearchCB);
           }
-
           function placesSearchCB(
             data: string | any[],
             status: any,
@@ -127,19 +127,48 @@ function TripEditMap() {
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
               // LatLngBounds 객체에 좌표를 추가합니다
               var bounds = new window.kakao.maps.LatLngBounds();
-
-              for (var i = 0; i < data.length; i++) {
+              for (var i = 0; i <= 0; i++) {
                 displayMarker(data[i]);
                 bounds.extend(
                   new window.kakao.maps.LatLng(data[i].y, data[i].x),
                 );
-                // setMapLatLng({ y: data[i].y, x: data[i].x });
+                // setMapLatLng(
+                //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
+                // );
+                // setMapLatLngArray((prevArray) => [
+                //   ...prevArray,
+                //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
+                // ]);
               }
-
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
               map.setBounds(bounds);
             }
           }
+
+          // const placesSearchCB = async (  data: string | any[],
+          //   status: any,
+          //   pagination: any,) => {
+          //     if (status === window.kakao.maps.services.Status.OK) {
+          //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+          //       // LatLngBounds 객체에 좌표를 추가합니다
+          //       var bounds = new window.kakao.maps.LatLngBounds();
+          //       for (var i = 0; i <= 0; i++) {
+          //         displayMarker(data[i]);
+          //         bounds.extend(
+          //           new window.kakao.maps.LatLng(data[i].y, data[i].x),
+          //         );
+          //         // setMapLatLng(
+          //         //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
+          //         // );
+          //         setMapLatLngArray((prevArray) => [
+          //           ...prevArray,
+          //           new window.kakao.maps.LatLng(data[i].y, data[i].x),
+          //         ]);
+          //       }
+          //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+          //       map.setBounds(bounds);
+          //     }
+          // }
 
           function displayMarker(place: {
             y: any;
@@ -152,6 +181,11 @@ function TripEditMap() {
               position: new window.kakao.maps.LatLng(place.y, place.x),
             });
 
+            setMapLatLngArray((prevArray) => [
+              ...prevArray,
+              new window.kakao.maps.LatLng(place.y, place.x),
+            ]);
+
             // 마커에 클릭이벤트를 등록합니다
             window.kakao.maps.event.addListener(marker, "click", function () {
               // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
@@ -163,14 +197,30 @@ function TripEditMap() {
               infowindow.open(map, marker);
             });
           }
-          // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+
+          console.log("mapLatLng", mapLatLng);
+          console.log(mapLatLngArray);
+
+          // console.log("firstLine", firstLine.flatMap);
+
+          // var first_polyline = [
+          //   new window.kakao.maps.LatLng(33.45066473510417, 126.57067214493566),
+
+          //   new window.kakao.maps.LatLng(33.45076072887628, 126.57236027708245),
+
+          //   new window.kakao.maps.LatLng(
+          //     33.452155848772605,
+          //     126.57167582561753,
+          //   ),
+          // ];
+          // console.log(first_polyline);
 
           // 지도에 표시할 선을 생성합니다
 
           var first_linePath = new window.kakao.maps.Polyline({
             path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
 
-            strokeWeight: 5, // 선의 두께 입니다
+            strokeWeight: 3, // 선의 두께 입니다
 
             strokeColor: "#63D4F2", // 선의 색깔입니다
 
@@ -183,11 +233,12 @@ function TripEditMap() {
 
           first_linePath.setMap(map);
         }
+        setMapLatLngArray([]);
       });
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
-  }, [place]);
+  }, [mapPlace]);
 
   return (
     <main className="w-full flex flex-col items-center justify-center ">
