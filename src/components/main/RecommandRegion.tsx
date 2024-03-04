@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
-import Image from "next/image";
 
 type RegionDataType = {
   rnum: number;
