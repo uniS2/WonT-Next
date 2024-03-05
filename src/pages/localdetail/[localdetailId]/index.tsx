@@ -73,7 +73,7 @@ const LocalDetail = () => {
             <Link href={"search"}>
               <button
                 type="button"
-                className="w-[460px] h-[50px] bg-primary flex flex-col items-center justify-center mt-[15px] hover:bg-secondary"
+                className="w-[460px] h-[50px] bg-primary flex flex-col items-center justify-center mt-[15px] hover:bg-point"
               >
                 <p>인기 장소 찾아보기</p>
               </button>
