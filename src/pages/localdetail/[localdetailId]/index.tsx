@@ -52,20 +52,20 @@ const LocalDetail = () => {
             <div className="pt-[10px] text-[14px] flex flex-col gap-3">
               <ul className="flex gap-1 font-suitBold">
                 <li>인기 :</li>
-                <li>{localData.faP}</li>
-                <li>{localData.faP2}</li>
+                <li>{localData.faP}﹒</li>
+                <li>{localData.faP2}﹒</li>
                 <li>{localData.faP3}</li>
               </ul>
               <ul className="flex gap-1 font-suitBold">
                 <li>호텔 :</li>
-                <li>{localData.faH}</li>
-                <li>{localData.faH2}</li>
+                <li>{localData.faH}﹒</li>
+                <li>{localData.faH2}﹒</li>
                 <li>{localData.faH3}</li>
               </ul>
               <ul className="flex gap-1 font-suitBold pb-[15px]">
                 <li>추천 :</li>
-                <li>{localData.faR}</li>
-                <li>{localData.faR2}</li>
+                <li>{localData.faR}﹒</li>
+                <li>{localData.faR2}﹒</li>
                 <li>{localData.faR3}</li>
               </ul>
             </div>
