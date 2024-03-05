@@ -31,6 +31,10 @@ function TripEditMap() {
 
   console.log(mapPlace);
 
+  const initializeMapData = () => {
+    setMapLatLngArray([]);
+  };
+
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
@@ -198,23 +202,36 @@ function TripEditMap() {
             });
           }
 
+          // const displayMarker = async (place: {
+          //   y: any;
+          //   x: any;
+          //   place_name: string;
+          // }) => {
+          //   // 마커를 생성하고 지도에 표시합니다
+          //   var marker = new window.kakao.maps.Marker({
+          //     map: map,
+          //     position: new window.kakao.maps.LatLng(place.y, place.x),
+          //   });
+
+          //   await setMapLatLngArray((prevArray) => [
+          //     ...prevArray,
+          //     new window.kakao.maps.LatLng(place.y, place.x),
+          //   ]);
+
+          //   // 마커에 클릭이벤트를 등록합니다
+          //   window.kakao.maps.event.addListener(marker, "click", function () {
+          //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          //     infowindow.setContent(
+          //       '<div style="padding:5px;font-size:12px;">' +
+          //         place.place_name +
+          //         "</div>",
+          //     );
+          //     infowindow.open(map, marker);
+          //   });
+          // };
+
           console.log("mapLatLng", mapLatLng);
           console.log(mapLatLngArray);
-
-          // console.log("firstLine", firstLine.flatMap);
-
-          // var first_polyline = [
-          //   new window.kakao.maps.LatLng(33.45066473510417, 126.57067214493566),
-
-          //   new window.kakao.maps.LatLng(33.45076072887628, 126.57236027708245),
-
-          //   new window.kakao.maps.LatLng(
-          //     33.452155848772605,
-          //     126.57167582561753,
-          //   ),
-          // ];
-          // console.log(first_polyline);
-
           // 지도에 표시할 선을 생성합니다
 
           var first_linePath = new window.kakao.maps.Polyline({
