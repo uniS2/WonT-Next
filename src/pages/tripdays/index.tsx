@@ -27,7 +27,7 @@ const TripDaysPage = () => {
 
   return (
     <TripDaysLayout>
-      <HeaderTripSelect />
+      <HeaderTripSelect inCloseButton />
       <TripTitle title="언제 떠나시나요?" guide="여행 일자를 선택해 주세요." />
       <TripCalendar />
       <TripDateInfo contents={selectDaysInfoText} />
