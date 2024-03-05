@@ -35,7 +35,7 @@ const LocalDetail = () => {
   return (
     <LocalDetailLayout>
       {localData && (
-        <div className="w-[500px] h-auto bg-primary bg-opacity-50 rounded-lg p-[20px]">
+        <div className="w-[500px] h-auto bg-primary bg-opacity-10 rounded-lg p-[20px]">
           <div className="flex flex-col gap-1">
             <p className="text-[20px] font-suitBold">{localData.name}</p>
             <p className="text-slate-500">{localData.engName}</p>
@@ -43,7 +43,7 @@ const LocalDetail = () => {
           <div className="pt-[10px]">
             <Image src={localImageUrl} alt="서울" width={500} height={100} />
           </div>
-          <div className="pt-[15px] flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-white">
             <p className="font-suitBold text-[20px] pt-[15px]">도시정보</p>
             <p className="text-[14px] pb-[15px]">{localData.info}</p>
             <div className="w-[460] border border-black"></div>
@@ -73,7 +73,7 @@ const LocalDetail = () => {
             <Link href={"search"}>
               <button
                 type="button"
-                className="w-[460px] h-[50px] bg-secondary flex flex-col items-center justify-center mt-[15px]"
+                className="w-[460px] h-[50px] bg-primary flex flex-col items-center justify-center mt-[15px] hover:bg-secondary"
               >
                 <p>인기 장소 찾아보기</p>
               </button>
