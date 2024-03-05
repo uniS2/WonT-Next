@@ -16,7 +16,6 @@ const BestTravels = () => {
   useEffect(() => {
     (async () => {
       const { data, error } = await supabase.from("travels").select("*");
-      console.log(data);
       if (data) {
         setTravelsData(data);
       }

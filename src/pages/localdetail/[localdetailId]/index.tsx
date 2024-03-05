@@ -11,7 +11,6 @@ const LocalDetail = () => {
   const { localdetailId } = router.query;
   const [localData, setLocalData] = useState<DataProps | null>(null);
   const [localImageUrl, setLocalImageUrl] = useState<string>("");
-  console.log(localdetailId);
   useEffect(() => {
     if (localdetailId) {
       (async () => {
