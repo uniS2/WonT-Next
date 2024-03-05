@@ -12,7 +12,8 @@ function TripEditMap() {
   const { place, setPlace } = useTripPlaceStore();
   // const [mapPlace, setMapPlace] = useState<string[]>();
   // const [mapLatLng, setMapLatLng] = useState();
-  const [mapLatLng, setMapLatLng] = useState({ y: 0, x: 0 });
+  // const [mapLatLng, setMapLatLng] = useState({ y: 0, x: 0 });
+  const [mapLatLng, setMapLatLng] = useState<any[] | undefined>();
   const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
 
@@ -29,11 +30,24 @@ function TripEditMap() {
     setMapPlace(place.flatMap((item) => item));
   }, [place, setPlace]);
 
-  console.log(mapPlace);
+  // const addMapLatLngToArray = (place: {
+  //   y: any;
+  //   x: any;
+  //   place_name?: string;
+  // }) => {
+  //   setMapLatLngArray((prevArray) => [
+  //     ...prevArray,
+  //     new window.kakao.maps.LatLng(place.y, place.x),
+  //   ]);
+  //   console.log(mapLatLngArray);
+  // };
 
-  const initializeMapData = () => {
-    setMapLatLngArray([]);
-  };
+  const combinedArray = mapPlace.map((place, index) => {
+    return {
+      place,
+      latLng: mapLatLngArray[index],
+    };
+  });
 
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
@@ -43,9 +57,6 @@ function TripEditMap() {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        // const [center, setCenter] = useState(
-        //   new window.kakao.maps.LatLng(latitude, longitude),
-        // );
         var container = document.getElementById("map");
         var options = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -58,10 +69,6 @@ function TripEditMap() {
           // 지도 중심좌표에 마커를 생성합니다
           position: map.getCenter(),
         });
-        // if (place.length !== 0) {
-        //   // 지도에 마커를 표시합니다
-        //   marker.setMap(map);
-        // }
 
         // 지도에 클릭 이벤트를 등록합니다
         // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -112,10 +119,6 @@ function TripEditMap() {
 
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-        // const setMapLatLng = (newLatLng: any) => {
-        //   setMapLatLngArray((prevArray) => [...prevArray, newLatLng]);
-        // };
-
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
         if (mapPlace) {
           var ps = new window.kakao.maps.services.Places();
@@ -136,43 +139,11 @@ function TripEditMap() {
                 bounds.extend(
                   new window.kakao.maps.LatLng(data[i].y, data[i].x),
                 );
-                // setMapLatLng(
-                //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
-                // );
-                // setMapLatLngArray((prevArray) => [
-                //   ...prevArray,
-                //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
-                // ]);
               }
               // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
               map.setBounds(bounds);
             }
           }
-
-          // const placesSearchCB = async (  data: string | any[],
-          //   status: any,
-          //   pagination: any,) => {
-          //     if (status === window.kakao.maps.services.Status.OK) {
-          //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-          //       // LatLngBounds 객체에 좌표를 추가합니다
-          //       var bounds = new window.kakao.maps.LatLngBounds();
-          //       for (var i = 0; i <= 0; i++) {
-          //         displayMarker(data[i]);
-          //         bounds.extend(
-          //           new window.kakao.maps.LatLng(data[i].y, data[i].x),
-          //         );
-          //         // setMapLatLng(
-          //         //   new window.kakao.maps.LatLng(data[i].y, data[i].x),
-          //         // );
-          //         setMapLatLngArray((prevArray) => [
-          //           ...prevArray,
-          //           new window.kakao.maps.LatLng(data[i].y, data[i].x),
-          //         ]);
-          //       }
-          //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-          //       map.setBounds(bounds);
-          //     }
-          // }
 
           function displayMarker(place: {
             y: any;
@@ -184,11 +155,18 @@ function TripEditMap() {
               map: map,
               position: new window.kakao.maps.LatLng(place.y, place.x),
             });
-
             setMapLatLngArray((prevArray) => [
               ...prevArray,
               new window.kakao.maps.LatLng(place.y, place.x),
             ]);
+
+            // setMapLatLng((prevArray) => [
+            //   ...prevArray,
+            //   {
+            //     place: place.place_name,
+            //     latLng: { La: place.x, Ma: place.y },
+            //   },
+            // ]);
 
             // 마커에 클릭이벤트를 등록합니다
             window.kakao.maps.event.addListener(marker, "click", function () {
@@ -200,38 +178,23 @@ function TripEditMap() {
               );
               infowindow.open(map, marker);
             });
+
+            // addMapLatLngToArray(place);
           }
 
-          // const displayMarker = async (place: {
-          //   y: any;
-          //   x: any;
-          //   place_name: string;
-          // }) => {
-          //   // 마커를 생성하고 지도에 표시합니다
-          //   var marker = new window.kakao.maps.Marker({
-          //     map: map,
-          //     position: new window.kakao.maps.LatLng(place.y, place.x),
-          //   });
-
-          //   await setMapLatLngArray((prevArray) => [
-          //     ...prevArray,
-          //     new window.kakao.maps.LatLng(place.y, place.x),
-          //   ]);
-
-          //   // 마커에 클릭이벤트를 등록합니다
-          //   window.kakao.maps.event.addListener(marker, "click", function () {
-          //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          //     infowindow.setContent(
-          //       '<div style="padding:5px;font-size:12px;">' +
-          //         place.place_name +
-          //         "</div>",
-          //     );
-          //     infowindow.open(map, marker);
-          //   });
-          // };
+          const combinedArray = mapPlace.map((place, index) => {
+            return {
+              place,
+              latLng: mapLatLngArray[index],
+            };
+          });
+          console.log(combinedArray);
 
           console.log("mapLatLng", mapLatLng);
+          console.log(mapPlace);
           console.log(mapLatLngArray);
+          console.log(place);
+
           // 지도에 표시할 선을 생성합니다
 
           var first_linePath = new window.kakao.maps.Polyline({

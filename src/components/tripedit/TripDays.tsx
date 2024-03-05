@@ -62,7 +62,9 @@ function TripDays({ days, date }: TripDaysProps) {
         {place.map((item, index) => (
           <React.Fragment key={index}>
             <p className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold">
-              <span className="font-light text-contentMuted">| {date}</span>
+              <span className="font-light text-contentMuted">
+                {days} | {date}
+              </span>
             </p>
             <Droppable droppableId={`day-${index}`}>
               {(provided) => (
@@ -93,60 +95,6 @@ function TripDays({ days, date }: TripDaysProps) {
         ))}
       </ul>
     </DragDropContext>
-    /* -------------------------------------------------------------------------- */
-    // <DragDropContext onDragEnd={onDragEnd}>
-    //   <ul className="flex flex-col my-5 gap-[10px]">
-    //     {place.map((item, index) => (
-    //       <React.Fragment key={index}>
-    //         <p className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold">
-    //           <span className="font-light text-contentMuted">| {date}</span>
-    //         </p>
-    //         <Droppable droppableId={`day-${index}`}>
-    //           {(provided) => (
-    //             <div {...provided.droppableProps} ref={provided.innerRef}>
-    //               {item.map((place, index) => (
-    //                 <Draggable key={place} draggableId={place} index={index}>
-    //                   {(
-    //                     provided,
-    //                     snapshot, // provided, snapshot 추가
-    //                   ) => (
-    //                     <div
-    //                       ref={provided.innerRef}
-    //                       {...provided.draggableProps}
-    //                       {...provided.dragHandleProps}
-    //                       className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
-    //                     >
-    //                       {/* AddPlanButton을 Draggable로 감싸기 */}
-    //                       <Draggable
-    //                         draggableId={`button-${index}`}
-    //                         index={index}
-    //                       >
-    //                         {(buttonProvided) => (
-    //                           <div
-    //                             ref={buttonProvided.innerRef}
-    //                             {...buttonProvided.draggableProps}
-    //                             {...buttonProvided.dragHandleProps}
-    //                           >
-    //                             <AddPlanButton
-    //                               text="장소"
-    //                               place={place}
-    //                               key={index}
-    //                             />
-    //                           </div>
-    //                         )}
-    //                       </Draggable>
-    //                     </div>
-    //                   )}
-    //                 </Draggable>
-    //               ))}
-    //               {provided.placeholder}
-    //             </div>
-    //           )}
-    //         </Droppable>
-    //       </React.Fragment>
-    //     ))}
-    //   </ul>
-    // </DragDropContext>
   );
 }
 
