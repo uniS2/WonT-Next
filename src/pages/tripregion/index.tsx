@@ -51,11 +51,12 @@ const TripRegionPage = () => {
           <input
             type="search"
             placeholder="지역명을 검색해 주세요."
-            className="peer w-full p-3 text-sm font-light outline-none focus:text-content focus:font-medium"
+            className="w-full p-3 text-sm font-light outline-none focus:text-content focus:font-medium"
           />
         </label>
-        <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 h-[500px] overflow-y-scroll scroll-smooth">
+        <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 overflow-y-auto h-96">
           {regionData?.map((region: RegionDataType) => {
+            0;
             return <RegionItem key={region.rnum} regionName={region.name} />;
           })}
         </ul>
