@@ -12,7 +12,6 @@ type RegionDataType = {
 
 const RecommandRegion = () => {
   const [regionData, setRegionData] = useState<RegionDataType[] | null>(null);
-  console.log(regionData);
   useEffect(() => {
     (async () => {
       const response = await fetch(TOUR_BASE_AREA);
@@ -30,7 +29,6 @@ const RecommandRegion = () => {
   const router = useRouter();
   const handleRegionClick = (rnum: number) => {
     router.push(`/localdetail/${rnum}`);
-    console.log(rnum);
   };
 
   return (
