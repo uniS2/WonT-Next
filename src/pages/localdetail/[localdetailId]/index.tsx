@@ -43,7 +43,7 @@ const LocalDetail = () => {
           <div className="pt-[10px]">
             <Image src={localImageUrl} alt="서울" width={500} height={100} />
           </div>
-          <div className="flex flex-col gap-2 bg-white">
+          <div className="flex flex-col gap-2 bg-white px-[10px]">
             <p className="font-suitBold text-[20px] pt-[15px]">도시정보</p>
             <p className="text-[14px] pb-[15px]">{localData.info}</p>
             <div className="w-[460] border border-black"></div>
@@ -69,16 +69,15 @@ const LocalDetail = () => {
               </ul>
             </div>
             <div className="w-[460] border border-black"></div>
-
-            <Link href={"search"}>
-              <button
-                type="button"
-                className="w-[460px] h-[50px] bg-primary flex flex-col items-center justify-center mt-[15px] hover:bg-point"
-              >
-                <p>인기 장소 찾아보기</p>
-              </button>
-            </Link>
           </div>
+          <Link href={"/search"}>
+            <button
+              type="button"
+              className="w-[460px] h-[50px] bg-primary flex flex-col items-center justify-center mt-[15px] hover:bg-point"
+            >
+              <p>인기 장소 찾아보기</p>
+            </button>
+          </Link>
         </div>
       )}
     </LocalDetailLayout>
