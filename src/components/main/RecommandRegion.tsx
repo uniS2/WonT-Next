@@ -2,30 +2,36 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
+import { useRouter } from "next/router";
 
 type RegionDataType = {
   rnum: number;
-  code: string;
   name: string;
   url: string;
 };
 
 const RecommandRegion = () => {
   const [regionData, setRegionData] = useState<RegionDataType[] | null>(null);
+  console.log(regionData);
   useEffect(() => {
     (async () => {
       const response = await fetch(TOUR_BASE_AREA);
       const json = await response.json();
 
       const dataWithImages = json.response.body.items.item.map(
-        (item: RegionDataType, key: number) => ({
+        (item: RegionDataType, rnum: number) => ({
           ...item,
-          url: `/images/local${key}.jpg`,
+          url: `/images/local/local${rnum}.jpg`,
         }),
       );
       setRegionData(dataWithImages);
     })();
   }, []);
+  const router = useRouter();
+  const handleRegionClick = (rnum: number) => {
+    router.push(`/localdetail/${rnum}`);
+    console.log(rnum);
+  };
 
   return (
     <div className=" w-[320px] h-[600px] overflow-auto">
@@ -46,6 +52,7 @@ const RecommandRegion = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
+              onClick={() => handleRegionClick(region.rnum)}
             >
               <div className="absolute inset-0 bg-primary bg-opacity-50 flex items-center justify-center text-white text-xl rounded-md opacity-0 hover:opacity-100 transition-opacity">
                 {region.name}
