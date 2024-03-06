@@ -4,20 +4,33 @@ import TourCategoryItem from "@/components/tripregion/TourCategoryItem";
 import { RegionStore } from "@/store/RegionStore";
 import { RegionToggleStore } from "@/store/RegionToggleStore";
 
-const RegionItem = ({ regionName = "지역이름" }) => {
-  const { selectedRegionName, setRegionName, resetRegionName } = RegionStore();
+type RegionItemProps = {
+  regionName: string;
+  regionCode: number;
+};
+
+const RegionItem = ({
+  regionName = "지역이름",
+  regionCode,
+}: RegionItemProps) => {
+  const { selectedRegionName, setRegionCode, setRegionName, resetRegionName } =
+    RegionStore();
   const { toggleRegionName, setToggleRegionName } = RegionToggleStore();
   const [isToggle, setIsToggle] = useState(false);
 
   const selectRegion = () => {
     if (!selectedRegionName) {
+      setRegionCode(regionCode);
       setRegionName(regionName);
     } else {
       setToggleRegionName("");
     }
     if (!toggleRegionName) {
       setToggleRegionName(regionName);
-    } else resetRegionName();
+    } else {
+      setRegionCode(null);
+      resetRegionName();
+    }
   };
 
   useEffect(() => {

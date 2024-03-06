@@ -12,7 +12,7 @@ import { RegionStore } from "@/store/RegionStore";
 
 type RegionDataType = {
   rnum: number;
-  code: string;
+  code: number;
   name: string;
 };
 
@@ -27,7 +27,7 @@ const TripRegionPage = () => {
     })();
   }, []);
 
-  const { selectedRegionName } = RegionStore();
+  const { selectedRegionCode, selectedRegionName } = RegionStore();
 
   const inSelectedTripRegion = () => {
     toast.error("여행 장소를 선택해 주세요!", {
@@ -35,6 +35,8 @@ const TripRegionPage = () => {
       autoClose: 2500,
     });
   };
+
+  console.log(selectedRegionCode, selectedRegionName);
 
   return (
     <TripRegionLayout>
@@ -56,7 +58,13 @@ const TripRegionPage = () => {
         </label>
         <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 h-[500px] overflow-y-scroll scroll-smooth">
           {regionData?.map((region: RegionDataType) => {
-            return <RegionItem key={region.rnum} regionName={region.name} />;
+            return (
+              <RegionItem
+                key={region.rnum}
+                regionCode={region.code}
+                regionName={region.name}
+              />
+            );
           })}
         </ul>
         <ButtonLarge
