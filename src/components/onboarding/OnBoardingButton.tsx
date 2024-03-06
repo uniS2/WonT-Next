@@ -18,7 +18,7 @@ const OnBoardingButton: React.FC<OnBoardingProps> = ({
     <Link href={href}>
       <button
         type="button"
-        className={`w-[320px] h-[50px] font-semibold text-[21px] ${colorClass} rounded-xl text-white`}
+        className={`hover:bg-content w-[320px] h-[50px] font-semibold text-[21px] ${colorClass} rounded-xl text-white`}
       >
         {text}
       </button>
