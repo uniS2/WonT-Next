@@ -9,6 +9,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
+import { useViewPlanStore } from "@/store/useViewPlanStore";
 
 interface TripDaysProps {
   days?: string;
@@ -18,9 +19,7 @@ interface TripDaysProps {
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
   const { day, setDay } = useDayStore();
-  const [viewPlanStates, setViewPlanStates] = useState<boolean[]>(
-    new Array(place.length).fill(true),
-  );
+  const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
 
   useEffect(() => {
     setDay(3);
@@ -65,6 +64,8 @@ function TripDays({ days, date }: TripDaysProps) {
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
     newViewPlanStates[index] = !newViewPlanStates[index];
+    console.log(newViewPlanStates);
+
     setViewPlanStates(newViewPlanStates);
   };
 
