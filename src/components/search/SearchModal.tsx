@@ -18,7 +18,7 @@ const SearchModal = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-end w-[320px] h-[60px]">
+    <div className="flex flex-col gap-2 items-end w-[320px] h-[60px] pt-[20px]">
       <button
         type="button"
         className="w-[90px] h-[26px] border border-[#5F8CEA] text-[14px] font-semibold text-[#5F8CEA] rounded-md"
