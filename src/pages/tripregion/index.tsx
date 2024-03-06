@@ -9,6 +9,7 @@ import RegionItem from "@/components/tripregion/RegionItem";
 import ButtonLarge from "@/components/tripselect/ButtonLarge";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
+import { debounce } from "@/utils/debounce";
 
 type RegionDataType = {
   rnum: number;
@@ -18,6 +19,7 @@ type RegionDataType = {
 
 const TripRegionPage = () => {
   const [regionData, setRegionData] = useState<RegionDataType[] | null>(null);
+  const { selectedRegionName } = RegionStore();
 
   useEffect(() => {
     (async () => {
@@ -27,7 +29,17 @@ const TripRegionPage = () => {
     })();
   }, []);
 
-  const { selectedRegionName } = RegionStore();
+  // 검색 기능
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchInput);
+
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  useEffect(() => {
+    debounce(() => setDebouncedSearch(searchInput), 700)();
+  }, [searchInput]);
 
   const inSelectedTripRegion = () => {
     toast.error("여행 장소를 선택해 주세요!", {
@@ -51,14 +63,20 @@ const TripRegionPage = () => {
           <input
             type="search"
             placeholder="지역명을 검색해 주세요."
+            value={searchInput}
+            onChange={onSearchChange}
             className="w-full p-3 text-sm font-light outline-none focus:text-content focus:font-medium"
           />
         </label>
-        <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 overflow-y-auto h-96">
-          {regionData?.map((region: RegionDataType) => {
-            0;
-            return <RegionItem key={region.rnum} regionName={region.name} />;
-          })}
+        <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 overflow-y-auto max-h-96">
+          {regionData
+            ?.filter((r) =>
+              r.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
+            )
+            .map((region: RegionDataType) => {
+              0;
+              return <RegionItem key={region.rnum} regionName={region.name} />;
+            })}
         </ul>
         <ButtonLarge
           isSelected={Boolean(selectedRegionName)}
