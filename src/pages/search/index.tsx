@@ -11,7 +11,7 @@ const index = () => {
       <SearchName />
       <SearchInput />
       <SearchModal />
-      <div className="grid grid-cols-2 gap-6 mt-[20px]">
+      {/* <div className="grid grid-cols-2 gap-6 mt-[20px]">
         <div className="rounded-md h-[148px] w-[148px] bg-primary relative hover:scale-110 transition">
           <Link href={"/search"}>
             <div>이미지</div>
@@ -35,7 +35,7 @@ const index = () => {
             <MyBookmarkIcon size="26px" fill="#363636" />
           </button>
         </div>
-      </div>
+      </div> */}
     </SearchLayout>
   );
 };

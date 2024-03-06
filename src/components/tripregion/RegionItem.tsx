@@ -58,14 +58,11 @@ const RegionItem = ({
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           />
         </div>
-        <div>
-          <span className="sr-only">지역이름</span>
-          <p
-            className={`mx-3 my-1 text-lg text-contentSecondary font-medium ${isToggle && "px-3 py-1 rounded-xl bg-point text-white shadow-md shadow-gray-400"}`}
-          >
-            {regionName}
-          </p>
-        </div>
+        <p
+          className={`mx-3 my-1 text-lg text-contentSecondary font-medium ${isToggle && "px-3 py-1 rounded-xl bg-point text-white shadow-md shadow-gray-400"}`}
+        >
+          {regionName}
+        </p>
       </button>
       {isToggle && (
         <section className="w-full mx-auto mt-2 p-3 rounded-xl bg-button shadow-md shadow-gray-400">

@@ -1,7 +1,7 @@
-function SaveButton() {
+function SaveButton({ text }: { text: string }) {
   return (
     <button className="bg-primary text-white h-12 rounded-md my-7 w-full">
-      현재 사진 삭제
+      {text}
     </button>
   );
 }
