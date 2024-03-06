@@ -13,9 +13,10 @@ export function getTripDate(date: string) {
 }
 
 export function getTripDateKo(dates: Date) {
-  const month = dates?.getMonth() + 1;
-  const date = dates?.getDate();
-  const day = dayText[dates?.getDay()];
+  const now = new Date(dates);
+  const month = now?.getMonth() + 1;
+  const date = now?.getDate();
+  const day = dayText[now?.getDay()];
   return `${month}월 ${date}일 ${day}`;
 }
 
