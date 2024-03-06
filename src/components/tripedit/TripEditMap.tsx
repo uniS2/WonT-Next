@@ -145,33 +145,6 @@ function TripEditMap() {
             }
           }
 
-          // function displayMarker(place: {
-          //   y: any;
-          //   x: any;
-          //   place_name: string;
-          // }) {
-          //   // 마커를 생성하고 지도에 표시합니다
-          //   var marker = new window.kakao.maps.Marker({
-          //     map: map,
-          //     position: new window.kakao.maps.LatLng(place.y, place.x),
-          //   });
-          //   setMapLatLngArray((prevArray) => [
-          //     ...prevArray,
-          //     new window.kakao.maps.LatLng(place.y, place.x),
-          //   ]);
-
-          //   // 마커에 클릭이벤트를 등록합니다
-          //   window.kakao.maps.event.addListener(marker, "click", function () {
-          //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          //     infowindow.setContent(
-          //       '<div style="padding:5px;font-size:12px;">' +
-          //         place.place_name +
-          //         "</div>",
-          //     );
-          //     infowindow.open(map, marker);
-          //   });
-          // }
-
           function displayMarker(place: {
             y: any;
             x: any;
@@ -213,32 +186,36 @@ function TripEditMap() {
             };
           });
           console.log(combinedArray);
+          console.log(
+            "얍",
+            combinedArray.filter((item) => place[2].includes(item.place)),
+          );
 
           console.log("mapLatLng", mapLatLng);
           console.log("mapPlace", mapPlace);
           console.log("mapLatLngArray", mapLatLngArray);
           console.log("place", place);
-
-          // 지도에 표시할 선을 생성합니다
         }
 
-        combinedArray.forEach((item) => {
-          if (place[0].includes(item.place)) {
-            const marker = new window.kakao.maps.Marker({
-              map: map,
-              position: item.latLng,
-            });
+        // combinedArray.forEach((item) => {
+        //   if (place[0].includes(item.place)) {
+        //     const marker = new window.kakao.maps.Marker({
+        //       map: map,
+        //       position: item.latLng,
+        //     });
 
-            window.kakao.maps.event.addListener(marker, "click", function () {
-              infowindow.setContent(
-                '<div style="padding:5px;font-size:12px;">' +
-                  item.place +
-                  "</div>",
-              );
-              infowindow.open(map, marker);
-            });
-          }
-        });
+        //     window.kakao.maps.event.addListener(marker, "click", function () {
+        //       infowindow.setContent(
+        //         '<div style="padding:5px;font-size:12px;">' +
+        //           item.place +
+        //           "</div>",
+        //       );
+        //       infowindow.open(map, marker);
+        //     });
+        //   }
+        // });
+
+        // 지도에 표시할 선을 생성합니다
         var first_linePath = new window.kakao.maps.Polyline({
           path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
 
