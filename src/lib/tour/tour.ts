@@ -11,3 +11,6 @@ export const TOUR_BASE_LOCATION = `${TOUR_END_POINT}/locationBasedList1?${USE_TO
 
 // 키워드 검색 조회 : &pageNo=1&numOfRows=10&listYN=Y&contentTypeId=12&keyword=%EA%B0%95%EC%9B%90
 export const TOUR_BASE_SEARCH = `${TOUR_END_POINT}/searchKeyword1?${USE_TOUR_KEY}${TOUR_BASE_PARAMETER}`;
+
+// 숙박 정보 조회
+export const TOUR_BASE_ACCOMMODATION = `${TOUR_END_POINT}/areaBasedList1?${USE_TOUR_KEY}${TOUR_BASE_PARAMETER}&arrange=A&contentTypeId=32`;

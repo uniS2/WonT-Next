@@ -13,7 +13,7 @@ import { debounce } from "@/utils/debounce";
 
 type RegionDataType = {
   rnum: number;
-  code: string;
+  code: number;
   name: string;
 };
 
@@ -75,7 +75,13 @@ const TripRegionPage = () => {
             )
             .map((region: RegionDataType) => {
               0;
-              return <RegionItem key={region.rnum} regionName={region.name} />;
+              return (
+                <RegionItem
+                  key={region.rnum}
+                  regionCode={region.code}
+                  regionName={region.name}
+                />
+              );
             })}
         </ul>
         <ButtonLarge
