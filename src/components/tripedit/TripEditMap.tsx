@@ -160,7 +160,7 @@ function TripEditMap() {
               place: place.place_name,
               latLng: new window.kakao.maps.LatLng(place.y, place.x),
             };
-            console.log(updatedPlace);
+            // console.log(updatedPlace);
 
             setMapLatLngArray((prevArray) => [
               ...prevArray,
@@ -185,35 +185,17 @@ function TripEditMap() {
               latLng: mapLatLngArray[index],
             };
           });
-          console.log(combinedArray);
-          console.log(
-            "얍",
-            combinedArray.filter((item) => place[2].includes(item.place)),
-          );
+          // console.log(combinedArray);
+          // console.log(
+          //   "얍",
+          //   combinedArray.filter((item) => place[2].includes(item.place)),
+          // );
 
-          console.log("mapLatLng", mapLatLng);
-          console.log("mapPlace", mapPlace);
-          console.log("mapLatLngArray", mapLatLngArray);
-          console.log("place", place);
+          // console.log("mapLatLng", mapLatLng);
+          // console.log("mapPlace", mapPlace);
+          // console.log("mapLatLngArray", mapLatLngArray);
+          // console.log("place", place);
         }
-
-        // combinedArray.forEach((item) => {
-        //   if (place[0].includes(item.place)) {
-        //     const marker = new window.kakao.maps.Marker({
-        //       map: map,
-        //       position: item.latLng,
-        //     });
-
-        //     window.kakao.maps.event.addListener(marker, "click", function () {
-        //       infowindow.setContent(
-        //         '<div style="padding:5px;font-size:12px;">' +
-        //           item.place +
-        //           "</div>",
-        //       );
-        //       infowindow.open(map, marker);
-        //     });
-        //   }
-        // });
 
         // 지도에 표시할 선을 생성합니다
         var first_linePath = new window.kakao.maps.Polyline({

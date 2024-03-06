@@ -18,15 +18,9 @@ interface TripDaysProps {
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
   const { day, setDay } = useDayStore();
-  // const [viewPlanStates, setViewPlanStates] = useState<boolean[]>(
-  //   new Array(place.length).fill(true),
-  // );
   const [viewPlanStates, setViewPlanStates] = useState<boolean[]>(
     new Array(place.length).fill(true),
   );
-  // const [isOpenStates, setIsOpenStates] = useState(
-  //   new Array(place.length).fill(true),
-  // );
 
   useEffect(() => {
     setDay(3);
@@ -37,9 +31,7 @@ function TripDays({ days, date }: TripDaysProps) {
     ];
     setPlace(testTripPlan.map((item) => item.places));
     setViewPlanStates(new Array(testTripPlan.length).fill(true));
-    // setIsOpenStates(new Array(testTripPlan.length).fill(true));
   }, []);
-  console.log(viewPlanStates);
 
   const onDragEnd = useCallback(
     (result: DropResult) => {
@@ -74,15 +66,25 @@ function TripDays({ days, date }: TripDaysProps) {
     const newViewPlanStates = [...viewPlanStates];
     newViewPlanStates[index] = !newViewPlanStates[index];
     setViewPlanStates(newViewPlanStates);
-
-    // const updatedIsOpen = [...isOpenStates];
-    // updatedIsOpen[index] = !updatedIsOpen[index];
-    // setIsOpenStates(updatedIsOpen);
   };
 
   const variants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, y: "-100%" },
+    // open: { opacity: 1, x: 0 },
+    // closed: { opacity: 0, y: "-100%" },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+    // closed: { opacity: 0, y: -20, transition: { duration: 0.2 } },
+    closed: {
+      height: 0,
+      transition: {
+        type: "spring",
+        bounce: 0,
+        duration: 0.3,
+      },
+    },
   };
 
   return (
@@ -110,9 +112,12 @@ function TripDays({ days, date }: TripDaysProps) {
                 <motion.div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className={viewPlanStates[index] ? `visible` : `hidden`}
+                  className="overflow-hidden"
                   animate={viewPlanStates[index] ? "open" : "closed"}
                   variants={variants}
+                  // hidden={viewPlanStates[index] ? false : true}
+                  transition={{ ease: "easeIn", duration: 0.3 }}
+                  style={{ originY: 0.55 }}
                 >
                   {item.map((place, index) => (
                     <Draggable key={place} draggableId={place} index={index}>
