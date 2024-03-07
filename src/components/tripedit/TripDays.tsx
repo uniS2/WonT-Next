@@ -91,59 +91,82 @@ function TripDays({ days, date }: TripDaysProps) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {place.map((item, index) => (
-          <React.Fragment key={index}>
+        {place.length !== 0 ? (
+          place.map((item, index) => (
+            <React.Fragment key={index}>
+              <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
+                <span className="font-light text-contentMuted">
+                  {days} | {date}
+                </span>
+                <button
+                  className="p-0 m-0"
+                  onClick={(e) => handleViewPlan(e, index)}
+                >
+                  {viewPlanStates[index] ? (
+                    <CiSquareChevUp size={20} color="#828282" />
+                  ) : (
+                    <CiSquareChevDown size={20} color="#828282" />
+                  )}
+                </button>
+              </div>
+              <Droppable droppableId={`day-${index}`}>
+                {(provided) => (
+                  <motion.div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="overflow-hidden"
+                    animate={viewPlanStates[index] ? "open" : "closed"}
+                    variants={variants}
+                    // hidden={viewPlanStates[index] ? false : true}
+                    transition={{ ease: "easeIn", duration: 0.3 }}
+                    style={{ originY: 0.55 }}
+                  >
+                    {item.map((place, index) => (
+                      <Draggable key={place} draggableId={place} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+                          >
+                            <AddPlanButton
+                              text="장소"
+                              place={place}
+                              key={index}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </motion.div>
+                )}
+              </Droppable>
+            </React.Fragment>
+          ))
+        ) : (
+          <>
             <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
               <span className="font-light text-contentMuted">
                 {days} | {date}
               </span>
               <button
                 className="p-0 m-0"
-                onClick={(e) => handleViewPlan(e, index)}
+                // onClick={(e) => handleViewPlan(e, index)}
               >
-                {viewPlanStates[index] ? (
-                  <CiSquareChevUp size={20} color="#828282" />
-                ) : (
-                  <CiSquareChevDown size={20} color="#828282" />
-                )}
+                {/* {viewPlanStates[index] ? (
+                    <CiSquareChevUp size={20} color="#828282" />
+                  ) : (
+                    <CiSquareChevDown size={20} color="#828282" />
+                  )} */}
               </button>
             </div>
-            <Droppable droppableId={`day-${index}`}>
-              {(provided) => (
-                <motion.div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="overflow-hidden"
-                  animate={viewPlanStates[index] ? "open" : "closed"}
-                  variants={variants}
-                  // hidden={viewPlanStates[index] ? false : true}
-                  transition={{ ease: "easeIn", duration: 0.3 }}
-                  style={{ originY: 0.55 }}
-                >
-                  {item.map((place, index) => (
-                    <Draggable key={place} draggableId={place} index={index}>
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
-                        >
-                          <AddPlanButton
-                            text="장소"
-                            place={place}
-                            key={index}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </motion.div>
-              )}
-            </Droppable>
-          </React.Fragment>
-        ))}
+
+            <AddPlanButton text="장소" />
+            <AddPlanButton text="숙소" />
+          </>
+        )}
       </ul>
     </DragDropContext>
   );

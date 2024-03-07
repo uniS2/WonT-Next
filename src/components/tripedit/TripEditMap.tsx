@@ -16,14 +16,14 @@ function TripEditMap() {
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
 
-  useEffect(() => {
-    const testTripPlan = [
-      { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
-      { places: ["오설록", "스누피가든", "용머리해안"] },
-      { places: ["금오름", "쇠소깍", "정방폭포"] },
-    ];
-    setPlace(testTripPlan.map((item) => item.places));
-  }, []);
+  // useEffect(() => {
+  //   const testTripPlan = [
+  //     { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
+  //     { places: ["오설록", "스누피가든", "용머리해안"] },
+  //     { places: ["금오름", "쇠소깍", "정방폭포"] },
+  //   ];
+  //   setPlace(testTripPlan.map((item) => item.places));
+  // }, []);
 
   useEffect(() => {
     setMapPlace(place.flatMap((item) => item));
@@ -38,6 +38,29 @@ function TripEditMap() {
   useEffect(() => {
     setMapLatLngArray(mapLatLngArray);
   }, [mapLatLngArray, setMapLatLngArray]);
+
+  // useEffect(() => {
+  //   if (mapLatLngArray.length > 0) {
+  //     var container = document.getElementById("map");
+  //     var options = {
+  //       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+  //       level: 8,
+  //     };
+  //     var map = new window.kakao.maps.Map(container, options);
+  //     var marker = new window.kakao.maps.Marker({
+  //       // 지도 중심좌표에 마커를 생성합니다
+  //       position: map.getCenter(),
+  //     });
+  //     var first_linePath = new window.kakao.maps.Polyline({
+  //       path: mapLatLngArray,
+  //       strokeWeight: 3,
+  //       strokeColor: "#63D4F2",
+  //       strokeOpacity: 0.7,
+  //       strokeStyle: "solid",
+  //     });
+  //     first_linePath.setMap(map);
+  //   }
+  // }, [mapLatLngArray]);
 
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
@@ -167,30 +190,26 @@ function TripEditMap() {
           });
         }
 
-        console.log(viewPlanItems);
         console.log(mapLatLngArray);
 
         // 지도에 표시할 선을 생성합니다
-        const updateMapWithPolyline = () => {
-          // 지도에 표시할 선을 생성합니다
-          var first_linePath = new window.kakao.maps.Polyline({
-            path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 3, // 선의 두께 입니다
-            strokeColor: "#63D4F2", // 선의 색깔입니다
-            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: "solid", // 선의 스타일입니다
-          });
+        // 지도에 표시할 선을 생성합니다
+        var first_linePath = new window.kakao.maps.Polyline({
+          path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 3, // 선의 두께 입니다
+          strokeColor: "#63D4F2", // 선의 색깔입니다
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: "solid", // 선의 스타일입니다
+        });
+        // 지도에 선을 표시합니다
+        first_linePath.setMap(map);
 
-          // 지도에 선을 표시합니다
-          first_linePath.setMap(map);
-        };
-        updateMapWithPolyline();
         setMapLatLngArray([]);
       });
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
-  }, [mapPlace, viewPlanItems]);
+  }, [mapPlace, viewPlanItems, setMapLatLngArray]);
 
   return (
     <main className="w-full flex flex-col items-center justify-center ">
