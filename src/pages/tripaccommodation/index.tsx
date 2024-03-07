@@ -22,7 +22,7 @@ function TripRegionPage() {
           </button>
         </div>
         <ul className="w-full pl-5 pr-[0.625rem] py-[0.625rem] rounded-[0.625rem] bg-[#E9F0F0]">
-          {/* AccommodationDate.map((item) => {firstimage, title, addr1, mapx, mapy}) */}
+          {/* AccommodationData.map((item) => {firstimage, title, addr1, mapx, mapy}) */}
           <SelectItem />
         </ul>
       </section>
