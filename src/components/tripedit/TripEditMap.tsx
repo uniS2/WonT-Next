@@ -36,6 +36,10 @@ function TripEditMap() {
   }, [viewPlanStates]);
 
   useEffect(() => {
+    setMapLatLngArray(mapLatLngArray);
+  }, [mapLatLngArray, setMapLatLngArray]);
+
+  useEffect(() => {
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=700d399006256f95732f06b19c046ba5&autoload=false&libraries=services`;
@@ -146,16 +150,6 @@ function TripEditMap() {
             position: new window.kakao.maps.LatLng(place.y, place.x),
           });
 
-          // const updatedPlace = {
-          //   place: place.place_name,
-          //   latLng: new window.kakao.maps.LatLng(place.y, place.x),
-          // };
-          // console.log(updatedPlace);
-
-          // setMapLatLngArray((prevArray) => [
-          //   ...prevArray,
-          //   new window.kakao.maps.LatLng(place.y, place.x),
-          // ]);
           setMapLatLngArray((prevArray) => [
             ...prevArray,
             new window.kakao.maps.LatLng(place.y, place.x),
