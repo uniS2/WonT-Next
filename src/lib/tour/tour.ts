@@ -6,8 +6,8 @@ const TOUR_BASE_PARAMETER = "&_type=json&MobileOS=ETC&MobileApp=WonT";
 // 지역코드 조회 : &numOfRows=10&pageNo=1
 export const TOUR_BASE_AREA = `${TOUR_END_POINT}/areaCode1?${USE_TOUR_KEY}&numOfRows=100${TOUR_BASE_PARAMETER}`;
 
-// 위치기반 관광정보 조회 : &numOfRows=10&pageNo=1&mapX=126.981611&mapY=37.568477&radius=1000&listYN=Y
-export const TOUR_BASE_LOCATION = `${TOUR_END_POINT}/locationBasedList1?${USE_TOUR_KEY}${TOUR_BASE_PARAMETER}&radius=10000`;
+// 위치기반 관광 장소정보 조회 : &numOfRows=10&pageNo=1&mapX=126.981611&mapY=37.568477&radius=1000&listYN=Y
+export const TOUR_BASE_PLACE = `${TOUR_END_POINT}/locationBasedList1?${USE_TOUR_KEY}${TOUR_BASE_PARAMETER}&numOfRows=50&radius=10000`;
 
 // 위치기반 숙박정보 조회 : &numOfRows=10&pageNo=1&mapX=126.981611&mapY=37.568477&radius=1000&listYN=Y
 export const TOUR_BASE_ACCOMMODATION = `${TOUR_END_POINT}/locationBasedList1?${USE_TOUR_KEY}${TOUR_BASE_PARAMETER}&numOfRows=30&radius=10000&contentTypeId=32`;
