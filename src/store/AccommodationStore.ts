@@ -4,18 +4,53 @@ import { AccommodationDataType } from "@/types/DataProps";
 
 type AccommodationStoreType = {
   locationAccommodation: AccommodationDataType[] | null;
-  setLocationAccommodation: (l: AccommodationDataType[]) => void;
+  selectedAccommodation: AccommodationDataType[] | null;
+  setLocationAccommodation: (location: AccommodationDataType[]) => void;
+  setToggleAccommodation: (id: number) => void;
+  resetSelectedAccommodation: () => void;
 };
 
 export const AccommodationStore = create(
   persist<AccommodationStoreType>(
     (set) => ({
       locationAccommodation: null,
-      setLocationAccommodation: (la: AccommodationDataType[]) =>
-        set({ locationAccommodation: la }),
+      selectedAccommodation: null,
+      setLocationAccommodation: (location: AccommodationDataType[]) =>
+        set({ locationAccommodation: location }),
+      setToggleAccommodation: (id: number) =>
+        set((state) => {
+          if (
+            !state.selectedAccommodation?.filter((sa) => sa.contentid == id)
+              .length
+          ) {
+            return state.selectedAccommodation
+              ? {
+                  selectedAccommodation: [
+                    ...state.selectedAccommodation,
+                    ...state.locationAccommodation!.filter(
+                      (location) => location.contentid == id,
+                    ),
+                  ],
+                }
+              : {
+                  selectedAccommodation: [
+                    ...state.locationAccommodation!.filter(
+                      (location) => location.contentid == id,
+                    ),
+                  ],
+                };
+          } else {
+            return {
+              selectedAccommodation: state.selectedAccommodation?.filter(
+                (sa) => sa.contentid != id,
+              ),
+            };
+          }
+        }),
+      resetSelectedAccommodation: () => set({ selectedAccommodation: null }),
     }),
     {
-      name: "tripDaysStorage",
+      name: "tripAccommodationStorage",
     },
   ),
 );
