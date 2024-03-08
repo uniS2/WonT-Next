@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_ACCOMMODATION } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
-// import { AccommodationDataType } from "@/types/DataProps";
 import { AccommodationStore } from "@/store/AccommodationStore";
 
 declare global {
@@ -13,7 +12,6 @@ declare global {
 const TripAccommodationMap = () => {
   const { locationAccommodation, setLocationAccommodation } =
     AccommodationStore();
-  // const [accommodationData, setAccommodationData] = useState<AccommodationDataType[] | null>(null);
   const { selectedRegionName } = RegionStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState([126.9837456304, 37.563446366]);
@@ -83,30 +81,26 @@ const TripAccommodationMap = () => {
 
   useEffect(() => {
     //# 2. 숙박 카테고리 지도 표시
-    const imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+    const imageSrc = "https://cdn-icons-png.flaticon.com/512/4324/4324725.png";
 
-    if (locationAccommodation) {
+    if (locationAccommodation && map) {
       for (let i = 0; i < locationAccommodation.length; i++) {
-        //# 2.
-        // 마커 이미지의 이미지 크기 입니다
-        const imageSize = new window.kakao.maps.Size(24, 35);
-
-        // 마커 이미지를 생성합니다
+        const imageSize = new window.kakao.maps.Size(35, 35);
+        const imageOption = { offset: new window.kakao.maps.Point(30, 35) };
         const markerImage = new window.kakao.maps.MarkerImage(
           imageSrc,
           imageSize,
+          imageOption,
         );
 
-        // 마커를 생성합니다
         const marker = new window.kakao.maps.Marker({
-          map: map, // 마커를 표시할 지도
+          map: map,
           position: new window.kakao.maps.LatLng(
             locationAccommodation[i].mapy,
             locationAccommodation[i].mapx,
-          ), // 마커를 표시할 위치
-          title: locationAccommodation[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          image: markerImage, // 마커 이미지
+          ),
+          title: locationAccommodation[i].title,
+          image: markerImage,
         });
 
         marker.setMap(map);
