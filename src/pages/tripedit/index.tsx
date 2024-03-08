@@ -2,9 +2,13 @@ import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";
 import TripEditLayout from "@/layout/tripedit/layout";
+import { AccommodationStore } from "@/store/AccommodationStore";
 
 function TripEdit() {
   const tripDate = new Date();
+
+  //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
+  const clearAccommodationIdStorage = AccommodationStore.persist.clearStorage;
 
   return (
     <TripEditLayout>
