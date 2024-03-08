@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_ACCOMMODATION } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
-import { debounce } from "@/utils/debounce";
+import { AccommodationStore } from "@/store/AccommodationStore";
 
 declare global {
   interface Window {
@@ -9,44 +9,24 @@ declare global {
   }
 }
 
-type RegionDataType = {
-  addr1: string;
-  addr2: string;
-  areacode: number;
-  booktour: string;
-  cat1: string;
-  cat2: string;
-  cat3: string;
-  contentid: number;
-  contenttypeid: number;
-  cpyrthDivCd: string;
-  createdtime: number;
-  firstimage: string;
-  firstimage2: string;
-  mapx: number;
-  mapy: number;
-  mlevel: number;
-  modifiedtime: number;
-  sigungucode: number;
-  tel: string;
-  title: string;
-  zipcode: number;
-};
-
 const TripAccommodationMap = () => {
-  const [regionData, setRegionData] = useState<RegionDataType[] | null>(null);
-  const { selectedRegionCode, selectedRegionName } = RegionStore();
+  const { locationAccommodation, setLocationAccommodation } =
+    AccommodationStore();
+  const { selectedRegionName } = RegionStore();
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [location, setLocation] = useState([126.9837456304, 37.563446366]);
+  const [map, setMap] = useState();
 
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `${TOUR_BASE_ACCOMMODATION}&areaCode=${selectedRegionCode}`,
+        `${TOUR_BASE_ACCOMMODATION}&mapX=${location[0]}&mapY=${location[1]}`,
       );
       const json = await response.json();
-      setRegionData(json.response.body.items.item);
-      console.log(selectedRegionCode, regionData);
+      setLocationAccommodation(json.response.body.items.item);
+      console.log(json.response.body.items.item);
     })();
-  }, [selectedRegionCode]);
+  }, [location]);
 
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
@@ -56,87 +36,79 @@ const TripAccommodationMap = () => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        var container = document.getElementById("map");
-        var options = {
-          center: new window.kakao.maps.LatLng(
-            37.4812845080678,
-            126.952713197762,
-          ),
-          level: 3,
+        const options = {
+          center: new window.kakao.maps.LatLng(location[1], location[0]),
+          level: 6,
         };
 
-        var map = new window.kakao.maps.Map(container, options);
+        const newMap = new window.kakao.maps.Map(mapRef.current, options);
 
         //# 1. 현재 위치 업데이트
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(
-          selectedRegionName,
+          selectedRegionName || "부산",
           function (result: any, status: any) {
             if (status === window.kakao.maps.services.Status.OK) {
               const coords = new window.kakao.maps.LatLng(
                 result[0].y,
                 result[0].x,
               );
+              setLocation([result[0].x, result[0].y]);
 
-              console.log(result);
-
-              map.setCenter(coords);
+              newMap.setCenter(coords);
+              setMap(newMap);
             }
           },
         );
 
-        //# 2. 숙박 카테고리 지도 표시
-        var imageSrc =
-          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-        if (regionData) {
-          for (var i = 0; i < regionData.length; i++) {
-            // 마커 이미지의 이미지 크기 입니다
-            var imageSize = new window.kakao.maps.Size(24, 35);
-
-            // 마커 이미지를 생성합니다
-            var markerImage = new window.kakao.maps.MarkerImage(
-              imageSrc,
-              imageSize,
+        //# 3. 검색 장소 위치 기준으로 지도 범위 재설정
+        /* const bounds = new window.kakao.maps.LatLngBounds();
+        if (locationAccommodation) {
+          for (let i = 0; i < locationAccommodation.length; i++) {
+            bounds.extend(
+              new window.kakao.maps.LatLng(
+                locationAccommodation[i].mapy,
+                locationAccommodation[i].mapx,
+              ),
             );
-
-            // 마커를 생성합니다
-            var marker = new window.kakao.maps.Marker({
-              map: map, // 마커를 표시할 지도
-              position: new window.kakao.maps.LatLng(
-                regionData[i].mapy,
-                regionData[i].mapx,
-              ), // 마커를 표시할 위치
-              title: regionData[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image: markerImage, // 마커 이미지
-            });
-          }
-        }
-
-        var marker = window.kakao.maps.Marker({
-          // 지도 중심좌표에 마커를 생성합니다
-          position: map.getCenter(),
-        });
-        // 지도에 마커를 표시합니다
-        marker.setMap(map);
-
-        const updateCenter = debounce((latitude, longitude) => {
-          map.panTo(new window.kakao.maps.LatLng(latitude, longitude));
-        }, 300);
-        // var geocoder = new window.kakao.maps.services.Geocoder();
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+            map.setBounds(bounds); */
       });
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
   }, []);
 
-  return (
-    <main className="w-full">
-      <div className="w-full h-[31.8125rem]">
-        <div id="map" style={{ width: "100%", height: "100%" }} />
-      </div>
-    </main>
-  );
+  useEffect(() => {
+    //# 2. 숙박 카테고리 지도 표시
+    const imageSrc = "https://cdn-icons-png.flaticon.com/512/4324/4324725.png";
+
+    if (locationAccommodation && map) {
+      for (let i = 0; i < locationAccommodation.length; i++) {
+        const imageSize = new window.kakao.maps.Size(35, 35);
+        const imageOption = { offset: new window.kakao.maps.Point(30, 35) };
+        const markerImage = new window.kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imageOption,
+        );
+
+        const marker = new window.kakao.maps.Marker({
+          map: map,
+          position: new window.kakao.maps.LatLng(
+            locationAccommodation[i].mapy,
+            locationAccommodation[i].mapx,
+          ),
+          title: locationAccommodation[i].title,
+          image: markerImage,
+        });
+
+        marker.setMap(map);
+      }
+    }
+  }, [locationAccommodation, map]);
+
+  return <div ref={mapRef} className="w-full h-[31.8125rem]" />;
 };
 
 export default TripAccommodationMap;
