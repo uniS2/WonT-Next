@@ -6,31 +6,31 @@ import {
 } from "react-beautiful-dnd";
 import AddPlanButton from "./AddPlanButton";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDayStore, useTripPlaceStore } from "@/store/useTripPlaceStore";
+import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 
 interface TripDaysProps {
-  days?: string;
-  date?: string;
+  days?: number | string;
+  // date?: string;
+  date?: any;
 }
 
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
-  const { day, setDay } = useDayStore();
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
 
-  useEffect(() => {
-    setDay(3);
-    const testTripPlan = [
-      { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
-      { places: ["오설록", "스누피가든", "용머리해안"] },
-      { places: ["금오름", "쇠소깍", "정방폭포"] },
-    ];
-    setPlace(testTripPlan.map((item) => item.places));
-    setViewPlanStates(new Array(testTripPlan.length).fill(true));
-  }, []);
+  // useEffect(() => {
+  //   setDay(3);
+  //   const testTripPlan = [
+  //     { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
+  //     { places: ["오설록", "스누피가든", "용머리해안"] },
+  //     { places: ["금오름", "쇠소깍", "정방폭포"] },
+  //   ];
+  //   setPlace(testTripPlan.map((item) => item.places));
+  //   setViewPlanStates(new Array(testTripPlan.length).fill(true));
+  // }, []);
 
   const onDragEnd = useCallback(
     (result: DropResult) => {
