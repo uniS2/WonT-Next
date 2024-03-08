@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_ACCOMMODATION } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
-import { AccommodationStore } from "@/store/AccommodationStore";
+import { AccommodationsStore } from "@/store/AccommodationsStore";
 
 declare global {
   interface Window {
@@ -10,8 +10,8 @@ declare global {
 }
 
 const TripAccommodationMap = () => {
-  const { locationAccommodation, setLocationAccommodation } =
-    AccommodationStore();
+  const { locationAccommodations, setLocationAccommodations } =
+    AccommodationsStore();
   const { selectedRegionName } = RegionStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState([126.9837456304, 37.563446366]);
@@ -23,8 +23,7 @@ const TripAccommodationMap = () => {
         `${TOUR_BASE_ACCOMMODATION}&mapX=${location[0]}&mapY=${location[1]}`,
       );
       const json = await response.json();
-      setLocationAccommodation(json.response.body.items.item);
-      console.log(json.response.body.items.item);
+      setLocationAccommodations(json.response.body.items.item);
     })();
   }, [location]);
 
@@ -83,8 +82,8 @@ const TripAccommodationMap = () => {
     //# 2. 숙박 카테고리 지도 표시
     const imageSrc = "https://cdn-icons-png.flaticon.com/512/4324/4324725.png";
 
-    if (locationAccommodation && map) {
-      for (let i = 0; i < locationAccommodation.length; i++) {
+    if (locationAccommodations && map) {
+      for (let i = 0; i < locationAccommodations.length; i++) {
         const imageSize = new window.kakao.maps.Size(35, 35);
         const imageOption = { offset: new window.kakao.maps.Point(30, 35) };
         const markerImage = new window.kakao.maps.MarkerImage(
@@ -96,17 +95,17 @@ const TripAccommodationMap = () => {
         const marker = new window.kakao.maps.Marker({
           map: map,
           position: new window.kakao.maps.LatLng(
-            locationAccommodation[i].mapy,
-            locationAccommodation[i].mapx,
+            locationAccommodations[i].mapy,
+            locationAccommodations[i].mapx,
           ),
-          title: locationAccommodation[i].title,
+          title: locationAccommodations[i].title,
           image: markerImage,
         });
 
         marker.setMap(map);
       }
     }
-  }, [locationAccommodation, map]);
+  }, [locationAccommodations, map]);
 
   return <div ref={mapRef} className="w-full h-[31.8125rem]" />;
 };
