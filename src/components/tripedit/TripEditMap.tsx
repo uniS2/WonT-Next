@@ -29,7 +29,7 @@ function TripEditMap() {
   //   setPlace(testTripPlan.map((item) => item.places));
   // }, []);
 
-  console.log(selectedAccommodation);
+  // console.log(selectedAccommodation);
 
   useEffect(() => {
     setMapPlace(place.flatMap((item) => item));
