@@ -10,56 +10,72 @@ import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
+import { AccommodationStore } from "@/store/AccommodationStore";
+import { DaysStore } from "@/store/DaysStore";
 
 interface TripDaysProps {
-  days?: number | string;
+  days?: string;
   // date?: string;
   date?: any;
+  tripDate?: string[];
 }
 
 function TripDays({ days, date }: TripDaysProps) {
-  const { place, setPlace } = useTripPlaceStore();
+  // const { place, setPlace } = useTripPlaceStore();
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
+  const { selectedAccommodation } = AccommodationStore();
+  const { tripDays, setTripDays } = DaysStore();
+  const [tripDate, setTripDate] = useState<string[]>([]);
+  console.log(tripDate);
+  // console.log(selectedAccommodation);
 
-  // useEffect(() => {
-  //   setDay(3);
-  //   const testTripPlan = [
-  //     { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
-  //     { places: ["오설록", "스누피가든", "용머리해안"] },
-  //     { places: ["금오름", "쇠소깍", "정방폭포"] },
-  //   ];
-  //   setPlace(testTripPlan.map((item) => item.places));
-  //   setViewPlanStates(new Array(testTripPlan.length).fill(true));
-  // }, []);
+  useEffect(() => {
+    const dates = tripDays.map((dateString) =>
+      new Date(dateString).toISOString().slice(0, 10),
+    );
 
-  const onDragEnd = useCallback(
-    (result: DropResult) => {
-      if (!result.destination) return;
+    setTripDate(dates);
+  }, [tripDays]);
 
-      const { source, destination } = result;
+  useEffect(() => {
+    // setViewPlanStates(new Array(testTripPlan.length).fill(true));
+    setViewPlanStates(new Array(tripDate.length).fill(true));
+    console.log(viewPlanStates);
+  }, []);
 
-      if (source.droppableId === destination.droppableId) {
-        const listIndex = parseInt(source.droppableId.split("-")[1]);
-        const copiedPlace = [...place];
-        const items = copiedPlace[listIndex];
-        const [removed] = items.splice(source.index, 1);
-        items.splice(destination.index, 0, removed);
-        setPlace(copiedPlace);
-      } else {
-        const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
-        const destinationListIndex = parseInt(
-          destination.droppableId.split("-")[1],
-        );
-        const copiedPlace = [...place];
-        const sourceItems = copiedPlace[sourceListIndex];
-        const destinationItems = copiedPlace[destinationListIndex];
-        const [removed] = sourceItems.splice(source.index, 1);
-        destinationItems.splice(destination.index, 0, removed);
-        setPlace(copiedPlace);
-      }
-    },
-    [place, setPlace],
-  );
+  // const onDragEnd = useCallback(
+  //   (result: DropResult) => {
+  //     if (!result.destination) return;
+
+  //     const { source, destination } = result;
+
+  //     if (source.droppableId === destination.droppableId) {
+  //       const listIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const copiedPlace = [...place];
+  //       const items = copiedPlace[listIndex];
+  //       const [removed] = items.splice(source.index, 1);
+  //       items.splice(destination.index, 0, removed);
+  //       setPlace(copiedPlace);
+  //     } else {
+  //       const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const destinationListIndex = parseInt(
+  //         destination.droppableId.split("-")[1],
+  //       );
+  //       const copiedPlace = [...place];
+  //       const sourceItems = copiedPlace[sourceListIndex];
+  //       const destinationItems = copiedPlace[destinationListIndex];
+  //       const [removed] = sourceItems.splice(source.index, 1);
+  //       destinationItems.splice(destination.index, 0, removed);
+  //       setPlace(copiedPlace);
+  //     }
+  //   },
+  //   [place, setPlace],
+  // );
+  const onDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) return;
+
+    const { source, destination } = result;
+  }, []);
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
@@ -70,14 +86,11 @@ function TripDays({ days, date }: TripDaysProps) {
   };
 
   const variants = {
-    // open: { opacity: 1, x: 0 },
-    // closed: { opacity: 0, y: "-100%" },
     open: {
       opacity: 1,
       y: 0,
       transition: { type: "spring", stiffness: 300, damping: 24 },
     },
-    // closed: { opacity: 0, y: -20, transition: { duration: 0.2 } },
     closed: {
       height: 0,
       transition: {
@@ -91,12 +104,12 @@ function TripDays({ days, date }: TripDaysProps) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {place.length !== 0 ? (
-          place.map((item, index) => (
+        {tripDate.length !== 0 ? (
+          tripDate.map((item, index) => (
             <React.Fragment key={index}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
                 <span className="font-light text-contentMuted">
-                  {days} | {date}
+                  {`Day${index + 1} | ${item}`}
                 </span>
                 <button
                   className="p-0 m-0"
@@ -117,12 +130,15 @@ function TripDays({ days, date }: TripDaysProps) {
                     className="overflow-hidden"
                     animate={viewPlanStates[index] ? "open" : "closed"}
                     variants={variants}
-                    // hidden={viewPlanStates[index] ? false : true}
                     transition={{ ease: "easeIn", duration: 0.3 }}
                     style={{ originY: 0.55 }}
                   >
-                    {item.map((place, index) => (
-                      <Draggable key={place} draggableId={place} index={index}>
+                    {selectedAccommodation?.map((item, index) => (
+                      <Draggable
+                        key={item.title}
+                        draggableId={item.title}
+                        index={index}
+                      >
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
@@ -132,7 +148,7 @@ function TripDays({ days, date }: TripDaysProps) {
                           >
                             <AddPlanButton
                               text="장소"
-                              place={place}
+                              place={item.title}
                               key={index}
                             />
                           </div>
@@ -151,16 +167,6 @@ function TripDays({ days, date }: TripDaysProps) {
               <span className="font-light text-contentMuted">
                 {days} | {date}
               </span>
-              <button
-                className="p-0 m-0"
-                // onClick={(e) => handleViewPlan(e, index)}
-              >
-                {/* {viewPlanStates[index] ? (
-                    <CiSquareChevUp size={20} color="#828282" />
-                  ) : (
-                    <CiSquareChevDown size={20} color="#828282" />
-                  )} */}
-              </button>
             </div>
 
             <AddPlanButton text="장소" />

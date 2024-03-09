@@ -90,36 +90,6 @@ function TripEditMap() {
         }, 300);
         var geocoder = new window.kakao.maps.services.Geocoder();
 
-        // geocoder.addressSearch(
-        //   selectedRegionName,
-        //   function (result: { x: any; y: any }[], status: any) {
-        //     // 정상적으로 검색이 완료됐으면
-        //     if (status === window.kakao.maps.services.Status.OK) {
-        //       var coords = new window.kakao.maps.LatLng(
-        //         result[0].y,
-        //         result[0].x,
-        //       );
-
-        //       const categoryOptions = {
-        //         location: coords,
-        //         radius: 10000,
-        //       };
-
-        //       // 인포윈도우로 장소에 대한 설명을 표시합니다
-        //       var infowindow = new window.kakao.maps.InfoWindow({
-        //         content:
-        //           '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>',
-        //       });
-        //       infowindow.open(map, marker);
-
-        //       // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        //       map.setCenter(coords);
-        //     }
-        //   },
-        // );
-
-        // console.log(selectedAccommodation[0].addr1);
-
         selectedAccommodation?.forEach((accommodation) => {
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(
