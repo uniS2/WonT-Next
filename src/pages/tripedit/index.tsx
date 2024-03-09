@@ -1,3 +1,4 @@
+import TripRegionDaysEdit from "@/components/common/TripRegionDaysEdit";
 import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";

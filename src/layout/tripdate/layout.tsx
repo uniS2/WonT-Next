@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 
-const TripPlaceLayout = ({
+const TripDateLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,12 +9,12 @@ const TripPlaceLayout = ({
   return (
     <>
       <Head>
-        <title>Trip Places - WonT</title>
-        <meta name="description" content="여행 관광 장소 선택 페이지입니다." />
+        <title>Trip Date - WonT</title>
+        <meta name="description" content="여행 기간 선택 페이지입니다." />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <section
-        className="flex flex-col items-center min-w-[22.5rem] mb-5 
+        className="flex flex-col items-center gap-y-[1.875rem] px-5 mb-[1.875rem]
       "
       >
         {children}
@@ -23,4 +23,4 @@ const TripPlaceLayout = ({
   );
 };
 
-export default TripPlaceLayout;
+export default TripDateLayout;
