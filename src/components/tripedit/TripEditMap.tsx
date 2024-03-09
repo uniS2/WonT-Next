@@ -1,3 +1,5 @@
+import { AccommodationStore } from "@/store/AccommodationStore";
+import { RegionStore } from "@/store/RegionStore";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { debounce } from "@/utils/debounce";
@@ -15,6 +17,8 @@ function TripEditMap() {
   const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
+  const { selectedRegionName } = RegionStore();
+  const { selectedAccommodation } = AccommodationStore();
 
   // useEffect(() => {
   //   const testTripPlan = [
@@ -24,6 +28,8 @@ function TripEditMap() {
   //   ];
   //   setPlace(testTripPlan.map((item) => item.places));
   // }, []);
+
+  console.log(selectedAccommodation);
 
   useEffect(() => {
     setMapPlace(place.flatMap((item) => item));
@@ -38,29 +44,6 @@ function TripEditMap() {
   useEffect(() => {
     setMapLatLngArray(mapLatLngArray);
   }, [mapLatLngArray, setMapLatLngArray]);
-
-  // useEffect(() => {
-  //   if (mapLatLngArray.length > 0) {
-  //     var container = document.getElementById("map");
-  //     var options = {
-  //       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-  //       level: 8,
-  //     };
-  //     var map = new window.kakao.maps.Map(container, options);
-  //     var marker = new window.kakao.maps.Marker({
-  //       // 지도 중심좌표에 마커를 생성합니다
-  //       position: map.getCenter(),
-  //     });
-  //     var first_linePath = new window.kakao.maps.Polyline({
-  //       path: mapLatLngArray,
-  //       strokeWeight: 3,
-  //       strokeColor: "#63D4F2",
-  //       strokeOpacity: 0.7,
-  //       strokeStyle: "solid",
-  //     });
-  //     first_linePath.setMap(map);
-  //   }
-  // }, [mapLatLngArray]);
 
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
@@ -107,26 +90,70 @@ function TripEditMap() {
         }, 300);
         var geocoder = new window.kakao.maps.services.Geocoder();
 
-        geocoder.addressSearch(
-          "제주",
-          function (result: { x: any; y: any }[], status: any) {
-            // 정상적으로 검색이 완료됐으면
-            if (status === window.kakao.maps.services.Status.OK) {
-              var coords = new window.kakao.maps.LatLng(
-                result[0].y,
-                result[0].x,
-              );
+        // geocoder.addressSearch(
+        //   selectedRegionName,
+        //   function (result: { x: any; y: any }[], status: any) {
+        //     // 정상적으로 검색이 완료됐으면
+        //     if (status === window.kakao.maps.services.Status.OK) {
+        //       var coords = new window.kakao.maps.LatLng(
+        //         result[0].y,
+        //         result[0].x,
+        //       );
 
-              const categoryOptions = {
-                location: coords,
-                radius: 10000,
-              };
+        //       const categoryOptions = {
+        //         location: coords,
+        //         radius: 10000,
+        //       };
 
-              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-              map.setCenter(coords);
-            }
-          },
-        );
+        //       // 인포윈도우로 장소에 대한 설명을 표시합니다
+        //       var infowindow = new window.kakao.maps.InfoWindow({
+        //         content:
+        //           '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>',
+        //       });
+        //       infowindow.open(map, marker);
+
+        //       // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        //       map.setCenter(coords);
+        //     }
+        //   },
+        // );
+
+        // console.log(selectedAccommodation[0].addr1);
+
+        selectedAccommodation?.forEach((accommodation) => {
+          // 주소로 좌표를 검색합니다
+          geocoder.addressSearch(
+            accommodation.addr1,
+            function (result: { x: any; y: any }[], status: any) {
+              // 정상적으로 검색이 완료됐으면
+              if (status === window.kakao.maps.services.Status.OK) {
+                var coords = new window.kakao.maps.LatLng(
+                  result[0].y,
+                  result[0].x,
+                );
+                var accommodationCoords = new window.kakao.maps.LatLng(
+                  accommodation.mapy,
+                  accommodation.mapx,
+                );
+
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new window.kakao.maps.Marker({
+                  map: map,
+                  position: coords || accommodationCoords,
+                });
+
+                // 인포윈도우로 장소에 대한 설명을 표시합니다
+                var infowindow = new window.kakao.maps.InfoWindow({
+                  content: `<div style="width:150px;text-align:center;padding:6px 0;">${accommodation.title}</div>`,
+                });
+                infowindow.open(map, marker);
+
+                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                map.setCenter(coords);
+              }
+            },
+          );
+        });
 
         /* -------------------------------------------------------------------------- */
 
@@ -137,16 +164,24 @@ function TripEditMap() {
             latLng: mapLatLngArray[index],
           };
         });
+
+        /* -------------------------------------------------------------------------- */
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        var ps = new window.kakao.maps.services.Places();
-        if (viewPlanItems?.some(Array.isArray) === true) {
-          viewPlanItems.map((item) => {
-            for (var i = 0; i < item.length; i++) {
-              ps.keywordSearch(item[i], placesSearchCB);
-              console.log(item);
-            }
-          });
-        }
+        // var ps = new window.kakao.maps.services.Places();
+        // selectedAccommodation?.map((item) => {
+        //   for (var i = 0; i < selectedAccommodation.length; i++) {
+        //     ps.keywordSearch(item.title, placesSearchCB);
+        //     // console.log(item.title[i]);
+        //   }
+        // });
+        // if (viewPlanItems?.some(Array.isArray) === true) {
+        //   viewPlanItems.map((item) => {
+        //     for (var i = 0; i < item.length; i++) {
+        //       ps.keywordSearch(item[i], placesSearchCB);
+        //       console.log(item);
+        //     }
+        //   });
+        // }
 
         function placesSearchCB(
           data: string | any[],
@@ -156,11 +191,12 @@ function TripEditMap() {
           if (status === window.kakao.maps.services.Status.OK) {
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
-            var bounds = new window.kakao.maps.LatLngBounds();
-            for (var i = 0; i <= 0; i++) {
+            let bounds = new window.kakao.maps.LatLngBounds();
+            for (let i = 0; i <= 0; i++) {
               displayMarker(data[i]);
               bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
             }
+
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             map.setBounds(bounds);
           }
@@ -178,7 +214,7 @@ function TripEditMap() {
             new window.kakao.maps.LatLng(place.y, place.x),
           ]);
 
-          // 마커에 클릭이벤트를 등록합니다
+          // // 마커에 클릭이벤트를 등록합니다
           window.kakao.maps.event.addListener(marker, "click", function () {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
             infowindow.setContent(
