@@ -12,7 +12,6 @@ import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { AccommodationStore } from "@/store/AccommodationStore";
 import { DaysStore } from "@/store/DaysStore";
-import { AccommodationDataType } from "@/types/DataProps";
 
 interface TripDaysProps {
   days?: string;
@@ -22,12 +21,13 @@ interface TripDaysProps {
 }
 
 function TripDays({ days, date }: TripDaysProps) {
-  const { place, setPlace } = useTripPlaceStore();
+  // const { place, setPlace } = useTripPlaceStore();
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
-  const { selectedAccommodation, setselectedAccommodation } =
-    AccommodationStore();
+  const { selectedAccommodation } = AccommodationStore();
   const { tripDays, setTripDays } = DaysStore();
   const [tripDate, setTripDate] = useState<string[]>([]);
+  console.log(tripDate);
+  // console.log(selectedAccommodation);
 
   useEffect(() => {
     const dates = tripDays.map((dateString) =>
@@ -43,35 +43,39 @@ function TripDays({ days, date }: TripDaysProps) {
     console.log(viewPlanStates);
   }, []);
 
-  const onDragEnd = (result: { source: any; destination: any }) => {
+  // const onDragEnd = useCallback(
+  //   (result: DropResult) => {
+  //     if (!result.destination) return;
+
+  //     const { source, destination } = result;
+
+  //     if (source.droppableId === destination.droppableId) {
+  //       const listIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const copiedPlace = [...place];
+  //       const items = copiedPlace[listIndex];
+  //       const [removed] = items.splice(source.index, 1);
+  //       items.splice(destination.index, 0, removed);
+  //       setPlace(copiedPlace);
+  //     } else {
+  //       const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const destinationListIndex = parseInt(
+  //         destination.droppableId.split("-")[1],
+  //       );
+  //       const copiedPlace = [...place];
+  //       const sourceItems = copiedPlace[sourceListIndex];
+  //       const destinationItems = copiedPlace[destinationListIndex];
+  //       const [removed] = sourceItems.splice(source.index, 1);
+  //       destinationItems.splice(destination.index, 0, removed);
+  //       setPlace(copiedPlace);
+  //     }
+  //   },
+  //   [place, setPlace],
+  // );
+  const onDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) return;
+
     const { source, destination } = result;
-
-    // 드래그가 유효한 목적지로 이동한 경우
-    if (destination && destination.droppableId !== source.droppableId) {
-      const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
-      const destinationListIndex = parseInt(
-        destination.droppableId.split("-")[1],
-      );
-
-      // 선택한 숙소 리스트 복사
-      // const copiedAccommodation = [...selectedAccommodation];
-      const copiedAccommodation: AccommodationDataType[] = selectedAccommodation
-        ? [...selectedAccommodation]
-        : [];
-
-      // 드래그한 아이템의 정보 가져오기
-      const draggedItem = copiedAccommodation[sourceListIndex];
-
-      // 드래그한 아이템을 원래 리스트에서 제거
-      copiedAccommodation.splice(sourceListIndex, 1);
-
-      // 드롭한 위치에 아이템 삽입
-      copiedAccommodation.splice(destinationListIndex, 0, draggedItem);
-
-      // 변경된 숙소 리스트로 업데이트
-      setselectedAccommodation(copiedAccommodation);
-    }
-  };
+  }, []);
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
@@ -101,62 +105,65 @@ function TripDays({ days, date }: TripDaysProps) {
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
         {tripDate.length !== 0 ? (
-          tripDate.map((item, index) => (
-            <React.Fragment key={item}>
-              <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
-                <span className="font-light text-contentMuted">
-                  {`Day${index + 1} | ${item}`}
-                </span>
-                <button
-                  className="p-0 m-0"
-                  onClick={(e) => handleViewPlan(e, index)}
-                >
-                  {viewPlanStates[index] ? (
-                    <CiSquareChevUp size={20} color="#828282" />
-                  ) : (
-                    <CiSquareChevDown size={20} color="#828282" />
-                  )}
-                </button>
-              </div>
-              <Droppable droppableId={`day-${index}`}>
-                {(provided) => (
-                  <motion.div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="overflow-hidden"
-                    animate={viewPlanStates[index] ? "open" : "closed"}
-                    variants={variants}
-                    transition={{ ease: "easeIn", duration: 0.3 }}
-                    style={{ originY: 0.55 }}
-                  >
-                    {selectedAccommodation?.map((item, index) => (
-                      <Draggable
-                        key={item.title}
-                        draggableId={item.title}
-                        index={index}
+          tripDate.map(
+            (item, index) =>
+              index < tripDate.length && (
+                <div key={item}>
+                  <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
+                    <span className="font-light text-contentMuted">
+                      {`Day${index + 1} | ${item}`}
+                    </span>
+                    <button
+                      className="p-0 m-0"
+                      onClick={(e) => handleViewPlan(e, index)}
+                    >
+                      {viewPlanStates[index] ? (
+                        <CiSquareChevUp size={20} color="#828282" />
+                      ) : (
+                        <CiSquareChevDown size={20} color="#828282" />
+                      )}
+                    </button>
+                  </div>
+                  <Droppable droppableId={`day-${index}`}>
+                    {(provided) => (
+                      <motion.div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className="overflow-hidden"
+                        animate={viewPlanStates[index] ? "open" : "closed"}
+                        variants={variants}
+                        transition={{ ease: "easeIn", duration: 0.3 }}
+                        style={{ originY: 0.55 }}
                       >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+                        {selectedAccommodation?.map((item, index) => (
+                          <Draggable
+                            key={item.title}
+                            draggableId={item.title}
+                            index={index}
                           >
-                            <AddPlanButton
-                              text="장소"
-                              place={item.title}
-                              key={index}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </motion.div>
-                )}
-              </Droppable>
-            </React.Fragment>
-          ))
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+                              >
+                                <AddPlanButton
+                                  text="장소"
+                                  place={item.title}
+                                  key={index}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </motion.div>
+                    )}
+                  </Droppable>
+                </div>
+              ),
+          )
         ) : (
           <>
             <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">

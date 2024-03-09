@@ -24,6 +24,9 @@ function TripEdit() {
     setTripDate(dates);
   }, [tripDays]);
 
+  console.log(typeof tripDays);
+  console.log(tripDays);
+
   return (
     <TripEditLayout>
       <div>
@@ -40,11 +43,11 @@ function TripEdit() {
         </div>
         <section>
           <div className="mt-7 mb-10">
-            {/* {tripDate.map((item, index) => ( */}
-            {/* <React.Fragment key={index}> */}
-            <TripDays />
-            {/* </React.Fragment> */}
-            {/* ))} */}
+            {tripDate.map((item, index) => (
+              <React.Fragment key={index}>
+                <TripDays />
+              </React.Fragment>
+            ))}
             <SaveButton text="저장" />
           </div>
         </section>

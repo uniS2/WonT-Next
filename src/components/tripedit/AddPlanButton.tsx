@@ -14,13 +14,7 @@ interface AddPlanButtonProps {
 function AddPlanButton({ text, place }: AddPlanButtonProps) {
   return (
     <Link
-      href={
-        text === "장소"
-          ? "/tripplace"
-          : text === "숙소"
-            ? "/tripaccommodation"
-            : ""
-      }
+      href={text === "장소" ? "/tripplace" : "/tripaccommodation"}
       className=" cursor-pointer"
     >
       <li className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full">
