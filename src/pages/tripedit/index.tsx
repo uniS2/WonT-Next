@@ -44,11 +44,7 @@ function TripEdit() {
           <div className="mt-7 mb-10">
             {tripDate.map((item, index) => (
               <React.Fragment key={index}>
-                <TripDays
-                // days={`Day ${index + 1}`}
-                // date={item}
-                // tripDate={tripDate}
-                />
+                <TripDays />
               </React.Fragment>
             ))}
             <SaveButton text="저장" />
