@@ -5,14 +5,13 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import AddPlanButton from "./AddPlanButton";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
-import { AccommodationStore } from "@/store/AccommodationStore";
 import { DaysStore } from "@/store/DaysStore";
-import { AccommodationDataType } from "@/types/DataProps";
+import { AccommodationsStore } from "@/store/AccommodationStore";
 
 interface TripDaysProps {
   days?: string;
@@ -24,10 +23,12 @@ interface TripDaysProps {
 function TripDays({ days, date }: TripDaysProps) {
   const { place, setPlace } = useTripPlaceStore();
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
-  const { selectedAccommodation, setselectedAccommodation } =
-    AccommodationStore();
+  const { selectedAccommodations, setSelectedAccommodationArray } =
+    AccommodationsStore();
   const { tripDays, setTripDays } = DaysStore();
   const [tripDate, setTripDate] = useState<string[]>([]);
+
+  console.log(selectedAccommodations);
 
   useEffect(() => {
     const dates = tripDays.map((dateString) =>
@@ -43,33 +44,18 @@ function TripDays({ days, date }: TripDaysProps) {
     console.log(viewPlanStates);
   }, []);
 
-  const onDragEnd = (result: { source: any; destination: any }) => {
-    const { source, destination } = result;
+  const onDragEnd = (result: { destination: any; source: any }) => {
+    const { destination, source } = result;
 
-    // 드래그가 유효한 목적지로 이동한 경우
-    if (destination && destination.droppableId !== source.droppableId) {
-      const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
-      const destinationListIndex = parseInt(
-        destination.droppableId.split("-")[1],
+    if (destination && destination.index !== source.index) {
+      // const newSelectedAccommodations = Array.from(selectedAccommodations);
+      const newSelectedAccommodations = Array.from(
+        selectedAccommodations || [],
       );
+      const [removed] = newSelectedAccommodations.splice(source.index, 1);
+      newSelectedAccommodations.splice(destination.index, 0, removed);
 
-      // 선택한 숙소 리스트 복사
-      // const copiedAccommodation = [...selectedAccommodation];
-      const copiedAccommodation: AccommodationDataType[] = selectedAccommodation
-        ? [...selectedAccommodation]
-        : [];
-
-      // 드래그한 아이템의 정보 가져오기
-      const draggedItem = copiedAccommodation[sourceListIndex];
-
-      // 드래그한 아이템을 원래 리스트에서 제거
-      copiedAccommodation.splice(sourceListIndex, 1);
-
-      // 드롭한 위치에 아이템 삽입
-      copiedAccommodation.splice(destinationListIndex, 0, draggedItem);
-
-      // 변경된 숙소 리스트로 업데이트
-      setselectedAccommodation(copiedAccommodation);
+      setSelectedAccommodationArray(newSelectedAccommodations);
     }
   };
 
@@ -100,7 +86,7 @@ function TripDays({ days, date }: TripDaysProps) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {tripDate.length !== 0 ? (
+        {tripDate.length !== 0 && selectedAccommodations !== null ? (
           tripDate.map((item, index) => (
             <React.Fragment key={item}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
@@ -129,7 +115,7 @@ function TripDays({ days, date }: TripDaysProps) {
                     transition={{ ease: "easeIn", duration: 0.3 }}
                     style={{ originY: 0.55 }}
                   >
-                    {selectedAccommodation?.map((item, index) => (
+                    {selectedAccommodations?.map((item, index) => (
                       <Draggable
                         key={item.title}
                         draggableId={item.title}
@@ -159,14 +145,18 @@ function TripDays({ days, date }: TripDaysProps) {
           ))
         ) : (
           <>
-            <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
-              <span className="font-light text-contentMuted">
-                {days} | {date}
-              </span>
-            </div>
+            {tripDate.map((item, index) => (
+              <React.Fragment key={index}>
+                <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
+                  <span className="font-light text-contentMuted">
+                    {`Day${index + 1} | ${item}`}
+                  </span>
+                </div>
 
-            <AddPlanButton text="장소" />
-            <AddPlanButton text="숙소" />
+                <AddPlanButton text="장소" />
+                <AddPlanButton text="숙소" />
+              </React.Fragment>
+            ))}
           </>
         )}
       </ul>

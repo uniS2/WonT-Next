@@ -1,4 +1,4 @@
-import { AccommodationStore } from "@/store/AccommodationStore";
+import { AccommodationsStore } from "@/store/AccommodationsStore";
 import { RegionStore } from "@/store/RegionStore";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
@@ -18,7 +18,7 @@ function TripEditMap() {
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedRegionName } = RegionStore();
-  const { selectedAccommodation } = AccommodationStore();
+  const { selectedAccommodations } = AccommodationsStore();
 
   // useEffect(() => {
   //   const testTripPlan = [
@@ -29,7 +29,7 @@ function TripEditMap() {
   //   setPlace(testTripPlan.map((item) => item.places));
   // }, []);
 
-  console.log(selectedAccommodation);
+  console.log(selectedAccommodations);
 
   useEffect(() => {
     setMapPlace(place.flatMap((item) => item));
@@ -90,7 +90,7 @@ function TripEditMap() {
         }, 300);
         var geocoder = new window.kakao.maps.services.Geocoder();
 
-        selectedAccommodation?.forEach((accommodation) => {
+        selectedAccommodations?.forEach((accommodation) => {
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(
             accommodation.addr1,

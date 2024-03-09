@@ -3,7 +3,6 @@ import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";
 import TripEditLayout from "@/layout/tripedit/layout";
-import { AccommodationStore } from "@/store/AccommodationStore";
 import { DaysStore } from "@/store/DaysStore";
 import { RegionStore } from "@/store/RegionStore";
 import React, { useEffect, useState } from "react";
