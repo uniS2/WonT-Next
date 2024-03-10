@@ -1,24 +1,34 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType, PlacesObject } from "@/types/DataProps";
+import { setTripRange } from "@/utils/setTripRange";
 
-type PlacesStoreType = {
-  locationPlaces: AccommodationDataType[] | null;
-  selectedPlaces: AccommodationDataType[] | null;
-  setLocationPlaces: (location: AccommodationDataType[]) => void;
-  setSelctedPlaces: (id: number) => void;
+type LocationPlacesStoreType = {
+  locationPlaces: PlaceDataType[] | null;
+  setLocationPlaces: (location: PlaceDataType[]) => void;
+};
+
+type SelectPlacesStoreType = {
+  selectedPlaces: PlacesObject | null;
+  setTripPlacesRange: (range: number) => void;
+  // setSelctedPlaces: (id: number) => void;
   resetSelectedPlaces: () => void;
 };
 
-export const PlacesStore = create(
-  persist<PlacesStoreType>(
+export const LocationPlacesStore = create<LocationPlacesStoreType>((set) => ({
+  locationPlaces: null,
+  setLocationPlaces: (location: PlaceDataType[]) =>
+    set({ locationPlaces: location }),
+}));
+
+export const SelectPlacesStore = create(
+  persist<SelectPlacesStoreType>(
     (set) => ({
-      locationPlaces: null,
       selectedPlaces: null,
-      setLocationPlaces: (location: AccommodationDataType[]) =>
-        set({ locationPlaces: location }),
-      setSelctedPlaces: (id: number) =>
-        set((state) => {
+      setTripPlacesRange: (range: number) =>
+        set({ selectedPlaces: setTripRange(range) }),
+      /* setSelctedPlaces: (id: number) =>
+        set((state) => {d
           if (
             !state.selectedPlaces?.filter((sa) => sa.contentid == id).length
           ) {
@@ -45,7 +55,7 @@ export const PlacesStore = create(
               ),
             };
           }
-        }),
+        }), */
       resetSelectedPlaces: () => set({ selectedPlaces: null }),
     }),
     {
