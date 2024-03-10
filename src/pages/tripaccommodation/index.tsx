@@ -1,33 +1,33 @@
 import TripAccommodationLayout from "@/layout/tripaccommodation/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
-import TripAccommodationMap from "@/components/tripaccommodation/TripAccommodationMap";
+import TripAccommodationsMap from "@/components/tripaccommodation/TripAccommodationsMap";
 import TripRegionDaysEdit from "@/components/common/TripRegionDaysEdit";
-import SelectDaysInfo from "@/components/tripselect/SelectDaysInfo";
+import SelectDateInfo from "@/components/tripselect/SelectDateInfo";
 import DefaultImage from "@/components/common/DefaultImage";
 import SelectItem from "@/components/tripselect/SelectItem";
-import LocalItem from "@/components/tripselect/LocalItem";
+import LocalAccommodationItem from "@/components/tripaccommodation/LocalAccommodationItem";
 import ButtonLarge from "@/components/tripselect/ButtonLarge";
-import { AccommodationStore } from "@/store/AccommodationStore";
+import { AccommodationsStore } from "@/store/AccommodationsStore";
 
-function TripRegionPage() {
+function TripAccommodationPage() {
   const {
-    locationAccommodation,
-    selectedAccommodation,
-    resetSelectedAccommodation,
-  } = AccommodationStore();
-  const isSelected = Boolean(selectedAccommodation);
+    locationAccommodations,
+    selectedAccommodations,
+    resetSelectedAccommodations,
+  } = AccommodationsStore();
+  const isSelected = Boolean(selectedAccommodations);
 
   return (
     <TripAccommodationLayout>
       <HeaderTripSelect isPadding inCloseButton />
-      <TripAccommodationMap />
+      <TripAccommodationsMap />
       <TripRegionDaysEdit />
       <section className="flex flex-col gap-5 w-full p-5">
         <div className="flex justify-between">
-          <SelectDaysInfo />
+          <SelectDateInfo totalNumber={selectedAccommodations?.length} />
           <button
             type="button"
-            onClick={resetSelectedAccommodation}
+            onClick={resetSelectedAccommodations}
             className="w-20 h-7 rounded-md border border-contentMuted  text-sm text-contentMuted hover:bg-secondary hover:border-black hover:text-black hover:font-semibold"
           >
             초기화
@@ -37,7 +37,7 @@ function TripRegionPage() {
           className={`grid grid-cols-1 lg:grid-cols-2 gap-3 w-full pr-3 py-3 rounded-xl ${isSelected ? "bg-button" : "bg-[#E9F0F0]"}`}
         >
           {isSelected ? (
-            selectedAccommodation!.map((accommodation, index) => (
+            selectedAccommodations!.map((accommodation, index) => (
               <SelectItem
                 key={accommodation.contentid}
                 index={index + 1}
@@ -64,9 +64,9 @@ function TripRegionPage() {
           className={`pt-5 border-t-4 ${isSelected ? "border-primary" : "border-[#D0CFD7]"}`}
         >
           <ul className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full p-3 rounded-xl bg-[#E9F0F0]">
-            {locationAccommodation &&
-              locationAccommodation.map((location, index) => (
-                <LocalItem
+            {locationAccommodations &&
+              locationAccommodations.map((location, index) => (
+                <LocalAccommodationItem
                   key={index}
                   id={location.contentid}
                   title={location.title}
@@ -82,4 +82,4 @@ function TripRegionPage() {
   );
 }
 
-export default TripRegionPage;
+export default TripAccommodationPage;

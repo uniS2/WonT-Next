@@ -86,7 +86,7 @@ const TripRegionPage = () => {
         </ul>
         <ButtonLarge
           isSelected={Boolean(selectedRegionName)}
-          href="/tripdays"
+          href="/tripdate"
           onClick={inSelectedTripRegion}
         />
       </main>

@@ -1,22 +1,19 @@
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DefaultImage from "@/components/common/DefaultImage";
-import { AccommodationStore } from "@/store/AccommodationStore";
+import { PlacesStore } from "@/store/PlacesStore";
 
-type LocalItemProps = {
+type LocalPlaceItemProps = {
   id: number;
   title: string;
   addr: string;
   imgSrc: string;
 };
 
-const LocalItem = ({ id, title, addr, imgSrc }: LocalItemProps) => {
-  const { selectedAccommodation, setToggleAccommodation } =
-    AccommodationStore();
+const LocalPlaceItem = ({ id, title, addr, imgSrc }: LocalPlaceItemProps) => {
+  const { selectedPlaces, setSelctedPlaces } = PlacesStore();
   const isSelected = Boolean(
-    selectedAccommodation?.filter(
-      (accommodation) => accommodation.contentid == id,
-    ).length,
+    selectedPlaces?.filter((place) => place.contentid == id).length,
   );
 
   return (
@@ -33,7 +30,7 @@ const LocalItem = ({ id, title, addr, imgSrc }: LocalItemProps) => {
       <button
         type="button"
         onClick={() => {
-          setToggleAccommodation(id);
+          setSelctedPlaces(id);
         }}
       >
         {isSelected ? (
@@ -54,4 +51,4 @@ const LocalItem = ({ id, title, addr, imgSrc }: LocalItemProps) => {
   );
 };
 
-export default LocalItem;
+export default LocalPlaceItem;

@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { DaysStore } from "@/store/DaysStore";
+import { DatesStore } from "@/store/DatesStore";
 
 type TripDateInfoProps = {
   contents: string;
@@ -11,10 +11,10 @@ export const TripDateInfo = ({
   contents,
   isPoint = false,
 }: TripDateInfoProps) => {
-  const { tripDays } = DaysStore();
+  const { tripDates } = DatesStore();
   let title = "여행 제목";
 
-  if (tripDays.length == 2) {
+  if (Boolean(tripDates)) {
     title = "선택한 여행 기간";
     isPoint = true;
   } else {
@@ -25,7 +25,7 @@ export const TripDateInfo = ({
     "/svg/" +
     (title == "다가오는 여행"
       ? "plane-paper.svg"
-      : tripDays.length > 1
+      : Boolean(tripDates)
         ? "calendar-selected.svg"
         : "calendar-inSelected.svg");
 

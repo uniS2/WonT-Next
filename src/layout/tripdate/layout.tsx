@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 
-const TripDaysLayout = ({
+const TripDateLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,7 +9,7 @@ const TripDaysLayout = ({
   return (
     <>
       <Head>
-        <title>TripDays - WonT</title>
+        <title>Trip Date - WonT</title>
         <meta name="description" content="여행 기간 선택 페이지입니다." />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
@@ -23,4 +23,4 @@ const TripDaysLayout = ({
   );
 };
 
-export default TripDaysLayout;
+export default TripDateLayout;

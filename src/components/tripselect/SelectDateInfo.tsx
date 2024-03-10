@@ -1,9 +1,8 @@
-import { AccommodationStore } from "@/store/AccommodationStore";
+type SelectDateInfoProps = {
+  totalNumber?: number;
+};
 
-const SelectDaysInfo = () => {
-  const { selectedAccommodation } = AccommodationStore();
-  const totalNumber = selectedAccommodation ? selectedAccommodation.length : 0;
-
+const SelectDateInfo = ({ totalNumber = 0 }: SelectDateInfoProps) => {
   return (
     <div className="flex gap-[0.625rem] items-end">
       <span className="text-2xl text-content font-bold">{totalNumber}</span>
@@ -16,4 +15,4 @@ const SelectDaysInfo = () => {
   );
 };
 
-export default SelectDaysInfo;
+export default SelectDateInfo;
