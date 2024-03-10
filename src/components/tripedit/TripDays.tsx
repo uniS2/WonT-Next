@@ -10,9 +10,9 @@ import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
-import { DaysStore } from "@/store/DaysStore";
 import { AccommodationsStore } from "@/store/AccommodationStore";
 import { DatesStore } from "@/store/DatesStore";
+import Router from "next/router";
 
 interface TripDaysProps {
   days?: string;
@@ -21,27 +21,18 @@ interface TripDaysProps {
   tripDate?: string[];
 }
 
-function TripDays({ days, date }: TripDaysProps) {
+function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
-  const { tripDays, setTripDays } = DaysStore();
-  const [tripDate, setTripDate] = useState<string[]>([]);
   const { tripDates } = DatesStore();
+  console.log(selectedAccommodations);
 
-  useEffect(() => {
-    const dates = tripDays.map((dateString) =>
-      new Date(dateString).toISOString().slice(0, 10),
-    );
-
-    setTripDate(dates);
-  }, [tripDays]);
-
-  useEffect(() => {
-    // setViewPlanStates(new Array(testTripPlan.length).fill(true));
-    setViewPlanStates(new Array(tripDate.length).fill(true));
-    console.log(viewPlanStates);
-  }, []);
+  // useEffect(() => {
+  //   if (selectedAccommodations) {
+  //     setSelectedAccommodationArray(selectedAccommodations);
+  //   }
+  // }, [selectedAccommodations]);
 
   const onDragEnd = (result: { destination: any; source: any }) => {
     const { destination, source } = result;
@@ -61,9 +52,20 @@ function TripDays({ days, date }: TripDaysProps) {
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
     newViewPlanStates[index] = !newViewPlanStates[index];
-    console.log(newViewPlanStates);
 
     setViewPlanStates(newViewPlanStates);
+  };
+
+  const handleRoute = (e: React.MouseEvent) => {
+    const target = e.currentTarget.textContent;
+    console.log(target);
+    if (target === "장소를 추가해주세요.") {
+      Router.push("/tripplace");
+    } else if (target === "숙소를 추가해주세요.") {
+      Router.push("/tripaccommodation");
+    }
+
+    // Router.push("/tripplace");
   };
 
   const variants = {
@@ -125,12 +127,13 @@ function TripDays({ days, date }: TripDaysProps) {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
+                            // className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
                           >
                             <AddPlanButton
                               text="장소"
                               place={item.title}
                               key={index}
+                              index={index}
                             />
                           </div>
                         )}
@@ -140,11 +143,13 @@ function TripDays({ days, date }: TripDaysProps) {
                   </motion.div>
                 )}
               </Droppable>
+              {/* <AddPlanButton text="장소" handleRoute={handleRoute} /> */}
+              {/* <AddPlanButton text="숙소" handleRoute={handleRoute} /> */}
             </React.Fragment>
           ))
         ) : (
           <>
-            {tripDate.map((item, index) => (
+            {tripDates?.map((item, index) => (
               <React.Fragment key={index}>
                 <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
                   <span className="font-light text-contentMuted">
@@ -152,8 +157,8 @@ function TripDays({ days, date }: TripDaysProps) {
                   </span>
                 </div>
 
-                <AddPlanButton text="장소" />
-                <AddPlanButton text="숙소" />
+                <AddPlanButton text="장소" handleRoute={handleRoute} />
+                <AddPlanButton text="숙소" handleRoute={handleRoute} />
               </React.Fragment>
             ))}
           </>

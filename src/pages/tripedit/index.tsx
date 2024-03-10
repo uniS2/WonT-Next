@@ -2,28 +2,34 @@ import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";
 import TripEditLayout from "@/layout/tripedit/layout";
-import { DaysStore } from "@/store/DaysStore";
 import { RegionStore } from "@/store/RegionStore";
 import React, { useEffect, useState } from "react";
 import { DatesStore } from "@/store/DatesStore";
+import { useRouter } from "next/router";
+import { AccommodationsStore } from "@/store/AccommodationStore";
 
 function TripEdit() {
-  const { tripDays, setTripDays } = DaysStore();
-  const { selectedRegionName } = RegionStore();
-  // const [tripDate, setTripDate] = useState<string[]>([]);
-  const { tripDates } = DatesStore();
+  const { selectedRegionName, resetRegionName } = RegionStore();
+  const { tripDates, resetTripDates } = DatesStore();
+  const { selectedAccommodations, setSelectedAccommodationArray } =
+    AccommodationsStore();
   console.log("여행일자", tripDates);
+  console.log(selectedRegionName);
 
   //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
   // const clearAccommodationIdStorage = AccommodationStore.persist.clearStorage;
 
-  // useEffect(() => {
-  //   const dates = tripDays.map((dateString) =>
-  //     new Date(dateString).toISOString().slice(0, 10),
-  //   );
+  const router = useRouter();
 
-  //   setTripDate(dates);
-  // }, [tripDays]);
+  const handleModify = () => {
+    resetRegionName();
+    resetTripDates();
+    setSelectedAccommodationArray([]);
+
+    router.push("/tripregion");
+  };
+  // console.log(tripDates);
+  // console.log(selectedAccommodations);
 
   if (tripDates) {
     return (
@@ -36,17 +42,16 @@ function TripEdit() {
 
               <span className="text-white">{`${tripDates[0]} - ${tripDates[tripDates?.length - 1]}`}</span>
             </div>
-            <button className="border-[1px] w-[56px] h-7 rounded-md border-contentMuted text-contentMuted text-sm">
+            <button
+              className="border-[1px] w-[56px] h-7 rounded-md border-contentMuted text-contentMuted text-sm"
+              onClick={handleModify}
+            >
               수정
             </button>
           </div>
           <section>
             <div className="mt-7 mb-10">
-              {/* {tripDate.map((item, index) => ( */}
-              {/* <React.Fragment key={index}> */}
               <TripDays />
-              {/* </React.Fragment> */}
-              {/* ))} */}
               <SaveButton text="저장" />
             </div>
           </section>

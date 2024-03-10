@@ -12,7 +12,6 @@ declare global {
 }
 
 function TripEditMap() {
-  // const { place, setPlace } = useTripPlaceStore();
   const [viewPlanItems, setViewPlanItems] = useState<any[] | undefined>();
   const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
@@ -20,22 +19,8 @@ function TripEditMap() {
   const { selectedRegionName } = RegionStore();
   const { selectedAccommodations } = AccommodationsStore();
 
-  // useEffect(() => {
-  //   const testTripPlan = [
-  //     { places: ["새별오름", "성산일출봉", "카멜리아 힐"] },
-  //     { places: ["오설록", "스누피가든", "용머리해안"] },
-  //     { places: ["금오름", "쇠소깍", "정방폭포"] },
-  //   ];
-  //   setPlace(testTripPlan.map((item) => item.places));
-  // }, []);
-
-  console.log(viewPlanStates);
-  console.log(selectedAccommodations);
-  // console.log(place);
-
-  // useEffect(() => {
-  //   setMapPlace(place.flatMap((item) => item));
-  // }, [place, setPlace]);
+  // console.log(selectedRegionName);
+  // console.log(selectedAccommodations);
 
   useEffect(() => {
     if (selectedAccommodations) {
@@ -94,12 +79,13 @@ function TripEditMap() {
         const updateCenter = debounce((latitude, longitude) => {
           map.panTo(new window.kakao.maps.LatLng(latitude, longitude));
         }, 300);
+
         var geocoder = new window.kakao.maps.services.Geocoder();
 
         selectedAccommodations?.forEach((accommodation) => {
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(
-            accommodation.addr1 || selectedRegionName,
+            accommodation.addr1,
             function (result: { x: any; y: any }[], status: any) {
               // 정상적으로 검색이 완료됐으면
               if (status === window.kakao.maps.services.Status.OK) {
@@ -131,6 +117,22 @@ function TripEditMap() {
           );
         });
 
+        // 주소로 좌표를 검색합니다
+        geocoder.addressSearch(
+          selectedRegionName,
+          function (result: { x: any; y: any }[], status: any) {
+            // 정상적으로 검색이 완료됐으면
+            if (status === window.kakao.maps.services.Status.OK) {
+              var coords = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x,
+              );
+
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+            }
+          },
+        );
         /* -------------------------------------------------------------------------- */
 
         var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
@@ -221,7 +223,7 @@ function TripEditMap() {
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
-  }, [mapPlace, viewPlanItems, setMapLatLngArray]);
+  }, [selectedAccommodations, viewPlanItems, setMapLatLngArray]);
 
   return (
     <main className="w-full flex flex-col items-center justify-center ">
