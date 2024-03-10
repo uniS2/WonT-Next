@@ -1,23 +1,34 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType, PlacesObject } from "@/types/DataProps";
+import { setTripRange } from "@/utils/setTripRange";
 
-type AccommodationsStoreType = {
-  locationAccommodations: AccommodationDataType[] | null;
-  selectedAccommodations: AccommodationDataType[] | null;
-  setLocationAccommodations: (location: AccommodationDataType[]) => void;
-  setSelectedAccommodations: (id: number) => void;
+type LocationAccommodationsStoreType = {
+  locationAccommodations: PlaceDataType[] | null;
+  setLocationAccommodations: (location: PlaceDataType[]) => void;
+};
+
+type SelectAccommodationsStoreType = {
+  selectedAccommodations: PlacesObject | null;
+  setTripAccommodationsRange: (range: number) => void;
+  // setSelectedAccommodations: (id: number) => void;
   resetSelectedAccommodations: () => void;
 };
 
-export const AccommodationsStore = create(
-  persist<AccommodationsStoreType>(
+export const LocationAccommodationsStore =
+  create<LocationAccommodationsStoreType>((set) => ({
+    locationAccommodations: null,
+    setLocationAccommodations: (location: PlaceDataType[]) =>
+      set({ locationAccommodations: location }),
+  }));
+
+export const SelectAccommodationsStore = create(
+  persist<SelectAccommodationsStoreType>(
     (set) => ({
-      locationAccommodations: null,
       selectedAccommodations: null,
-      setLocationAccommodations: (location: AccommodationDataType[]) =>
-        set({ locationAccommodations: location }),
-      setSelectedAccommodations: (id: number) =>
+      setTripAccommodationsRange: (range: number) =>
+        set({ selectedAccommodations: setTripRange(range) }),
+      /* setSelectedAccommodations: (id: number) =>
         set((state) => {
           if (
             !state.selectedAccommodations?.filter((sa) => sa.contentid == id)
@@ -46,7 +57,7 @@ export const AccommodationsStore = create(
               ),
             };
           }
-        }),
+        }), */
       resetSelectedAccommodations: () => set({ selectedAccommodations: null }),
     }),
     {
