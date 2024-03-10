@@ -31,7 +31,7 @@ const SignInPage: React.FC = () => {
       if (data) {
         setIsAuthenticated(true);
         console.log("로그인완료");
-        router.push("/main");
+        router.push("/signnickname");
       }
     } catch (error) {
       console.error("로그인 실패:");

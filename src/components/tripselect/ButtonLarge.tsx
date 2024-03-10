@@ -14,7 +14,7 @@ const ButtonLarge = ({
   onClick,
   children = "선택 완료",
 }: ButtonLargePropType) => {
-  const buttonClasses = "w-80 h-16 rounded-[0.625rem] font-bold text-white";
+  const buttonClasses = "w-80 h-16 rounded-xl font-bold text-white";
 
   if (isSelected && href) {
     return (

@@ -1,10 +1,10 @@
-import { DaysStore } from "@/store/DaysStore";
+import { DatesStore } from "@/store/DatesStore";
 import { RegionStore } from "@/store/RegionStore";
-import { getTripDateKo } from "@/utils/getTripDay";
+import { getTripDate } from "@/utils/getTripDate";
 
 const TripRegionDaysEdit = () => {
   const { selectedRegionName } = RegionStore();
-  const { tripDays } = DaysStore();
+  const { tripDates } = DatesStore();
 
   // 모달창 구현 예정
   const toggleTripEdit = () => {};
@@ -12,10 +12,15 @@ const TripRegionDaysEdit = () => {
   return (
     <aside className="flex justify-between items-center w-full h-20 px-5 bg-contentSecondary">
       <div>
-        <p className="text-white">{selectedRegionName || "여행 지역"}</p>
+        <p className="text-white">
+          {selectedRegionName
+            ? selectedRegionName
+            : "여행 지역을 다시 선택해주세요."}
+        </p>
         <p className=" text-white">
-          {`${getTripDateKo(tripDays[0])} ~
-          ${getTripDateKo(tripDays[1])}` || "여행 기간"}
+          {tripDates
+            ? `${getTripDate(tripDates[0])} - ${getTripDate(tripDates[tripDates.length - 1])}`
+            : "여행 기간을 다시 선택해주세요."}
         </p>
       </div>
       <button
