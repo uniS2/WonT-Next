@@ -6,15 +6,15 @@ import { RegionStore } from "@/store/RegionStore";
 import React, { useEffect, useState } from "react";
 import { DatesStore } from "@/store/DatesStore";
 import { useRouter } from "next/router";
-import { AccommodationsStore } from "@/store/AccommodationStore";
+import { PlacesStore } from "@/store/PlacesStore";
+import { AccommodationsStore } from "@/store/AccommodationsStore";
 
 function TripEdit() {
   const { selectedRegionName, resetRegionName } = RegionStore();
   const { tripDates, resetTripDates } = DatesStore();
   const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
-  console.log("여행일자", tripDates);
-  console.log(selectedRegionName);
+  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
 
   //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
   // const clearAccommodationIdStorage = AccommodationStore.persist.clearStorage;
@@ -25,11 +25,10 @@ function TripEdit() {
     resetRegionName();
     resetTripDates();
     setSelectedAccommodationArray([]);
+    setSelectedPlacesArray([]);
 
     router.push("/tripregion");
   };
-  // console.log(tripDates);
-  // console.log(selectedAccommodations);
 
   if (tripDates) {
     return (

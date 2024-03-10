@@ -1,9 +1,9 @@
-import Link from "next/link";
 import MapPin from "./MapPin";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { BsX } from "react-icons/bs";
 import { AccommodationsStore } from "@/store/AccommodationsStore";
 import { useEffect } from "react";
+import { PlacesStore } from "@/store/PlacesStore";
 
 interface AddPlanButtonProps {
   text?: string;
@@ -13,6 +13,7 @@ interface AddPlanButtonProps {
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
   handleRoute?: (e: React.MouseEvent) => void;
+  handleRemove?: (e: React.MouseEvent) => void;
 }
 
 function AddPlanButton({
@@ -20,38 +21,43 @@ function AddPlanButton({
   place,
   index,
   handleRoute,
+  // handleRemove
 }: AddPlanButtonProps) {
-  const { selectedAccommodations, resetSelectedAccommodations } =
+  const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
+  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
 
-  useEffect(() => {}, [selectedAccommodations]);
-
+  // const handleRemove = (e: React.MouseEvent) => {
+  //   const target = e.currentTarget;
+  //   console.log(target);
+  //   console.log("index", index);
+  //   const newSelectedAccommodations = Array.from(selectedAccommodations || []);
+  //   console.log(newSelectedAccommodations);
+  //   resetSelectedAccommodations();
+  // };
   const handleRemove = (e: React.MouseEvent) => {
-    const target = e.currentTarget;
-    console.log(target);
-    console.log("index", index);
-    const newSelectedAccommodations = Array.from(selectedAccommodations || []);
-    console.log(newSelectedAccommodations);
-    resetSelectedAccommodations();
+    e.stopPropagation();
+
+    if (typeof index === "number") {
+      if (text === "장소") {
+        const newSelectedPlaces = Array.from(selectedPlaces || []);
+        newSelectedPlaces.splice(index, 1);
+        setSelectedPlacesArray(newSelectedPlaces);
+      }
+
+      if (text === "숙소") {
+        const newSelectedAccommodations = Array.from(
+          selectedAccommodations || [],
+        );
+        newSelectedAccommodations.splice(index, 1);
+        setSelectedAccommodationArray(newSelectedAccommodations);
+      }
+    }
   };
 
   return (
-    // <Link
-    //   href={
-    //     text === "장소" && selectedAccommodations === null
-    //       ? "/tripplace"
-    //       : text === "숙소" && selectedAccommodations === null
-    //         ? "/tripaccommodation"
-    //         : ""
-    //   }
-    //   className=" cursor-pointer"
-    // >
-    // <button
-    //   className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full"
-    //   onClick={handleRoute}
-    // >
     <div
-      className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full"
+      className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full cursor-pointer"
       onClick={handleRoute}
     >
       <div className="flex justify-between w-full items-center">
@@ -77,7 +83,7 @@ function AddPlanButton({
           </span>
         )}
       </div>
-      {text === "장소" ||
+      {(text === "장소" && selectedPlaces !== null) ||
       (text === "숙소" && selectedAccommodations !== null) ? (
         <button onClick={handleRemove}>
           <BsX color="#828282" />
@@ -86,8 +92,6 @@ function AddPlanButton({
         <AiFillPlusCircle size="28px" color="#828282" />
       )}
     </div>
-    // </button>
-    // </Link>
   );
 }
 

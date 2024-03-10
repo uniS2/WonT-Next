@@ -5,6 +5,7 @@ import { AccommodationDataType } from "@/types/DataProps";
 type PlacesStoreType = {
   locationPlaces: AccommodationDataType[] | null;
   selectedPlaces: AccommodationDataType[] | null;
+  setSelectedPlacesArray: (state: AccommodationDataType[]) => void;
   setLocationPlaces: (location: AccommodationDataType[]) => void;
   setSelctedPlaces: (id: number) => void;
   resetSelectedPlaces: () => void;
@@ -15,6 +16,8 @@ export const PlacesStore = create(
     (set) => ({
       locationPlaces: null,
       selectedPlaces: null,
+      setSelectedPlacesArray: (state: AccommodationDataType[]) =>
+        set({ selectedPlaces: state }),
       setLocationPlaces: (location: AccommodationDataType[]) =>
         set({ locationPlaces: location }),
       setSelctedPlaces: (id: number) =>

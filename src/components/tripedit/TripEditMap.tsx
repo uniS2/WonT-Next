@@ -1,4 +1,5 @@
 import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { PlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
@@ -18,9 +19,9 @@ function TripEditMap() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedRegionName } = RegionStore();
   const { selectedAccommodations } = AccommodationsStore();
-
-  // console.log(selectedRegionName);
-  // console.log(selectedAccommodations);
+  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
+  console.log(selectedAccommodations);
+  console.log(selectedPlaces);
 
   useEffect(() => {
     if (selectedAccommodations) {
@@ -44,15 +45,15 @@ function TripEditMap() {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        var container = document.getElementById("map");
-        var options = {
+        const container = document.getElementById("map");
+        const options = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 3,
         };
 
-        var map = new window.kakao.maps.Map(container, options);
+        const map = new window.kakao.maps.Map(container, options);
 
-        var marker = new window.kakao.maps.Marker({
+        let marker = new window.kakao.maps.Marker({
           // 지도 중심좌표에 마커를 생성합니다
           position: map.getCenter(),
         });
@@ -64,12 +65,12 @@ function TripEditMap() {
           "click",
           function (mouseEvent: { latLng: any }) {
             // 클릭한 위도, 경도 정보를 가져옵니다
-            var latlng = mouseEvent.latLng;
+            let latlng = mouseEvent.latLng;
 
             // 마커 위치를 클릭한 위치로 옮깁니다
             marker.setPosition(latlng);
 
-            var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+            let message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
             message += "경도는 " + latlng.getLng() + " 입니다";
 
             console.log(message);
@@ -82,40 +83,43 @@ function TripEditMap() {
 
         var geocoder = new window.kakao.maps.services.Geocoder();
 
-        selectedAccommodations?.forEach((accommodation) => {
-          // 주소로 좌표를 검색합니다
-          geocoder.addressSearch(
-            accommodation.addr1,
-            function (result: { x: any; y: any }[], status: any) {
-              // 정상적으로 검색이 완료됐으면
-              if (status === window.kakao.maps.services.Status.OK) {
-                var coords = new window.kakao.maps.LatLng(
-                  result[0].y,
-                  result[0].x,
-                );
-                var accommodationCoords = new window.kakao.maps.LatLng(
-                  accommodation.mapy,
-                  accommodation.mapx,
-                );
+        if (selectedAccommodations && selectedPlaces) {
+          const selected = selectedAccommodations?.concat(selectedPlaces);
+          console.log(selected);
 
-                // 결과값으로 받은 위치를 마커로 표시합니다
-                var marker = new window.kakao.maps.Marker({
-                  map: map,
-                  position: coords || accommodationCoords,
-                });
+          selected?.forEach((item) => {
+            // 주소로 좌표를 검색합니다
 
-                // 인포윈도우로 장소에 대한 설명을 표시합니다
-                var infowindow = new window.kakao.maps.InfoWindow({
-                  content: `<div style="width:150px;text-align:center;padding:6px 0;">${accommodation.title}</div>`,
-                });
-                infowindow.open(map, marker);
-
-                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                map.setCenter(coords);
-              }
-            },
-          );
-        });
+            geocoder.addressSearch(
+              item?.addr1,
+              function (result: { x: any; y: any }[], status: any) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === window.kakao.maps.services.Status.OK) {
+                  let coords = new window.kakao.maps.LatLng(
+                    result[0].y,
+                    result[0].x,
+                  );
+                  let accommodationCoords = new window.kakao.maps.LatLng(
+                    item.mapy,
+                    item.mapx,
+                  );
+                  // 결과값으로 받은 위치를 마커로 표시합니다
+                  let marker = new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords || accommodationCoords,
+                  });
+                  // 인포윈도우로 장소에 대한 설명을 표시합니다
+                  let infowindow = new window.kakao.maps.InfoWindow({
+                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+                  });
+                  infowindow.open(map, marker);
+                  // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                  map.setCenter(coords);
+                }
+              },
+            );
+          });
+        }
 
         // 주소로 좌표를 검색합니다
         geocoder.addressSearch(
@@ -135,13 +139,7 @@ function TripEditMap() {
         );
         /* -------------------------------------------------------------------------- */
 
-        var infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-        const combinedArray = mapPlace.map((place, index) => {
-          return {
-            place,
-            latLng: mapLatLngArray[index],
-          };
-        });
+        let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
         /* -------------------------------------------------------------------------- */
         // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];

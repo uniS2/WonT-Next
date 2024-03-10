@@ -10,10 +10,11 @@ import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
-import { AccommodationsStore } from "@/store/AccommodationStore";
 import { DatesStore } from "@/store/DatesStore";
 import Router from "next/router";
 import { PlacesStore } from "@/store/PlacesStore";
+import AddSchedule from "./AddSchedule";
+import { AccommodationsStore } from "@/store/AccommodationsStore";
 
 interface TripDaysProps {
   days?: string;
@@ -26,7 +27,7 @@ function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
-  const { selectedPlaces, setSelctedPlaces } = PlacesStore();
+  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
   const { tripDates } = DatesStore();
   console.log(selectedAccommodations);
   console.log(selectedPlaces);
@@ -34,13 +35,6 @@ function TripDays() {
   useEffect(() => {
     setViewPlanStates(new Array(tripDates?.length).fill(true));
   }, []);
-
-  useEffect(() => {
-    if (selectedAccommodations) {
-      setSelectedAccommodationArray(selectedAccommodations);
-    }
-    console.log(selectedAccommodations);
-  }, [selectedAccommodations]);
 
   // const onDragEnd = (result: { destination: any; source: any }) => {
   //   const { destination, source } = result;
@@ -58,45 +52,113 @@ function TripDays() {
   //     setSelectedAccommodationArray(newSelectedAccommodations);
   //   }
   // };
+  const onDragEnd = (result: { destination: any; source: any }) => {
+    const { destination, source } = result;
 
-  const onDragEnd = useCallback(
-    (result: DropResult) => {
-      if (!result.destination) return;
+    if (destination && destination.index !== source.index) {
+      // const newSelectedAccommodations = Array.from(selectedAccommodations);
+      const newSelectedPlaces = Array.from(selectedPlaces || []);
+      console.log(...newSelectedPlaces, 1);
 
-      const { source, destination } = result;
+      const [removed] = newSelectedPlaces.splice(source.index, 1);
+      newSelectedPlaces.splice(destination.index, 0, removed);
 
-      if (source.droppableId === destination.droppableId) {
-        const listIndex = parseInt(source.droppableId.split("-")[1]);
-        const newSelectedAccommodations = Array.from(
-          selectedAccommodations || [],
-        );
-        const copiedPlace = [...newSelectedAccommodations];
-        const items = copiedPlace[listIndex];
-        // const [removed] = newSelectedAccommodations.splice(source.index, 1);
-        // newSelectedAccommodations.splice(destination.index, 0, removed);
-        // setSelectedAccommodationArray(newSelectedAccommodations);
+      setSelectedPlacesArray(newSelectedPlaces);
+    }
+  };
 
-        const [removed] = [items].splice(source.index, 1);
-        [items].splice(destination.index, 0, removed);
-        setSelectedAccommodationArray(copiedPlace);
-      } else {
-        const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
-        const destinationListIndex = parseInt(
-          destination.droppableId.split("-")[1],
-        );
-        const newSelectedAccommodations = Array.from(
-          selectedAccommodations || [],
-        );
-        const copiedPlace = [...newSelectedAccommodations];
-        const sourceItems = copiedPlace[sourceListIndex];
-        const destinationItems = copiedPlace[destinationListIndex];
-        const [removed] = [sourceItems].splice(source.index, 1);
-        [destinationItems].splice(destination.index, 0, removed);
-        setSelectedAccommodationArray(copiedPlace);
-      }
-    },
-    [selectedAccommodations, setSelectedAccommodationArray],
-  );
+  // const onDragEnd = useCallback(
+  //   (result: DropResult) => {
+  //     if (!result.destination) return;
+
+  //     const { source, destination } = result;
+
+  //     if (source.droppableId === destination.droppableId) {
+  //       const listIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const newSelectedAccommodations = Array.from(
+  //         selectedAccommodations || [],
+  //       );
+  //       const copiedPlace = [...newSelectedAccommodations];
+  //       const items = copiedPlace[listIndex];
+  //       // const [removed] = newSelectedAccommodations.splice(source.index, 1);
+  //       // newSelectedAccommodations.splice(destination.index, 0, removed);
+  //       // setSelectedAccommodationArray(newSelectedAccommodations);
+
+  //       const [removed] = [items].splice(source.index, 1);
+  //       [items].splice(destination.index, 0, removed);
+  //       setSelectedAccommodationArray(copiedPlace);
+  //     } else {
+  //       const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const destinationListIndex = parseInt(
+  //         destination.droppableId.split("-")[1],
+  //       );
+  //       const newSelectedAccommodations = Array.from(
+  //         selectedAccommodations || [],
+  //       );
+  //       const copiedPlace = [...newSelectedAccommodations];
+  //       const sourceItems = copiedPlace[sourceListIndex];
+  //       const destinationItems = copiedPlace[destinationListIndex];
+  //       const [removed] = [sourceItems].splice(source.index, 1);
+  //       [destinationItems].splice(destination.index, 0, removed);
+  //       setSelectedAccommodationArray(copiedPlace);
+  //     }
+  //   },
+  //   [selectedAccommodations, setSelectedAccommodationArray],
+  // );
+
+  // const onDragEnd = useCallback(
+  //   (result: DropResult) => {
+  //     if (!result.destination) return;
+
+  //     const { source, destination } = result;
+
+  //     if (source.droppableId === destination.droppableId) {
+  //       const listIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const newSelectedAccommodations = Array.from(
+  //         selectedAccommodations || [],
+  //       );
+  //       const newSelectedPlaces = Array.from(selectedPlaces || []);
+  //       const copiedAccommodations = [...newSelectedAccommodations];
+  //       const copiedPlace = [...newSelectedPlaces];
+  //       const accommodationsitems = copiedPlace[listIndex];
+  //       const placeitems = copiedPlace[listIndex];
+  //       // const [removedAccommodations] = newSelectedAccommodations.splice(source.index, 1);
+  //       // const [removedPlace ] = newSelectedPlaces.splice(source.index, 1);
+  //       // newSelectedAccommodations.splice(destination.index, 0, removed);
+  //       // setSelectedAccommodationArray(newSelectedAccommodations);
+
+  //       const [removedAccommodations] = [accommodationsitems].splice(
+  //         source.index,
+  //         1,
+  //       );
+  //       const [removedPlace] = [placeitems].splice(source.index, 1);
+  //       [removedAccommodations].splice(
+  //         destination.index,
+  //         0,
+  //         removedAccommodations,
+  //       );
+  //       [removedPlace].splice(destination.index, 0, removedPlace);
+  //       setSelectedAccommodationArray(copiedAccommodations);
+  //       setSelectedPlacesArray(copiedPlace);
+  //     }
+  //     // else {
+  //     //   const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+  //     //   const destinationListIndex = parseInt(
+  //     //     destination.droppableId.split("-")[1],
+  //     //   );
+  //     //   const newSelectedAccommodations = Array.from(
+  //     //     selectedAccommodations || [],
+  //     //   );
+  //     //   const copiedPlace = [...newSelectedAccommodations];
+  //     //   const sourceItems = copiedPlace[sourceListIndex];
+  //     //   const destinationItems = copiedPlace[destinationListIndex];
+  //     //   const [removed] = [sourceItems].splice(source.index, 1);
+  //     //   [destinationItems].splice(destination.index, 0, removed);
+  //     //   setSelectedAccommodationArray(copiedPlace);
+  //     // }
+  //   },
+  //   [selectedAccommodations, setSelectedAccommodationArray],
+  // );
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
@@ -133,7 +195,8 @@ function TripDays() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {tripDates?.length !== 0 && selectedAccommodations?.length !== 0 ? (
+        {(tripDates?.length !== 0 && selectedAccommodations?.length !== 0) ||
+        selectedPlaces?.length !== 0 ? (
           tripDates?.map((item, index) => (
             <React.Fragment key={item}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
@@ -151,6 +214,7 @@ function TripDays() {
                   )}
                 </button>
               </div>
+              <AddSchedule />
               <Droppable droppableId={`day-${index}`}>
                 {(provided) => (
                   <motion.div
@@ -162,7 +226,7 @@ function TripDays() {
                     transition={{ ease: "easeIn", duration: 0.3 }}
                     style={{ originY: 0.55 }}
                   >
-                    {selectedAccommodations?.map((item, index) => (
+                    {selectedPlaces?.map((item, index) => (
                       <Draggable
                         key={item.title}
                         draggableId={item.title}
@@ -173,13 +237,37 @@ function TripDays() {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            // className="flex h-14 border-[1px] border-[#EDF2F2] bg-[#F3F5F5] items-center justify-between px-5"
                           >
                             <AddPlanButton
                               text="장소"
                               place={item.title}
                               key={index}
                               index={index}
+                              // handleRemove={handleRemove}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+
+                    {selectedAccommodations?.map((item, index) => (
+                      <Draggable
+                        key={item?.title}
+                        draggableId={item.title}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <AddPlanButton
+                              text="숙소"
+                              place={item?.title}
+                              key={index}
+                              index={index}
+                              // handleRemove={handleRemove}
                             />
                           </div>
                         )}
@@ -189,8 +277,6 @@ function TripDays() {
                   </motion.div>
                 )}
               </Droppable>
-              {/* <AddPlanButton text="장소" handleRoute={handleRoute} /> */}
-              {/* <AddPlanButton text="숙소" handleRoute={handleRoute} /> */}
             </React.Fragment>
           ))
         ) : (
