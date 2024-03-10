@@ -18,12 +18,22 @@ const OnBoardingPage: React.FC = () => {
             <p>행복한 여행을 위해 일정을 세워보세요</p>
           </div>
           <Image
-            src={"/images/test.jpeg"}
+            src={"/images/test-crop-unscreen.gif"}
             alt="로고"
             width={200}
             height={100}
             className="mb-[20px]"
           />
+          <div className="bg-primary w-[500px] h-[500px] flex flex-col items-center justify-center">
+            <video
+              src="/video/tst.mp4"
+              width={320}
+              height={200}
+              autoPlay
+              loop
+              preload="auto"
+            ></video>
+          </div>
           <OnBoardingButton
             text="WonT 시작하기"
             href="/signin"
