@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TripDateLayout from "@/layout/tripdate/layout";
@@ -9,9 +10,17 @@ import { TripScheduleInfo } from "@/components/tripdate/TripScheduleInfo";
 import ButtonLarge from "@/components/common/ButtonLarge";
 import { DatesStore } from "@/store/DatesStore";
 import { getTripDateKo } from "@/utils/getTripDate";
+import { SelectPlacesStore } from "@/store/PlacesStore";
 
 const TripDatePage = () => {
   const { tripDates } = DatesStore();
+  const { setTripPlacesRange } = SelectPlacesStore();
+
+  useEffect(() => {
+    if (tripDates) {
+      setTripPlacesRange(tripDates.length);
+    }
+  }, [tripDates]);
 
   const selectDatesRangeText = tripDates
     ? `${tripDates[0]} ~ ${tripDates[tripDates.length - 1]}`

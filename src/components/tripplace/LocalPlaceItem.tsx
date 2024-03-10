@@ -1,7 +1,7 @@
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DefaultImage from "@/components/common/DefaultImage";
-import { PlacesStore } from "@/store/PlacesStore";
+import { SelectPlacesStore } from "@/store/PlacesStore";
 
 type LocalPlaceItemProps = {
   id: number;
@@ -11,7 +11,7 @@ type LocalPlaceItemProps = {
 };
 
 const LocalPlaceItem = ({ id, title, addr, imgSrc }: LocalPlaceItemProps) => {
-  const { selectedPlaces, setSelctedPlaces } = PlacesStore();
+  const { selectedPlaces, setSelctedPlaces } = SelectPlacesStore();
   const isSelected = Boolean(
     selectedPlaces?.filter((place) => place.contentid == id).length,
   );

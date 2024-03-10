@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_PLACE } from "@/lib/tour/tour";
-import { PlacesStore } from "@/store/PlacesStore";
+import { LocationPlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType } from "@/types/DataProps";
 
 declare global {
   interface Window {
@@ -12,7 +12,7 @@ declare global {
 
 const TripPlaceMap = () => {
   const { selectedRegionName } = RegionStore();
-  const { locationPlaces, setLocationPlaces } = PlacesStore();
+  const { locationPlaces, setLocationPlaces } = LocationPlacesStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState([126.9837456304, 37.563446366]);
   const [map, setMap] = useState();
@@ -26,7 +26,7 @@ const TripPlaceMap = () => {
       const data = json.response.body.items.item;
       setLocationPlaces(
         data.filter(
-          (data: AccommodationDataType) =>
+          (data: PlaceDataType) =>
             data.contenttypeid != 25 && data.contenttypeid != 32,
         ),
       );
