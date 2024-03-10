@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { DaysStore } from "@/store/DaysStore";
 import { AccommodationsStore } from "@/store/AccommodationStore";
+import { DatesStore } from "@/store/DatesStore";
 
 interface TripDaysProps {
   days?: string;
@@ -21,14 +22,12 @@ interface TripDaysProps {
 }
 
 function TripDays({ days, date }: TripDaysProps) {
-  const { place, setPlace } = useTripPlaceStore();
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
   const { tripDays, setTripDays } = DaysStore();
   const [tripDate, setTripDate] = useState<string[]>([]);
-
-  console.log(selectedAccommodations);
+  const { tripDates } = DatesStore();
 
   useEffect(() => {
     const dates = tripDays.map((dateString) =>
@@ -86,8 +85,8 @@ function TripDays({ days, date }: TripDaysProps) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {tripDate.length !== 0 && selectedAccommodations !== null ? (
-          tripDate.map((item, index) => (
+        {tripDates?.length !== 0 && selectedAccommodations !== null ? (
+          tripDates?.map((item, index) => (
             <React.Fragment key={item}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
                 <span className="font-light text-contentMuted">

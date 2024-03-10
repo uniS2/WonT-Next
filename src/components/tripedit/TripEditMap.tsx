@@ -12,7 +12,7 @@ declare global {
 }
 
 function TripEditMap() {
-  const { place, setPlace } = useTripPlaceStore();
+  // const { place, setPlace } = useTripPlaceStore();
   const [viewPlanItems, setViewPlanItems] = useState<any[] | undefined>();
   const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
@@ -29,16 +29,22 @@ function TripEditMap() {
   //   setPlace(testTripPlan.map((item) => item.places));
   // }, []);
 
+  console.log(viewPlanStates);
   console.log(selectedAccommodations);
+  // console.log(place);
+
+  // useEffect(() => {
+  //   setMapPlace(place.flatMap((item) => item));
+  // }, [place, setPlace]);
 
   useEffect(() => {
-    setMapPlace(place.flatMap((item) => item));
-  }, [place, setPlace]);
-
-  useEffect(() => {
-    setViewPlanItems(
-      viewPlanStates.map((item, index) => item === true && place[index]),
-    );
+    if (selectedAccommodations) {
+      setViewPlanItems(
+        viewPlanStates.map(
+          (item, index) => item === true && selectedAccommodations[index],
+        ),
+      );
+    }
   }, [viewPlanStates]);
 
   useEffect(() => {
@@ -93,7 +99,7 @@ function TripEditMap() {
         selectedAccommodations?.forEach((accommodation) => {
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(
-            accommodation.addr1,
+            accommodation.addr1 || selectedRegionName,
             function (result: { x: any; y: any }[], status: any) {
               // 정상적으로 검색이 완료됐으면
               if (status === window.kakao.maps.services.Status.OK) {
