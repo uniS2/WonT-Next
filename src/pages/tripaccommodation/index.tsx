@@ -7,15 +7,17 @@ import DefaultImage from "@/components/common/DefaultImage";
 import SelectItem from "@/components/common/SelectItem";
 import LocalAccommodationItem from "@/components/tripaccommodation/LocalAccommodationItem";
 import ButtonLarge from "@/components/common/ButtonLarge";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import {
+  LocationAccommodationsStore,
+  SelectAccommodationsStore,
+} from "@/store/AccommodationsStore";
 
 function TripAccommodationPage() {
-  const {
-    locationAccommodations,
-    selectedAccommodations,
-    resetSelectedAccommodations,
-  } = AccommodationsStore();
+  const { locationAccommodations } = LocationAccommodationsStore();
+  const { selectedAccommodations, resetSelectedAccommodations } =
+    SelectAccommodationsStore();
   const isSelected = Boolean(selectedAccommodations);
+  const totalNumberText = Object.keys(selectedAccommodations!).length;
 
   return (
     <TripAccommodationLayout>
@@ -24,7 +26,7 @@ function TripAccommodationPage() {
       <TripRegionDaysEdit />
       <section className="flex flex-col gap-5 w-full p-5">
         <div className="flex justify-between">
-          <SelectDateInfo totalNumber={selectedAccommodations?.length} />
+          <SelectDateInfo totalNumber={totalNumberText} />
           <button
             type="button"
             onClick={resetSelectedAccommodations}
@@ -37,7 +39,7 @@ function TripAccommodationPage() {
           className={`grid grid-cols-1 lg:grid-cols-2 gap-3 w-full pr-3 py-3 rounded-xl ${isSelected ? "bg-button" : "bg-[#E9F0F0]"}`}
         >
           {isSelected ? (
-            selectedAccommodations!.map((accommodation, index) => (
+            /* selectedAccommodations!.map((accommodation, index) => (
               <SelectItem
                 key={accommodation.contentid}
                 index={index + 1}
@@ -45,7 +47,8 @@ function TripAccommodationPage() {
                 addr={`${accommodation.addr2 ? accommodation.addr1 + " " + accommodation.addr2 : accommodation.addr1}`}
                 imgSrc={accommodation.firstimage || accommodation.firstimage2}
               />
-            ))
+            )) */
+            <SelectItem />
           ) : (
             <li className="flex gap-5 pl-5 items-center justify-start w-full">
               <span className="w-5 h-5 rounded-full bg-[#D0CFD7] text-center text-[#F3F5F5] leading-5">

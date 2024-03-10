@@ -11,14 +11,17 @@ import ButtonLarge from "@/components/common/ButtonLarge";
 import { DatesStore } from "@/store/DatesStore";
 import { getTripDateKo } from "@/utils/getTripDate";
 import { SelectPlacesStore } from "@/store/PlacesStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 
 const TripDatePage = () => {
   const { tripDates } = DatesStore();
   const { setTripPlacesRange } = SelectPlacesStore();
+  const { setTripAccommodationsRange } = SelectAccommodationsStore();
 
   useEffect(() => {
     if (tripDates) {
       setTripPlacesRange(tripDates.length);
+      setTripAccommodationsRange(tripDates.length);
     }
   }, [tripDates]);
 

@@ -1,7 +1,7 @@
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DefaultImage from "@/components/common/DefaultImage";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 
 type LocalAccommodationItemProps = {
   id: number;
@@ -17,7 +17,7 @@ const LocalAccommodationItem = ({
   imgSrc,
 }: LocalAccommodationItemProps) => {
   const { selectedAccommodations, setSelectedAccommodations } =
-    AccommodationsStore();
+    SelectAccommodationsStore();
   const isSelected = Boolean(
     selectedAccommodations?.filter(
       (accommodation) => accommodation.contentid == id,
