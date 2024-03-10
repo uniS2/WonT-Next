@@ -1,6 +1,7 @@
 import { AccommodationsStore } from "@/store/AccommodationsStore";
 import { PlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
+import { SelectedPlanStore } from "@/store/SelectedPlanStore";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { debounce } from "@/utils/debounce";
@@ -20,8 +21,7 @@ function TripEditMap() {
   const { selectedRegionName } = RegionStore();
   const { selectedAccommodations } = AccommodationsStore();
   const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
-  console.log(selectedAccommodations);
-  console.log(selectedPlaces);
+  const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
 
   useEffect(() => {
     if (selectedAccommodations) {
@@ -85,7 +85,7 @@ function TripEditMap() {
 
         if (selectedAccommodations && selectedPlaces) {
           const selected = selectedAccommodations?.concat(selectedPlaces);
-          console.log(selected);
+          setSelectedPlan(selected);
 
           selected?.forEach((item) => {
             // 주소로 좌표를 검색합니다
@@ -137,27 +137,8 @@ function TripEditMap() {
             }
           },
         );
-        /* -------------------------------------------------------------------------- */
 
         let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-
-        /* -------------------------------------------------------------------------- */
-        // var keywords = ["성산일출봉", "새별오름", "하얏트 제주"];
-        // var ps = new window.kakao.maps.services.Places();
-        // selectedAccommodation?.map((item) => {
-        //   for (var i = 0; i < selectedAccommodation.length; i++) {
-        //     ps.keywordSearch(item.title, placesSearchCB);
-        //     // console.log(item.title[i]);
-        //   }
-        // });
-        // if (viewPlanItems?.some(Array.isArray) === true) {
-        //   viewPlanItems.map((item) => {
-        //     for (var i = 0; i < item.length; i++) {
-        //       ps.keywordSearch(item[i], placesSearchCB);
-        //       console.log(item);
-        //     }
-        //   });
-        // }
 
         function placesSearchCB(
           data: string | any[],
