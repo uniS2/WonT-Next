@@ -1,15 +1,15 @@
 import Calendar from "react-calendar";
-import { DaysStore } from "@/store/DaysStore";
+import { DatesStore } from "@/store/DatesStore";
 import "@/styles/calendar.css";
 
 export const TripCalendar = () => {
-  const { setTripDays } = DaysStore();
+  const { setTripDates } = DatesStore();
 
   return (
     <Calendar
       className={"h-[19.875rem w-[19.875rem] p-[1.3475rem] text-content"}
       locale="ko"
-      onChange={(value) => setTripDays(value)}
+      onChange={(value) => setTripDates(value)}
       selectRange={true}
       formatMonthYear={(_, date) =>
         `${date.getFullYear()}.${date.getMonth() + 1}`

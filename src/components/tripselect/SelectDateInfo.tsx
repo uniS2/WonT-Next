@@ -1,8 +1,8 @@
-type SelectDaysInfoProps = {
+type SelectDateInfoProps = {
   totalNumber?: number;
 };
 
-const SelectDaysInfo = ({ totalNumber = 0 }) => {
+const SelectDateInfo = ({ totalNumber = 0 }: SelectDateInfoProps) => {
   return (
     <div className="flex gap-[0.625rem] items-end">
       <span className="text-2xl text-content font-bold">{totalNumber}</span>
@@ -15,4 +15,4 @@ const SelectDaysInfo = ({ totalNumber = 0 }) => {
   );
 };
 
-export default SelectDaysInfo;
+export default SelectDateInfo;

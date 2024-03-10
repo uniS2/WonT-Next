@@ -2,7 +2,7 @@ import TripAccommodationLayout from "@/layout/tripaccommodation/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripAccommodationsMap from "@/components/tripaccommodation/TripAccommodationsMap";
 import TripRegionDaysEdit from "@/components/common/TripRegionDaysEdit";
-import SelectDaysInfo from "@/components/tripselect/SelectDaysInfo";
+import SelectDateInfo from "@/components/tripselect/SelectDateInfo";
 import DefaultImage from "@/components/common/DefaultImage";
 import SelectItem from "@/components/tripselect/SelectItem";
 import LocalAccommodationItem from "@/components/tripaccommodation/LocalAccommodationItem";
@@ -24,7 +24,7 @@ function TripAccommodationPage() {
       <TripRegionDaysEdit />
       <section className="flex flex-col gap-5 w-full p-5">
         <div className="flex justify-between">
-          <SelectDaysInfo totalNumber={selectedAccommodations?.length} />
+          <SelectDateInfo totalNumber={selectedAccommodations?.length} />
           <button
             type="button"
             onClick={resetSelectedAccommodations}
