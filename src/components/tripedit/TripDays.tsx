@@ -5,7 +5,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import AddPlanButton from "./AddPlanButton";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
@@ -13,6 +13,7 @@ import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { AccommodationsStore } from "@/store/AccommodationStore";
 import { DatesStore } from "@/store/DatesStore";
 import Router from "next/router";
+import { PlacesStore } from "@/store/PlacesStore";
 
 interface TripDaysProps {
   days?: string;
@@ -25,29 +26,77 @@ function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedAccommodations, setSelectedAccommodationArray } =
     AccommodationsStore();
+  const { selectedPlaces, setSelctedPlaces } = PlacesStore();
   const { tripDates } = DatesStore();
   console.log(selectedAccommodations);
+  console.log(selectedPlaces);
 
-  // useEffect(() => {
-  //   if (selectedAccommodations) {
-  //     setSelectedAccommodationArray(selectedAccommodations);
-  //   }
-  // }, [selectedAccommodations]);
+  useEffect(() => {
+    setViewPlanStates(new Array(tripDates?.length).fill(true));
+  }, []);
 
-  const onDragEnd = (result: { destination: any; source: any }) => {
-    const { destination, source } = result;
-
-    if (destination && destination.index !== source.index) {
-      // const newSelectedAccommodations = Array.from(selectedAccommodations);
-      const newSelectedAccommodations = Array.from(
-        selectedAccommodations || [],
-      );
-      const [removed] = newSelectedAccommodations.splice(source.index, 1);
-      newSelectedAccommodations.splice(destination.index, 0, removed);
-
-      setSelectedAccommodationArray(newSelectedAccommodations);
+  useEffect(() => {
+    if (selectedAccommodations) {
+      setSelectedAccommodationArray(selectedAccommodations);
     }
-  };
+    console.log(selectedAccommodations);
+  }, [selectedAccommodations]);
+
+  // const onDragEnd = (result: { destination: any; source: any }) => {
+  //   const { destination, source } = result;
+
+  //   if (destination && destination.index !== source.index) {
+  //     // const newSelectedAccommodations = Array.from(selectedAccommodations);
+  //     const newSelectedAccommodations = Array.from(
+  //       selectedAccommodations || [],
+  //     );
+  //     console.log(...newSelectedAccommodations, 1);
+
+  //     const [removed] = newSelectedAccommodations.splice(source.index, 1);
+  //     newSelectedAccommodations.splice(destination.index, 0, removed);
+
+  //     setSelectedAccommodationArray(newSelectedAccommodations);
+  //   }
+  // };
+
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) return;
+
+      const { source, destination } = result;
+
+      if (source.droppableId === destination.droppableId) {
+        const listIndex = parseInt(source.droppableId.split("-")[1]);
+        const newSelectedAccommodations = Array.from(
+          selectedAccommodations || [],
+        );
+        const copiedPlace = [...newSelectedAccommodations];
+        const items = copiedPlace[listIndex];
+        // const [removed] = newSelectedAccommodations.splice(source.index, 1);
+        // newSelectedAccommodations.splice(destination.index, 0, removed);
+        // setSelectedAccommodationArray(newSelectedAccommodations);
+
+        const [removed] = [items].splice(source.index, 1);
+        [items].splice(destination.index, 0, removed);
+        setSelectedAccommodationArray(copiedPlace);
+      } else {
+        const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+        const destinationListIndex = parseInt(
+          destination.droppableId.split("-")[1],
+        );
+        const newSelectedAccommodations = Array.from(
+          selectedAccommodations || [],
+        );
+        const copiedPlace = [...newSelectedAccommodations];
+        const sourceItems = copiedPlace[sourceListIndex];
+        const destinationItems = copiedPlace[destinationListIndex];
+        const [removed] = [sourceItems].splice(source.index, 1);
+        [destinationItems].splice(destination.index, 0, removed);
+        setSelectedAccommodationArray(copiedPlace);
+      }
+    },
+    [selectedAccommodations, setSelectedAccommodationArray],
+  );
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
@@ -58,14 +107,11 @@ function TripDays() {
 
   const handleRoute = (e: React.MouseEvent) => {
     const target = e.currentTarget.textContent;
-    console.log(target);
     if (target === "장소를 추가해주세요.") {
       Router.push("/tripplace");
     } else if (target === "숙소를 추가해주세요.") {
       Router.push("/tripaccommodation");
     }
-
-    // Router.push("/tripplace");
   };
 
   const variants = {
@@ -87,7 +133,7 @@ function TripDays() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {tripDates?.length !== 0 && selectedAccommodations !== null ? (
+        {tripDates?.length !== 0 && selectedAccommodations?.length !== 0 ? (
           tripDates?.map((item, index) => (
             <React.Fragment key={item}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
