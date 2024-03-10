@@ -13,7 +13,7 @@ import { getTripDateKo } from "@/utils/getTripDate";
 const TripDatePage = () => {
   const { tripDates } = DatesStore();
 
-  const selectDaysInfoText = tripDates
+  const selectDatesRangeText = tripDates
     ? `${tripDates[0]} ~ ${tripDates[tripDates.length - 1]}`
     : getTripDateKo(new Date());
 
@@ -29,7 +29,7 @@ const TripDatePage = () => {
       <HeaderTripSelect inCloseButton />
       <TripTitle title="언제 떠나시나요?" guide="여행 일자를 선택해 주세요." />
       <TripCalendar />
-      <TripDateInfo contents={selectDaysInfoText} />
+      <TripDateInfo contents={selectDatesRangeText} />
       <TripScheduleInfo />
       <ButtonLarge
         isSelected={Boolean(tripDates)}

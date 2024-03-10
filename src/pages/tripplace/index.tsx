@@ -2,7 +2,7 @@ import TripPlaceLayout from "@/layout/tripplace/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripPlacesMap from "@/components/tripplace/TripPlacesMap";
 import TripRegionDaysEdit from "@/components/common/TripRegionDaysEdit";
-import SelectDaysInfo from "@/components/tripselect/SelectDaysInfo";
+import SelectDateInfo from "@/components/tripselect/SelectDateInfo";
 import SelectItem from "@/components/tripselect/SelectItem";
 import ButtonLarge from "@/components/tripselect/ButtonLarge";
 import { PlacesStore } from "@/store/PlacesStore";
@@ -20,7 +20,7 @@ const TripPlacePage = () => {
       <TripRegionDaysEdit />
       <section className="flex flex-col gap-5 w-full p-5">
         <div className="flex justify-between">
-          <SelectDaysInfo totalNumber={selectedPlaces?.length} />
+          <SelectDateInfo totalNumber={selectedPlaces?.length} />
           <button
             type="button"
             onClick={resetSelectedPlaces}
