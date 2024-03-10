@@ -2,11 +2,11 @@ import TripAccommodationLayout from "@/layout/tripaccommodation/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripAccommodationsMap from "@/components/tripaccommodation/TripAccommodationsMap";
 import TripRegionDaysEdit from "@/components/common/TripRegionDaysEdit";
-import SelectDateInfo from "@/components/tripselect/SelectDateInfo";
+import SelectDateInfo from "@/components/common/SelectDateInfo";
 import DefaultImage from "@/components/common/DefaultImage";
-import SelectItem from "@/components/tripselect/SelectItem";
+import SelectItem from "@/components/common/SelectItem";
 import LocalAccommodationItem from "@/components/tripaccommodation/LocalAccommodationItem";
-import ButtonLarge from "@/components/tripselect/ButtonLarge";
+import ButtonLarge from "@/components/common/ButtonLarge";
 import { AccommodationsStore } from "@/store/AccommodationsStore";
 
 function TripAccommodationPage() {

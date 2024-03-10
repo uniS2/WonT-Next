@@ -2,11 +2,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TripDateLayout from "@/layout/tripdate/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
-import TripTitle from "@/components/tripselect/TripTitle";
+import TripTitle from "@/components/common/TripTitle";
 import { TripCalendar } from "@/components/tripdate/TripCalendar";
 import { TripDateInfo } from "@/components/tripdate/TripDateInfo";
 import { TripScheduleInfo } from "@/components/tripdate/TripScheduleInfo";
-import ButtonLarge from "@/components/tripselect/ButtonLarge";
+import ButtonLarge from "@/components/common/ButtonLarge";
 import { DatesStore } from "@/store/DatesStore";
 import { getTripDateKo } from "@/utils/getTripDate";
 
