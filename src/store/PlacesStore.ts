@@ -11,8 +11,7 @@ type LocationPlacesStoreType = {
 type SelectPlacesStoreType = {
   selectedPlaces: PlaceDataType[][] | null;
   setTripPlacesRange: (range: number) => void;
-  // setSelctedPlaces: (id: number) => void;
-  resetSelectedPlaces: () => void;
+  setSelctedPlaces: (date: number, id: number) => void;
 };
 
 export const LocationPlacesStore = create<LocationPlacesStoreType>((set) => ({
@@ -27,36 +26,32 @@ export const SelectPlacesStore = create(
       selectedPlaces: null,
       setTripPlacesRange: (range: number) =>
         set({ selectedPlaces: setTripRange(range) }),
-      /* setSelctedPlaces: (id: number) =>
-        set((state) => {d
-          if (
-            !state.selectedPlaces?.filter((sa) => sa.contentid == id).length
-          ) {
-            return state.selectedPlaces
-              ? {
-                  selectedPlaces: [
-                    ...state.selectedPlaces,
-                    ...state.locationPlaces!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                }
-              : {
-                  selectedPlaces: [
-                    ...state.locationPlaces!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                };
-          } else {
-            return {
-              selectedPlaces: state.selectedPlaces?.filter(
-                (sa) => sa.contentid != id,
-              ),
-            };
+      setSelctedPlaces: (date: number, id: number) =>
+        set((state) => {
+          if (!state.selectedPlaces || !state.selectedPlaces[date]) {
+            state.selectedPlaces = [];
+            state.selectedPlaces[date] = [];
           }
-        }), */
-      resetSelectedPlaces: () => set({ selectedPlaces: null }),
+
+          const locationPlaces = LocationPlacesStore.getState().locationPlaces;
+          const index = state.selectedPlaces![date]!.findIndex(
+            (place) => place.contentid === id,
+          );
+
+          if (index == -1) {
+            const selectPlace = locationPlaces!.find(
+              (place) => place.contentid === id,
+            );
+            if (selectPlace) {
+              state.selectedPlaces[date].push(selectPlace);
+            }
+          } else {
+            state.selectedPlaces[date].splice(index, 1);
+          }
+          return {
+            selectedPlaces: [...state.selectedPlaces],
+          };
+        }),
     }),
     {
       name: "tripPlaceStorage",
