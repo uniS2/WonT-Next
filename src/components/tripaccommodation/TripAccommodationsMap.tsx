@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_ACCOMMODATION } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { LocationAccommodationsStore } from "@/store/AccommodationsStore";
 
 declare global {
   interface Window {
