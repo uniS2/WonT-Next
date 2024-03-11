@@ -16,7 +16,7 @@ function OnBoardingLayout({
         />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <section className="flex h-auto w-auto flex-col items-center">
+      <section className="bg-gradient-to-t from-white to-blue-200 flex h-auto w-auto flex-col items-center">
         {children}
       </section>
     </>
