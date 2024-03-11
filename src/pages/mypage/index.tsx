@@ -7,7 +7,7 @@ import MyReview from "@/components/mypage/MyReview";
 import { TbSettings } from "react-icons/tb";
 import Link from "next/link";
 import { useTabTitleStore } from "@/store/useTabTitleStore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import supabase from "@/lib/supabase/supabase";
 import {
   useSessionStore,
@@ -57,8 +57,8 @@ function Mypage() {
 
   return (
     <MyPageLayout>
-      {userData?.map((item) => (
-        <>
+      {userData?.map((item, index) => (
+        <React.Fragment key={index}>
           <div className="bg-primary w-100% h-[220px] rounded-b-[40px] flex justify-center items-center flex-col gap-2">
             <div className="flex justify-center items-center rounded-full border-[#CADDE2] border-[0.0625rem] w-[100px] h-[100px] bg-secondary">
               {item.avatar_url !== null ? (
@@ -96,7 +96,7 @@ function Mypage() {
               <MyBookmark />
             )}
           </section>
-        </>
+        </React.Fragment>
       ))}
     </MyPageLayout>
   );
