@@ -1,13 +1,12 @@
 import { create } from "zustand";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType } from "@/types/DataProps";
 
 interface SelectedPlanState {
-  selectedPlan: AccommodationDataType[] | null;
-  setSelectedPlan: (data: AccommodationDataType[]) => void;
+  selectedPlan: PlaceDataType[] | null;
+  setSelectedPlan: (data: PlaceDataType[]) => void;
 }
 
 export const SelectedPlanStore = create<SelectedPlanState>((set) => ({
   selectedPlan: null,
-  setSelectedPlan: (data: AccommodationDataType[]) =>
-    set({ selectedPlan: data }),
+  setSelectedPlan: (data: PlaceDataType[]) => set({ selectedPlan: data }),
 }));

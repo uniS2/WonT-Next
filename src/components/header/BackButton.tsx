@@ -1,8 +1,13 @@
+"use client";
+
+import { useRouter } from "next/router";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 const BackButton = () => {
+  const router = useRouter();
+
   return (
-    <button type="button">
+    <button type="button" onClick={() => router.back()}>
       <IoArrowBackCircleOutline
         size="30px"
         color="#363636"

@@ -11,7 +11,7 @@ declare global {
 
 const TripAccommodationMap = () => {
   const { locationAccommodations, setLocationAccommodations } =
-    AccommodationsStore();
+    LocationAccommodationsStore();
   const { selectedRegionName } = RegionStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState([126.9837456304, 37.563446366]);

@@ -4,9 +4,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import TripRegionLayout from "@/layout/tripregion/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
-import TripTitle from "@/components/tripselect/TripTitle";
+import TripTitle from "@/components/common/TripTitle";
 import RegionItem from "@/components/tripregion/RegionItem";
-import ButtonLarge from "@/components/tripselect/ButtonLarge";
+import ButtonLarge from "@/components/common/ButtonLarge";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
 import { debounce } from "@/utils/debounce";
