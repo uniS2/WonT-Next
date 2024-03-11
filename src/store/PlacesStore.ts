@@ -34,7 +34,7 @@ export const SelectPlacesStore = create(
           }
 
           const locationPlaces = LocationPlacesStore.getState().locationPlaces;
-          const index = state.selectedPlaces![date]!.findIndex(
+          const index = state.selectedPlaces[date].findIndex(
             (place) => place.contentid === id,
           );
 
