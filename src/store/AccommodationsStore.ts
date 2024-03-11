@@ -31,13 +31,6 @@ export const SelectAccommodationsStore = create(
       /* setSelectedAccommodations: (id: number) =>
         set((state) => {
           if (
-            !state.selectedAccommodations?.filter((sa) => sa.contentid == id)
-              .length
-          ) {
-            return state.selectedAccommodations
-              ? {
-                  selectedAccommodations: [
-                    ...state.selectedAccommodations,
                     ...state.locationAccommodations!.filter(
                       (location) => location.contentid == id,
                     ),
