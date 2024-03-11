@@ -5,7 +5,7 @@ import SearchInput from "@/components/search/SearchInput";
 import SearchModal from "@/components/search/SearchModal";
 import Link from "next/link";
 import MyBookmarkIcon from "@/components/mypage/MyBookmarkIcon";
-import { TOUR_BASE_ACCOMMODATION, TOUR_BASE_SEARCH } from "@/lib/tour/tour";
+import { TOUR_BASE_SEARCH } from "@/lib/tour/tour";
 const SearchPage = () => {
   const [test, setTest] = useState();
   useEffect(() => {
