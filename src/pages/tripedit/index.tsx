@@ -6,8 +6,8 @@ import { RegionStore } from "@/store/RegionStore";
 import React, { useEffect, useState } from "react";
 import { DatesStore } from "@/store/DatesStore";
 import { useRouter } from "next/router";
-import { PlacesStore } from "@/store/PlacesStore";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectPlacesStore } from "@/store/PlacesStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { useSessionStore } from "@/store/useSessionStore";
 import supabase from "@/lib/supabase/supabase";
 import { SelectedPlanStore } from "@/store/SelectedPlanStore";
@@ -15,9 +15,9 @@ import { SelectedPlanStore } from "@/store/SelectedPlanStore";
 function TripEdit() {
   const { selectedRegionName, resetRegionName } = RegionStore();
   const { tripDates, resetTripDates } = DatesStore();
-  const { selectedAccommodations, setSelectedAccommodationArray } =
-    AccommodationsStore();
-  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
+  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
+  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+    SelectAccommodationsStore();
   const { userSession, setUserSession } = useSessionStore();
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
   const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
@@ -25,7 +25,7 @@ function TripEdit() {
   console.log("selectedPlan", selectedPlan);
 
   //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
-  // const clearAccommodationIdStorage = AccommodationStore.persist.clearStorage;
+  // const clearAccommodationIdStorage = SelectAccommodationStore.persist.clearStorage;
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -39,8 +39,8 @@ function TripEdit() {
   const handleModify = () => {
     resetRegionName();
     resetTripDates();
-    setSelectedAccommodationArray([]);
-    setSelectedPlacesArray([]);
+    // setSelectedAccommodationArray([]);
+    // setSelectedPlacesArray([]);
 
     router.push("/tripregion");
   };

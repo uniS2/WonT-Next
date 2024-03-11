@@ -13,7 +13,7 @@ const TripPlacePage = () => {
   const { locationPlaces } = LocationPlacesStore();
   const { selectedPlaces, resetSelectedPlaces } = SelectPlacesStore();
   const isSelected = Boolean(selectedPlaces);
-  const totalNumberText = Object.keys(selectedPlaces!).length;
+  const totalNumberText = selectedPlaces!.length;
 
   return (
     <TripPlaceLayout>

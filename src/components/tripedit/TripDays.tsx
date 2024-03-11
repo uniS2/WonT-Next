@@ -12,9 +12,9 @@ import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { DatesStore } from "@/store/DatesStore";
 import Router from "next/router";
-import { PlacesStore } from "@/store/PlacesStore";
+import { SelectPlacesStore } from "@/store/PlacesStore";
 import AddSchedule from "./AddSchedule";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 
 interface TripDaysProps {
   days?: string;
@@ -25,9 +25,9 @@ interface TripDaysProps {
 
 function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
-  const { selectedAccommodations, setSelectedAccommodationArray } =
-    AccommodationsStore();
-  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
+  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
+  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+    SelectAccommodationsStore();
   const { tripDates } = DatesStore();
   console.log(selectedAccommodations);
   console.log(selectedPlaces);
@@ -63,7 +63,7 @@ function TripDays() {
       const [removed] = newSelectedPlaces.splice(source.index, 1);
       newSelectedPlaces.splice(destination.index, 0, removed);
 
-      setSelectedPlacesArray(newSelectedPlaces);
+      // setSelectedPlacesArray(newSelectedPlaces);
     }
   };
 
