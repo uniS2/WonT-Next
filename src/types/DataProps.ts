@@ -34,6 +34,6 @@ export type PlaceDataType = {
   modifiedtime: number;
   sigungucode: number;
   tel: string;
-  title: string;
   zipcode: number;
+  title: string;
 };

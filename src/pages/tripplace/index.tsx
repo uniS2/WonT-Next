@@ -8,10 +8,13 @@ import ButtonLarge from "@/components/common/ButtonLarge";
 import { LocationPlacesStore, SelectPlacesStore } from "@/store/PlacesStore";
 import DefaultImage from "@/components/common/DefaultImage";
 import LocalPlaceItem from "@/components/tripplace/LocalPlaceItem";
+import { useRouter } from "next/router";
 
-const TripPlacePage = () => {
+const TripPlacePage = ({ params }: { params: { index: number } }) => {
   const { locationPlaces } = LocationPlacesStore();
   const { selectedPlaces, resetSelectedPlaces } = SelectPlacesStore();
+  const router = useRouter();
+  const { index } = router.query;
   const isSelected = Boolean(selectedPlaces);
   const totalNumberText = selectedPlaces!.length;
 
