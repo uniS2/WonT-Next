@@ -4,6 +4,7 @@ import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
 import { uploadUserProfile } from "@/utils/uploadUserProfile";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 function EditProfile() {
   const [userNickname, setUserNickname] = useState<string | null>();
@@ -12,11 +13,11 @@ function EditProfile() {
   const [imgFile, setImgFile] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
   const [avatar, setavatar] = useState<string | undefined>();
+  const router = useRouter();
 
   useEffect(() => {
     const getUserSession = async () => {
       const { data, error } = await supabase.auth.getSession();
-      console.log(data);
       setUserSession(data);
       setUserSessionId(data.session?.user.id);
 
@@ -35,7 +36,7 @@ function EditProfile() {
     };
 
     getUserSession();
-  }, [imgSrc, userNickname, imgFile]);
+  }, [imgSrc, userNickname, imgFile, avatar, setavatar]);
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
