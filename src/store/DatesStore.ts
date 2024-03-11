@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 type DatesStoreType = {
   tripDates: null | string[];
   setTripDates: (dates: any) => void;
+  resetTripDates: () => void;
 };
 
 export const DatesStore = create(
