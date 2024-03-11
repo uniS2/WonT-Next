@@ -31,7 +31,7 @@ const DefaultImage = ({
         className={`flex justify-center align-middle min-w-14 ${width} ${heigth} rounded-xl bg-[#EFF2F6]`}
       >
         <Image
-          src="svg/default-image.svg"
+          src="/svg/default-image.svg"
           alt="기본 이미지"
           width={10}
           height={10}

@@ -11,8 +11,7 @@ type LocationAccommodationsStoreType = {
 type SelectAccommodationsStoreType = {
   selectedAccommodations: PlaceDataType[][] | null;
   setTripAccommodationsRange: (range: number) => void;
-  // setSelectedAccommodations: (id: number) => void;
-  resetSelectedAccommodations: () => void;
+  setSelectedAccommodations: (date: number, id: number) => void;
 };
 
 export const LocationAccommodationsStore =
@@ -28,30 +27,36 @@ export const SelectAccommodationsStore = create(
       selectedAccommodations: null,
       setTripAccommodationsRange: (range: number) =>
         set({ selectedAccommodations: setTripRange(range) }),
-      /* setSelectedAccommodations: (id: number) =>
+      setSelectedAccommodations: (date: number, id: number) =>
         set((state) => {
           if (
-                    ...state.locationAccommodations!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                }
-              : {
-                  selectedAccommodations: [
-                    ...state.locationAccommodations!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                };
-          } else {
-            return {
-              selectedAccommodations: state.selectedAccommodations?.filter(
-                (sa) => sa.contentid != id,
-              ),
-            };
+            !state.selectedAccommodations ||
+            !state.selectedAccommodations[date]
+          ) {
+            state.selectedAccommodations = [];
+            state.selectedAccommodations[date] = [];
           }
-        }), */
-      resetSelectedAccommodations: () => set({ selectedAccommodations: null }),
+
+          const locationAccommodations =
+            LocationAccommodationsStore.getState().locationAccommodations;
+          const index = state.selectedAccommodations[date].findIndex(
+            (accommodation) => accommodation.contentid === id,
+          );
+
+          if (index == -1) {
+            const selectAccommodation = locationAccommodations!.find(
+              (accommodation) => accommodation.contentid === id,
+            );
+            if (selectAccommodation) {
+              state.selectedAccommodations[date].push(selectAccommodation);
+            }
+          } else {
+            state.selectedAccommodations[date].splice(index, 1);
+          }
+          return {
+            selectedAccommodations: [...state.selectedAccommodations],
+          };
+        }),
     }),
     {
       name: "tripAccommodationStorage",

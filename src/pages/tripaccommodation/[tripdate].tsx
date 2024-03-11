@@ -1,3 +1,5 @@
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import TripAccommodationLayout from "@/layout/tripaccommodation/layout";
 import HeaderTripSelect from "@/components/header/HeaderTripSelect";
 import TripAccommodationsMap from "@/components/tripaccommodation/TripAccommodationsMap";
@@ -7,17 +9,30 @@ import DefaultImage from "@/components/common/DefaultImage";
 import SelectItem from "@/components/common/SelectItem";
 import LocalAccommodationItem from "@/components/tripaccommodation/LocalAccommodationItem";
 import ButtonLarge from "@/components/common/ButtonLarge";
+import { DatesStore } from "@/store/DatesStore";
 import {
   LocationAccommodationsStore,
   SelectAccommodationsStore,
 } from "@/store/AccommodationsStore";
 
 function TripAccommodationPage() {
+  const params = useParams();
+  const { tripDates } = DatesStore();
   const { locationAccommodations } = LocationAccommodationsStore();
-  const { selectedAccommodations, resetSelectedAccommodations } =
+  const { selectedAccommodations, setTripAccommodationsRange } =
     SelectAccommodationsStore();
-  const isSelected = Boolean(selectedAccommodations);
-  const totalNumberText = selectedAccommodations!.length;
+
+  const date = Number(params?.tripdate);
+  const dateIndex = date - 1;
+
+  const [isSelected, SetIsSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedAccommodations && selectedAccommodations[dateIndex]) {
+      const length = selectedAccommodations[dateIndex].length;
+      SetIsSelected(Boolean(length));
+    }
+  }, [selectedAccommodations]);
 
   return (
     <TripAccommodationLayout>
@@ -26,10 +41,10 @@ function TripAccommodationPage() {
       <TripRegionDaysEdit />
       <section className="flex flex-col gap-5 w-full p-5">
         <div className="flex justify-between">
-          <SelectDateInfo totalNumber={totalNumberText} />
+          <SelectDateInfo tripDate={date} />
           <button
             type="button"
-            onClick={resetSelectedAccommodations}
+            onClick={() => setTripAccommodationsRange(tripDates!.length)}
             className="w-20 h-7 rounded-md border border-contentMuted  text-sm text-contentMuted hover:bg-secondary hover:border-black hover:text-black hover:font-semibold"
           >
             초기화
@@ -39,7 +54,7 @@ function TripAccommodationPage() {
           className={`grid grid-cols-1 lg:grid-cols-2 gap-3 w-full pr-3 py-3 rounded-xl ${isSelected ? "bg-button" : "bg-[#E9F0F0]"}`}
         >
           {isSelected ? (
-            /* selectedAccommodations!.map((accommodation, index) => (
+            selectedAccommodations![dateIndex].map((accommodation, index) => (
               <SelectItem
                 key={accommodation.contentid}
                 index={index + 1}
@@ -47,8 +62,7 @@ function TripAccommodationPage() {
                 addr={`${accommodation.addr2 ? accommodation.addr1 + " " + accommodation.addr2 : accommodation.addr1}`}
                 imgSrc={accommodation.firstimage || accommodation.firstimage2}
               />
-            )) */
-            <SelectItem />
+            ))
           ) : (
             <li className="flex gap-5 pl-5 items-center justify-start w-full">
               <span className="w-5 h-5 rounded-full bg-[#D0CFD7] text-center text-[#F3F5F5] leading-5">
@@ -72,6 +86,7 @@ function TripAccommodationPage() {
                 <LocalAccommodationItem
                   key={index}
                   id={location.contentid}
+                  index={dateIndex}
                   title={location.title}
                   addr={`${location.addr2 ? location.addr1 + " " + location.addr2 : location.addr1}`}
                   imgSrc={location.firstimage || location.firstimage2}
