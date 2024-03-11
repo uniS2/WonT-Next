@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DefaultImage from "@/components/common/DefaultImage";
@@ -8,13 +9,31 @@ type LocalPlaceItemProps = {
   title: string;
   addr: string;
   imgSrc: string;
+  index: number;
 };
 
-const LocalPlaceItem = ({ id, title, addr, imgSrc }: LocalPlaceItemProps) => {
+const LocalPlaceItem = ({
+  id,
+  title,
+  addr,
+  imgSrc,
+  index,
+}: LocalPlaceItemProps) => {
   const { selectedPlaces, setSelctedPlaces } = SelectPlacesStore();
-  const isSelected = Boolean(
-    selectedPlaces?.filter((place) => place.contentid == id).length,
-  );
+  const [isSelected, SetIsSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedPlaces && selectedPlaces[index]) {
+      const i = selectedPlaces[index].findIndex(
+        (place) => place.contentid == id,
+      );
+      if (i > -1) {
+        SetIsSelected(true);
+      } else {
+        SetIsSelected(false);
+      }
+    }
+  }, [selectedPlaces]);
 
   return (
     <li className="group flex gap-3 p-3 items-center w-full bg-white rounded-xl">
@@ -30,7 +49,7 @@ const LocalPlaceItem = ({ id, title, addr, imgSrc }: LocalPlaceItemProps) => {
       <button
         type="button"
         onClick={() => {
-          setSelctedPlaces(id);
+          setSelctedPlaces(index, id);
         }}
       >
         {isSelected ? (
