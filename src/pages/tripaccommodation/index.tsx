@@ -17,7 +17,7 @@ function TripAccommodationPage() {
   const { selectedAccommodations, resetSelectedAccommodations } =
     SelectAccommodationsStore();
   const isSelected = Boolean(selectedAccommodations);
-  const totalNumberText = Object.keys(selectedAccommodations!).length;
+  const totalNumberText = selectedAccommodations!.length;
 
   return (
     <TripAccommodationLayout>

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { PlaceDataType, PlacesObject } from "@/types/DataProps";
+import { PlaceDataType } from "@/types/DataProps";
 import { setTripRange } from "@/utils/setTripRange";
 
 type LocationAccommodationsStoreType = {
@@ -9,7 +9,7 @@ type LocationAccommodationsStoreType = {
 };
 
 type SelectAccommodationsStoreType = {
-  selectedAccommodations: PlacesObject | null;
+  selectedAccommodations: PlaceDataType[][] | null;
   setTripAccommodationsRange: (range: number) => void;
   // setSelectedAccommodations: (id: number) => void;
   resetSelectedAccommodations: () => void;

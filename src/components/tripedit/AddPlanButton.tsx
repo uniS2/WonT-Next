@@ -1,9 +1,9 @@
 import MapPin from "./MapPin";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { BsX } from "react-icons/bs";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { useEffect } from "react";
-import { PlacesStore } from "@/store/PlacesStore";
+import { SelectPlacesStore } from "@/store/PlacesStore";
 
 interface AddPlanButtonProps {
   text?: string;
@@ -23,9 +23,9 @@ function AddPlanButton({
   handleRoute,
   // handleRemove
 }: AddPlanButtonProps) {
-  const { selectedAccommodations, setSelectedAccommodationArray } =
-    AccommodationsStore();
-  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
+  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+    SelectAccommodationsStore();
+  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
 
   // const handleRemove = (e: React.MouseEvent) => {
   //   const target = e.currentTarget;
@@ -42,7 +42,7 @@ function AddPlanButton({
       if (text === "장소") {
         const newSelectedPlaces = Array.from(selectedPlaces || []);
         newSelectedPlaces.splice(index, 1);
-        setSelectedPlacesArray(newSelectedPlaces);
+        // setSelectedPlacesArray(newSelectedPlaces);
       }
 
       if (text === "숙소") {
@@ -50,7 +50,7 @@ function AddPlanButton({
           selectedAccommodations || [],
         );
         newSelectedAccommodations.splice(index, 1);
-        setSelectedAccommodationArray(newSelectedAccommodations);
+        // setSelectedAccommodationArray(newSelectedAccommodations);
       }
     }
   };

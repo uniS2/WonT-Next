@@ -1,5 +1,5 @@
-import { AccommodationsStore } from "@/store/AccommodationsStore";
-import { PlacesStore } from "@/store/PlacesStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectPlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
 import { SelectedPlanStore } from "@/store/SelectedPlanStore";
 import { useTripPlaceStore } from "@/store/useTripPlaceStore";
@@ -19,8 +19,8 @@ function TripEditMap() {
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedRegionName } = RegionStore();
-  const { selectedAccommodations } = AccommodationsStore();
-  const { selectedPlaces, setSelectedPlacesArray } = PlacesStore();
+  const { selectedAccommodations } = SelectAccommodationsStore();
+  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
   const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function TripEditMap() {
 
         if (selectedAccommodations && selectedPlaces) {
           const selected = selectedAccommodations?.concat(selectedPlaces);
-          setSelectedPlan(selected);
+          // setSelectedPlan(selected);
 
           selected?.forEach((item) => {
             // 주소로 좌표를 검색합니다

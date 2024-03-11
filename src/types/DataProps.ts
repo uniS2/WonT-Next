@@ -37,7 +37,3 @@ export type PlaceDataType = {
   title: string;
   zipcode: number;
 };
-
-export type PlacesObject = {
-  [index: number]: PlaceDataType[] | [];
-};
