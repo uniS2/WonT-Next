@@ -7,6 +7,7 @@ import { uploadUserProfile } from "@/utils/uploadUserProfile";
 import Router from "next/router";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 function EditProfile() {
   const [userNickname, setUserNickname] = useState<string>("");
@@ -18,7 +19,11 @@ function EditProfile() {
   const [imgFile, setImgFile] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
   const [avatar, setavatar] = useState<string | undefined>();
+
   const nickNameInput = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
+
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -47,6 +52,7 @@ function EditProfile() {
     };
 
     getUserSession();
+
   }, [imgSrc, imgFile, setImgSrc, setImgFile]);
 
   useEffect(() => {
@@ -54,6 +60,9 @@ function EditProfile() {
       nickNameInput.current.value = userNickname;
     }
   }, [userNickname]);
+
+  }, [imgSrc, userNickname, imgFile, avatar, setavatar]);
+
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
