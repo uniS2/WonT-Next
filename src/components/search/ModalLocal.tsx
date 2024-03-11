@@ -12,15 +12,6 @@ const ModalLocal = () => {
           id=""
           className="w-[21px] h-[21px] accent-primary"
         />
-        <p className="text-[16px]">전국</p>
-      </div>
-      <div className="flex gap-8 mt-[12px]">
-        <input
-          type="checkbox"
-          name="check"
-          id=""
-          className="w-[21px] h-[21px] accent-primary"
-        />
         <p className="text-[16px]">서울</p>
       </div>
       <div className="flex gap-8 mt-[12px]">
