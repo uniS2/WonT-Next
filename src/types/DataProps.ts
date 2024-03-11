@@ -13,3 +13,27 @@ export default interface DataProps {
   faR2: string;
   faR3: string;
 }
+
+export type AccommodationDataType = {
+  addr1: string;
+  addr2: string;
+  areacode: number;
+  booktour: string;
+  cat1: string;
+  cat2: string;
+  cat3: string;
+  contentid: number;
+  contenttypeid: number;
+  cpyrthDivCd: string;
+  createdtime: number;
+  firstimage: string;
+  firstimage2: string;
+  mapx: number;
+  mapy: number;
+  mlevel: number;
+  modifiedtime: number;
+  sigungucode: number;
+  tel: string;
+  title: string;
+  zipcode: number;
+};

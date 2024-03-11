@@ -1,7 +1,11 @@
-const SelectDaysInfo = () => {
+type SelectDateInfoProps = {
+  totalNumber?: number;
+};
+
+const SelectDateInfo = ({ totalNumber = 0 }: SelectDateInfoProps) => {
   return (
     <div className="flex gap-[0.625rem] items-end">
-      <span className="text-2xl text-content font-bold">0</span>
+      <span className="text-2xl text-content font-bold">{totalNumber}</span>
       <div className="flex gap-[0.125rem] min-w-fit text-sm">
         <span className="font-medium text-[#2966E3]">n일</span>
         <span aria-hidden>/</span>
@@ -11,4 +15,4 @@ const SelectDaysInfo = () => {
   );
 };
 
-export default SelectDaysInfo;
+export default SelectDateInfo;
