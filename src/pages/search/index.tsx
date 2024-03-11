@@ -6,7 +6,7 @@ import SearchModal from "@/components/search/SearchModal";
 import Link from "next/link";
 import MyBookmarkIcon from "@/components/mypage/MyBookmarkIcon";
 import { TOUR_BASE_ACCOMMODATION, TOUR_BASE_SEARCH } from "@/lib/tour/tour";
-const index = () => {
+const SearchPage = () => {
   const [test, setTest] = useState();
   useEffect(() => {
     (async () => {
@@ -52,4 +52,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default SearchPage;

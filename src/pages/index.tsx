@@ -6,7 +6,7 @@ import Image from "next/image";
 const OnBoardingPage: React.FC = () => {
   return (
     <Layout>
-      <section className="relative h-screen flex items-center justify-center">
+      <section className="bg-gradient-to-t from-white to-blue-200 relative h-screen flex items-end justify-center">
         <motion.div
           className="flex flex-col items-center justify-center gap-5"
           initial={{ opacity: 0, y: -50 }}
@@ -17,14 +17,7 @@ const OnBoardingPage: React.FC = () => {
           <div className="text-[16px] text-black mb-[30px]">
             <p>행복한 여행을 위해 일정을 세워보세요</p>
           </div>
-          <Image
-            src={"/images/test-crop-unscreen.gif"}
-            alt="로고"
-            width={200}
-            height={100}
-            className="mb-[20px]"
-          />
-          <div className="bg-primary w-[500px] h-[500px] flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
             <video
               src="/video/tst.mp4"
               width={320}
