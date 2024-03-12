@@ -28,8 +28,10 @@ export const SelectPlacesStore = create(
         set({ selectedPlaces: setTripRange(range) }),
       setSelctedPlaces: (date: number, id: number) =>
         set((state) => {
-          if (!state.selectedPlaces || !state.selectedPlaces[date]) {
+          if (!state.selectedPlaces) {
             state.selectedPlaces = [];
+          }
+          if (!state.selectedPlaces[date]) {
             state.selectedPlaces[date] = [];
           }
 
@@ -38,18 +40,24 @@ export const SelectPlacesStore = create(
             (place) => place.contentid === id,
           );
 
+          const newSelectedPlacesForDate = [...state.selectedPlaces[date]];
+
           if (index == -1) {
             const selectPlace = locationPlaces!.find(
               (place) => place.contentid === id,
             );
             if (selectPlace) {
-              state.selectedPlaces[date].push(selectPlace);
+              newSelectedPlacesForDate.push(selectPlace);
             }
           } else {
-            state.selectedPlaces[date].splice(index, 1);
+            newSelectedPlacesForDate.splice(index, 1);
           }
+
+          const updatedSelectedPlaces = [...state.selectedPlaces];
+          updatedSelectedPlaces[date] = newSelectedPlacesForDate;
+
           return {
-            selectedPlaces: [...state.selectedPlaces],
+            selectedPlaces: updatedSelectedPlaces,
           };
         }),
     }),
