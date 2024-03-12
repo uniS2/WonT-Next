@@ -43,18 +43,28 @@ export const SelectAccommodationsStore = create(
             (accommodation) => accommodation.contentid === id,
           );
 
+          const newSelectedAccomodationsForDate = [
+            ...state.selectedAccommodations[date],
+          ];
+
           if (index == -1) {
             const selectAccommodation = locationAccommodations!.find(
               (accommodation) => accommodation.contentid === id,
             );
             if (selectAccommodation) {
-              state.selectedAccommodations[date].push(selectAccommodation);
+              newSelectedAccomodationsForDate.push(selectAccommodation);
             }
           } else {
-            state.selectedAccommodations[date].splice(index, 1);
+            newSelectedAccomodationsForDate.splice(index, 1);
           }
+
+          const updatedSelectedAccommodation = [
+            ...state.selectedAccommodations,
+          ];
+          updatedSelectedAccommodation[date] = newSelectedAccomodationsForDate;
+
           return {
-            selectedAccommodations: [...state.selectedAccommodations],
+            selectedAccommodations: updatedSelectedAccommodation,
           };
         }),
     }),
