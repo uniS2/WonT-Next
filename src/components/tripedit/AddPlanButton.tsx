@@ -4,11 +4,12 @@ import { BsX } from "react-icons/bs";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { useEffect } from "react";
 import { SelectPlacesStore } from "@/store/PlacesStore";
+import Router from "next/router";
 
 interface AddPlanButtonProps {
   text?: string;
   place?: string;
-  index?: number;
+  index: number;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
@@ -20,7 +21,6 @@ function AddPlanButton({
   text,
   place,
   index,
-  handleRoute,
   // handleRemove
 }: AddPlanButtonProps) {
   const { selectedAccommodations /* setSelectedAccommodationArray */ } =
@@ -35,6 +35,17 @@ function AddPlanButton({
   //   console.log(newSelectedAccommodations);
   //   resetSelectedAccommodations();
   // };
+  const handleRoute = (e: React.MouseEvent, index: number) => {
+    const target = e.currentTarget.textContent;
+
+    if (target === "장소를 추가해주세요.") {
+      Router.push(`/tripplace/${index + 1}`);
+      // Router.push("/tripplace");
+    } else if (target === "숙소를 추가해주세요.") {
+      Router.push(`/tripaccommodation/${index + 1}`);
+    }
+  };
+
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -58,7 +69,7 @@ function AddPlanButton({
   return (
     <div
       className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full cursor-pointer"
-      onClick={handleRoute}
+      onClick={(e) => handleRoute(e, index)}
     >
       <div className="flex justify-between w-full items-center">
         {text === "장소" && place ? (
@@ -83,8 +94,8 @@ function AddPlanButton({
           </span>
         )}
       </div>
-      {(text === "장소" && selectedPlaces !== null) ||
-      (text === "숙소" && selectedAccommodations !== null) ? (
+      {(text === "장소" && selectedPlaces?.length !== 0) ||
+      (text === "숙소" && selectedAccommodations?.length !== 0) ? (
         <button onClick={handleRemove}>
           <BsX color="#828282" />
         </button>

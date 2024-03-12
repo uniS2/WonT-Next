@@ -10,7 +10,6 @@ import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { DatesStore } from "@/store/DatesStore";
-import Router from "next/router";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import AddSchedule from "./AddSchedule";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
@@ -28,8 +27,8 @@ function TripDays() {
   const { selectedAccommodations /* setSelectedAccommodationArray */ } =
     SelectAccommodationsStore();
   const { tripDates } = DatesStore();
-  console.log(selectedAccommodations);
-  console.log(selectedPlaces);
+  // console.log(selectedAccommodations);
+  // console.log(selectedPlaces);
 
   useEffect(() => {
     setViewPlanStates(new Array(tripDates?.length).fill(true));
@@ -84,15 +83,10 @@ function TripDays() {
     },
   };
 
-  // console.log("selectedPlaces", selectedPlaces);
-  console.log("0번", selectedPlaces && selectedPlaces[0]);
-  // console.log(selectedPlaces?.map((item, index) => index));
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {(tripDates?.length !== 0 && selectedAccommodations?.length !== 0) ||
-        selectedPlaces?.length !== 0 ? (
+        {tripDates?.length !== 0 && selectedAccommodations && selectedPlaces ? (
           tripDates?.map((item, index) => (
             <React.Fragment key={item}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
@@ -187,17 +181,8 @@ function TripDays() {
                   </span>
                 </div>
 
-                <AddPlanButton
-                  text="장소"
-                  // handleRoute={handleRoute}
-                  // handleRoute={(e) => handleRoute(e, index)}
-                  index={index}
-                />
-                <AddPlanButton
-                  text="숙소"
-                  // handleRoute={(e) => handleRoute(e, index)}
-                  index={index}
-                />
+                <AddPlanButton text="장소" index={index} />
+                <AddPlanButton text="숙소" index={index} />
               </React.Fragment>
             ))}
           </>

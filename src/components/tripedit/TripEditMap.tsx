@@ -2,8 +2,8 @@ import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
 import { SelectedPlanStore } from "@/store/SelectedPlanStore";
-import { useTripPlaceStore } from "@/store/useTripPlaceStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
+import { PlaceDataType } from "@/types/DataProps";
 import { debounce } from "@/utils/debounce";
 import { useEffect, useState } from "react";
 
@@ -15,13 +15,30 @@ declare global {
 
 function TripEditMap() {
   const [viewPlanItems, setViewPlanItems] = useState<any[] | undefined>();
-  const [mapPlace, setMapPlace] = useState<string[]>([]);
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedRegionName } = RegionStore();
-  const { selectedAccommodations } = SelectAccommodationsStore();
   const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
-  const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
+  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+    SelectAccommodationsStore();
+  const [mapPlace, setMapPlace] = useState<PlaceDataType>();
+
+  console.log(selectedPlaces, selectedAccommodations);
+  useEffect(() => {
+    if (selectedPlaces) {
+      for (let i = 0; i < selectedPlaces.length; i++) {
+        const innerArr = selectedPlaces[i];
+
+        // 내부 배열 순회
+        for (let j = 0; j < innerArr.length; j++) {
+          const place = innerArr[j];
+          setMapPlace(place);
+
+          console.log(place);
+        }
+      }
+    }
+  }, [selectedAccommodations]);
 
   useEffect(() => {
     if (selectedAccommodations) {
@@ -86,12 +103,13 @@ function TripEditMap() {
         if (selectedAccommodations && selectedPlaces) {
           const selected = selectedAccommodations?.concat(selectedPlaces);
           // setSelectedPlan(selected);
+          // console.log(selected);
 
-          selected?.forEach((item) => {
+          selected?.forEach((item, index) => {
             // 주소로 좌표를 검색합니다
 
             geocoder.addressSearch(
-              item?.addr1,
+              item[index]?.addr1,
               function (result: { x: any; y: any }[], status: any) {
                 // 정상적으로 검색이 완료됐으면
                 if (status === window.kakao.maps.services.Status.OK) {
@@ -100,8 +118,8 @@ function TripEditMap() {
                     result[0].x,
                   );
                   let accommodationCoords = new window.kakao.maps.LatLng(
-                    item.mapy,
-                    item.mapx,
+                    item[index].mapy,
+                    item[index].mapx,
                   );
                   // 결과값으로 받은 위치를 마커로 표시합니다
                   let marker = new window.kakao.maps.Marker({
@@ -110,7 +128,7 @@ function TripEditMap() {
                   });
                   // 인포윈도우로 장소에 대한 설명을 표시합니다
                   let infowindow = new window.kakao.maps.InfoWindow({
-                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${item[index].title}</div>`,
                   });
                   infowindow.open(map, marker);
                   // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
