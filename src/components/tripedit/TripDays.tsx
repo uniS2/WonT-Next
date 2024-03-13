@@ -13,6 +13,7 @@ import { DatesStore } from "@/store/DatesStore";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import AddSchedule from "./AddSchedule";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
+import { useIndexStore } from "@/store/useIndexStore";
 
 interface TripDaysProps {
   days?: string;
@@ -27,8 +28,6 @@ function TripDays() {
   const { selectedAccommodations /* setSelectedAccommodationArray */ } =
     SelectAccommodationsStore();
   const { tripDates } = DatesStore();
-  // console.log(selectedAccommodations);
-  // console.log(selectedPlaces);
 
   useEffect(() => {
     setViewPlanStates(new Array(tripDates?.length).fill(true));
@@ -54,18 +53,8 @@ function TripDays() {
     newViewPlanStates[index] = !newViewPlanStates[index];
 
     setViewPlanStates(newViewPlanStates);
+    // setTripIndex(index);
   };
-
-  // const handleRoute = (e: React.MouseEvent) => {
-  //   const target = e.currentTarget.textContent;
-  //   console.log(target);
-
-  //   // if (target === "장소를 추가해주세요.") {
-  //   //   Router.push("/tripplace");
-  //   // } else if (target === "숙소를 추가해주세요.") {
-  //   //   Router.push("/tripaccommodation");
-  //   // }
-  // };
 
   const variants = {
     open: {

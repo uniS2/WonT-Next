@@ -2,9 +2,11 @@ import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import { RegionStore } from "@/store/RegionStore";
 import { SelectedPlanStore } from "@/store/SelectedPlanStore";
+import { useTripPlanArray } from "@/store/useTripPlanArrayStore";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { PlaceDataType } from "@/types/DataProps";
 import { debounce } from "@/utils/debounce";
+import { getSelectedArray } from "@/utils/getSelectedArray";
 import { useEffect, useState } from "react";
 
 declare global {
@@ -14,41 +16,33 @@ declare global {
 }
 
 function TripEditMap() {
-  const [viewPlanItems, setViewPlanItems] = useState<any[] | undefined>();
+  // const [viewPlanItems, setViewPlanItems] = useState<any[] | undefined>();
   const [mapLatLngArray, setMapLatLngArray] = useState<any[]>([]);
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
   const { selectedRegionName } = RegionStore();
   const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
   const { selectedAccommodations /* setSelectedAccommodationArray */ } =
     SelectAccommodationsStore();
-  const [mapPlace, setMapPlace] = useState<PlaceDataType>();
+  const { placeArray, setPlaceArray } = useTripPlanArray();
 
-  console.log(selectedPlaces, selectedAccommodations);
+  console.log(viewPlanStates);
+
   useEffect(() => {
     if (selectedPlaces) {
-      for (let i = 0; i < selectedPlaces.length; i++) {
-        const innerArr = selectedPlaces[i];
-
-        // 내부 배열 순회
-        for (let j = 0; j < innerArr.length; j++) {
-          const place = innerArr[j];
-          setMapPlace(place);
-
-          console.log(place);
-        }
-      }
+      const mapPlace = getSelectedArray(selectedPlaces!);
+      setPlaceArray(mapPlace);
     }
   }, [selectedAccommodations]);
 
-  useEffect(() => {
-    if (selectedAccommodations) {
-      setViewPlanItems(
-        viewPlanStates.map(
-          (item, index) => item === true && selectedAccommodations[index],
-        ),
-      );
-    }
-  }, [viewPlanStates]);
+  // useEffect(() => {
+  //   if (selectedAccommodations) {
+  //     setViewPlanItems(
+  //       viewPlanStates.map(
+  //         (item, index) => item === true && selectedAccommodations[index],
+  //       ),
+  //     );
+  //   }
+  // }, [viewPlanStates]);
 
   useEffect(() => {
     setMapLatLngArray(mapLatLngArray);
@@ -100,43 +94,143 @@ function TripEditMap() {
 
         var geocoder = new window.kakao.maps.services.Geocoder();
 
-        if (selectedAccommodations && selectedPlaces) {
-          const selected = selectedAccommodations?.concat(selectedPlaces);
-          // setSelectedPlan(selected);
-          // console.log(selected);
+        // if (selectedAccommodations && selectedPlaces) {
+        //   selectedAccommodations &&
+        //     selectedPlaces?.map((item, index) => {
+        //       // 주소로 좌표를 검색합니다
+        //       console.log(selectedPlaces);
+        //       console.log(selectedAccommodations);
 
-          selected?.forEach((item, index) => {
-            // 주소로 좌표를 검색합니다
+        //       item.map((item) => {
+        //         geocoder.addressSearch(
+        //           item?.addr1,
+        //           function (result: { x: any; y: any }[], status: any) {
+        //             // 정상적으로 검색이 완료됐으면
+        //             if (status === window.kakao.maps.services.Status.OK) {
+        //               let coords = new window.kakao.maps.LatLng(
+        //                 result[0].y,
+        //                 result[0].x,
+        //               );
+        //               let accommodationCoords = new window.kakao.maps.LatLng(
+        //                 item.mapy,
+        //                 item.mapx,
+        //               );
+        //               // 결과값으로 받은 위치를 마커로 표시합니다
+        //               let marker = new window.kakao.maps.Marker({
+        //                 map: map,
+        //                 position: coords || accommodationCoords,
+        //               });
+        //               // 인포윈도우로 장소에 대한 설명을 표시합니다
+        //               let infowindow = new window.kakao.maps.InfoWindow({
+        //                 content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+        //               });
+        //               infowindow.open(map, marker);
+        //               // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        //               map.setCenter(coords);
+        //             }
+        //           },
+        //         );
+        //       });
+        //     });
+        // }
 
-            geocoder.addressSearch(
-              item[index]?.addr1,
-              function (result: { x: any; y: any }[], status: any) {
-                // 정상적으로 검색이 완료됐으면
-                if (status === window.kakao.maps.services.Status.OK) {
-                  let coords = new window.kakao.maps.LatLng(
-                    result[0].y,
-                    result[0].x,
-                  );
-                  let accommodationCoords = new window.kakao.maps.LatLng(
-                    item[index].mapy,
-                    item[index].mapx,
-                  );
-                  // 결과값으로 받은 위치를 마커로 표시합니다
-                  let marker = new window.kakao.maps.Marker({
-                    map: map,
-                    position: coords || accommodationCoords,
-                  });
-                  // 인포윈도우로 장소에 대한 설명을 표시합니다
-                  let infowindow = new window.kakao.maps.InfoWindow({
-                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${item[index].title}</div>`,
-                  });
-                  infowindow.open(map, marker);
-                  // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                  map.setCenter(coords);
-                }
-              },
-            );
-          });
+        // if (
+        //   selectedAccommodations?.length === selectedPlaces?.length &&
+        //   viewPlanStates
+        // ) {
+        //   selectedPlaces?.forEach((accommodation, index) => {
+        //     if (viewPlanStates[index]) {
+        //       // viewPlanStates가 true인 경우에만 처리
+        //       accommodation.forEach((item) => {
+        //         geocoder.addressSearch(item.addr1, function (result, status) {
+        //           if (status === window.kakao.maps.services.Status.OK) {
+        //             let coords = new window.kakao.maps.LatLng(
+        //               result[0].y,
+        //               result[0].x,
+        //             );
+        //             let accommodationCoords = new window.kakao.maps.LatLng(
+        //               item.mapy,
+        //               item.mapx,
+        //             );
+        //             let marker = new window.kakao.maps.Marker({
+        //               map: map,
+        //               position: coords || accommodationCoords,
+        //             });
+        //             let infowindow = new window.kakao.maps.InfoWindow({
+        //               content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+        //             });
+        //             infowindow.open(map, marker);
+        //             map.setCenter(coords);
+        //           }
+        //         });
+        //       });
+        //     }
+        //   });
+        // }
+
+        if (
+          selectedAccommodations?.length === selectedPlaces?.length &&
+          viewPlanStates
+        ) {
+          for (let i = 0; i < selectedAccommodations.length; i++) {
+            const accommodation = selectedAccommodations[i];
+            const places = selectedPlaces[i];
+
+            if (viewPlanStates[i]) {
+              accommodation.forEach((item) => {
+                geocoder.addressSearch(
+                  item.addr1,
+                  function (result: { x: any; y: any }[], status: any) {
+                    if (status === window.kakao.maps.services.Status.OK) {
+                      let coords = new window.kakao.maps.LatLng(
+                        result[0].y,
+                        result[0].x,
+                      );
+                      let accommodationCoords = new window.kakao.maps.LatLng(
+                        item.mapy,
+                        item.mapx,
+                      );
+                      let marker = new window.kakao.maps.Marker({
+                        map: map,
+                        position: coords || accommodationCoords,
+                      });
+                      let infowindow = new window.kakao.maps.InfoWindow({
+                        content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+                      });
+                      infowindow.open(map, marker);
+                      map.setCenter(coords);
+                    }
+                  },
+                );
+              });
+              places.forEach((item) => {
+                geocoder.addressSearch(
+                  item.addr1,
+                  function (result: { x: any; y: any }[], status: any) {
+                    if (status === window.kakao.maps.services.Status.OK) {
+                      let coords = new window.kakao.maps.LatLng(
+                        result[0].y,
+                        result[0].x,
+                      );
+                      let accommodationCoords = new window.kakao.maps.LatLng(
+                        item.mapy,
+                        item.mapx,
+                      );
+                      let marker = new window.kakao.maps.Marker({
+                        map: map,
+                        position: coords || accommodationCoords,
+                      });
+                      let infowindow = new window.kakao.maps.InfoWindow({
+                        content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
+                      });
+                      infowindow.open(map, marker);
+                      map.setCenter(coords);
+                    }
+                  },
+                );
+              });
+            }
+          }
         }
 
         // 주소로 좌표를 검색합니다
@@ -158,24 +252,24 @@ function TripEditMap() {
 
         let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-        function placesSearchCB(
-          data: string | any[],
-          status: any,
-          pagination: any,
-        ) {
-          if (status === window.kakao.maps.services.Status.OK) {
-            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-            // LatLngBounds 객체에 좌표를 추가합니다
-            let bounds = new window.kakao.maps.LatLngBounds();
-            for (let i = 0; i <= 0; i++) {
-              displayMarker(data[i]);
-              bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
-            }
+        // function placesSearchCB(
+        //   data: string | any[],
+        //   status: any,
+        //   pagination: any,
+        // ) {
+        //   if (status === window.kakao.maps.services.Status.OK) {
+        //     // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        //     // LatLngBounds 객체에 좌표를 추가합니다
+        //     let bounds = new window.kakao.maps.LatLngBounds();
+        //     for (let i = 0; i <= 0; i++) {
+        //       displayMarker(data[i]);
+        //       bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
+        //     }
 
-            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-            map.setBounds(bounds);
-          }
-        }
+        //     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        //     map.setBounds(bounds);
+        //   }
+        // }
 
         function displayMarker(place: { y: any; x: any; place_name: string }) {
           // 마커를 생성하고 지도에 표시합니다
@@ -201,8 +295,6 @@ function TripEditMap() {
           });
         }
 
-        console.log(mapLatLngArray);
-
         // 지도에 표시할 선을 생성합니다
         // 지도에 표시할 선을 생성합니다
         var first_linePath = new window.kakao.maps.Polyline({
@@ -220,7 +312,7 @@ function TripEditMap() {
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
-  }, [selectedAccommodations, viewPlanItems, setMapLatLngArray]);
+  }, [selectedAccommodations, viewPlanStates, selectedPlaces]);
 
   return (
     <main className="w-full flex flex-col items-center justify-center ">
