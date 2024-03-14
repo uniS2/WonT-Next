@@ -30,14 +30,6 @@ function AddPlanButton({
   const { selectedAccommodations } = SelectAccommodationsStore();
   const { selectedPlaces, setSelectedPlacesArray } = SelectPlacesStore();
 
-  // const handleRemove = (e: React.MouseEvent) => {
-  //   const target = e.currentTarget;
-  //   console.log(target);
-  //   console.log("index", index);
-  //   const newSelectedAccommodations = Array.from(selectedAccommodations || []);
-  //   console.log(newSelectedAccommodations);
-  //   resetSelectedAccommodations();
-  // };
   const handleRoute = (e: React.MouseEvent, index: number) => {
     const target = e.currentTarget.textContent;
 
@@ -48,48 +40,27 @@ function AddPlanButton({
       Router.push(`/tripaccommodation/${index + 1}`);
     }
   };
+  console.log(placeIndex);
+  console.log(accommondationIndex);
 
-  const handleRemove = (e: React.MouseEvent, removeIndex: number) => {
-    e.stopPropagation();
-    console.log(index);
-
-    if (typeof index === "number") {
-      if (text === "장소") {
-        const newSelectedPlaces = Array.from(selectedPlaces || []);
-        newSelectedPlaces.forEach((innerArray, outerIndex) => {
-          if (
-            innerArray &&
-            innerArray.length > outerIndex &&
-            outerIndex === removeIndex
-          ) {
-            console.log("여깅", innerArray[outerIndex]); // n번 인덱스 안의 n번째 아이템 출력
-            innerArray.splice(outerIndex, 1);
-          }
-        });
-        // setSelectedPlacesArray(newSelectedPlaces);
-      }
-
-      if (text === "숙소") {
-        const newSelectedAccommodations = Array.from(
-          selectedAccommodations || [],
-        );
-        newSelectedAccommodations.splice(index, 1);
-        // setSelectedAccommodationArray(newSelectedAccommodations);
-      }
-    }
-  };
-
-  // const handleRemove = (e: React.MouseEvent) => {
+  // const handleRemove = (e: React.MouseEvent, removeIndex: number) => {
   //   e.stopPropagation();
+  //   console.log(index);
 
   //   if (typeof index === "number") {
   //     if (text === "장소") {
   //       const newSelectedPlaces = Array.from(selectedPlaces || []);
-  //       const [removed] = newSelectedPlaces.splice(index, 1);
-  //       newSelectedPlaces.splice(index, 0, removed);
-  //       console.log(newSelectedPlaces);
-
-  //       setSelectedPlacesArray(newSelectedPlaces);
+  //       newSelectedPlaces.forEach((innerArray, outerIndex) => {
+  //         if (
+  //           innerArray &&
+  //           innerArray.length > outerIndex &&
+  //           outerIndex === removeIndex
+  //         ) {
+  //           console.log("여깅", innerArray[outerIndex]); // n번 인덱스 안의 n번째 아이템 출력
+  //           innerArray.splice(outerIndex, 1);
+  //         }
+  //       });
+  //       // setSelectedPlacesArray(newSelectedPlaces);
   //     }
 
   //     if (text === "숙소") {
@@ -101,6 +72,38 @@ function AddPlanButton({
   //     }
   //   }
   // };
+  const handleRemove = (e: React.MouseEvent, placeIndex: number) => {
+    e.stopPropagation();
+
+    if (text === "장소") {
+      const newSelectedPlaces = Array.from(selectedPlaces || []);
+      if (
+        newSelectedPlaces.length > placeIndex &&
+        newSelectedPlaces[placeIndex].length > placeIndex
+      ) {
+        const item = newSelectedPlaces[placeIndex][placeIndex];
+        console.log(item); // n번 인덱스 안의 n번째 아이템 출력
+        newSelectedPlaces[placeIndex].splice(placeIndex, 1);
+        setSelectedPlacesArray(newSelectedPlaces);
+      }
+    }
+
+    // if (text === "숙소") {
+    //   const newSelectedAccommodations = Array.from(
+    //     selectedAccommodations || [],
+    //   );
+    //   if (
+    //     newSelectedAccommodations.length > removeIndex &&
+    //     newSelectedAccommodations[removeIndex].length > removeIndex
+    //   ) {
+    //     const item = newSelectedAccommodations[removeIndex][removeIndex];
+    //     console.log(item); // n번 인덱스 안의 n번째 아이템 출력
+    //     newSelectedAccommodations[removeIndex].splice(removeIndex, 1);
+    //     // setSelectedAccommodations(newSelectedAccommodations);
+    //   }
+    // }
+  };
+
   return (
     <div
       className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full cursor-pointer"
@@ -131,7 +134,7 @@ function AddPlanButton({
       </div>
       {(text === "장소" && selectedPlaces?.length !== 0) ||
       (text === "숙소" && selectedAccommodations?.length !== 0) ? (
-        <button onClick={(e) => handleRemove(e, 1)}>
+        <button onClick={(e) => handleRemove(e, placeIndex)}>
           <BsX color="#828282" />
         </button>
       ) : (
