@@ -106,7 +106,7 @@ function TripDays() {
                     style={{ originY: 0.55 }}
                   >
                     {selectedPlaces &&
-                      selectedPlaces[index]?.map((item, index) => (
+                      selectedPlaces[index]?.map((item, placeIndex) => (
                         <Draggable
                           key={item.title}
                           draggableId={item.title}
@@ -123,6 +123,7 @@ function TripDays() {
                                 place={item.title}
                                 key={index}
                                 index={index}
+                                placeIndex={placeIndex}
                                 // handleRemove={handleRemove}
                               />
                             </div>
@@ -131,29 +132,31 @@ function TripDays() {
                       ))}
 
                     {selectedAccommodations &&
-                      selectedAccommodations[index]?.map((item, index) => (
-                        <Draggable
-                          key={item?.title}
-                          draggableId={item.title}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <AddPlanButton
-                                text="숙소"
-                                place={item?.title}
-                                key={index}
-                                index={index}
-                                // handleRemove={handleRemove}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                      selectedAccommodations[index]?.map(
+                        (item, accommondationIndex) => (
+                          <Draggable
+                            key={item?.title}
+                            draggableId={item.title}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <AddPlanButton
+                                  text="숙소"
+                                  place={item?.title}
+                                  key={index}
+                                  index={index}
+                                  accommondationIndex={accommondationIndex}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ),
+                      )}
                     {provided.placeholder}
                   </motion.div>
                 )}

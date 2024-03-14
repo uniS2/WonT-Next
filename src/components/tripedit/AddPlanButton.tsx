@@ -5,11 +5,14 @@ import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { useEffect } from "react";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import Router from "next/router";
+import { useModifyPlanArray } from "@/store/useModifyTripArrayStore";
 
 interface AddPlanButtonProps {
   text?: string;
   place?: string;
   index: number;
+  placeIndex?: number;
+  accommondationIndex?: number;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
@@ -21,11 +24,11 @@ function AddPlanButton({
   text,
   place,
   index,
-  // handleRemove
+  placeIndex,
+  accommondationIndex,
 }: AddPlanButtonProps) {
-  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
-    SelectAccommodationsStore();
-  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
+  const { selectedAccommodations } = SelectAccommodationsStore();
+  const { selectedPlaces, setSelectedPlacesArray } = SelectPlacesStore();
 
   // const handleRemove = (e: React.MouseEvent) => {
   //   const target = e.currentTarget;
@@ -46,13 +49,23 @@ function AddPlanButton({
     }
   };
 
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRemove = (e: React.MouseEvent, removeIndex: number) => {
     e.stopPropagation();
+    console.log(index);
 
     if (typeof index === "number") {
       if (text === "장소") {
         const newSelectedPlaces = Array.from(selectedPlaces || []);
-        newSelectedPlaces.splice(index, 1);
+        newSelectedPlaces.forEach((innerArray, outerIndex) => {
+          if (
+            innerArray &&
+            innerArray.length > outerIndex &&
+            outerIndex === removeIndex
+          ) {
+            console.log("여깅", innerArray[outerIndex]); // n번 인덱스 안의 n번째 아이템 출력
+            innerArray.splice(outerIndex, 1);
+          }
+        });
         // setSelectedPlacesArray(newSelectedPlaces);
       }
 
@@ -66,6 +79,28 @@ function AddPlanButton({
     }
   };
 
+  // const handleRemove = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+
+  //   if (typeof index === "number") {
+  //     if (text === "장소") {
+  //       const newSelectedPlaces = Array.from(selectedPlaces || []);
+  //       const [removed] = newSelectedPlaces.splice(index, 1);
+  //       newSelectedPlaces.splice(index, 0, removed);
+  //       console.log(newSelectedPlaces);
+
+  //       setSelectedPlacesArray(newSelectedPlaces);
+  //     }
+
+  //     if (text === "숙소") {
+  //       const newSelectedAccommodations = Array.from(
+  //         selectedAccommodations || [],
+  //       );
+  //       newSelectedAccommodations.splice(index, 1);
+  //       // setSelectedAccommodationArray(newSelectedAccommodations);
+  //     }
+  //   }
+  // };
   return (
     <div
       className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full cursor-pointer"
@@ -96,7 +131,7 @@ function AddPlanButton({
       </div>
       {(text === "장소" && selectedPlaces?.length !== 0) ||
       (text === "숙소" && selectedAccommodations?.length !== 0) ? (
-        <button onClick={handleRemove}>
+        <button onClick={(e) => handleRemove(e, 1)}>
           <BsX color="#828282" />
         </button>
       ) : (

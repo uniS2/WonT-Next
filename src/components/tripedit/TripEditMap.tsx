@@ -30,9 +30,7 @@ function TripEditMap() {
     }
   }, [selectedAccommodations]);
 
-  // useEffect(() => {
-  //   setMapLatLngArray(mapLatLngArray);
-  // }, [mapLatLngArray, setMapLatLngArray]);
+  console.log(selectedRegionName);
 
   useEffect(() => {
     const kakaoMapScript = document.createElement("script");
@@ -88,6 +86,7 @@ function TripEditMap() {
             for (let i = 0; i < selectedAccommodations.length; i++) {
               const accommodation = selectedAccommodations[i];
               const places = selectedPlaces[i];
+
               if (viewPlanStates[i]) {
                 accommodation.forEach((item) => {
                   geocoder.addressSearch(
@@ -132,6 +131,11 @@ function TripEditMap() {
                           map: map,
                           position: coords || accommodationCoords,
                         });
+                        setMapLatLngArray((prevArray) => [
+                          ...prevArray,
+                          new window.kakao.maps.LatLng(item.mapy, item.mapx),
+                        ]);
+
                         let infowindow = new window.kakao.maps.InfoWindow({
                           content: `<div style="width:150px;text-align:center;padding:6px 0;">${item.title}</div>`,
                         });
@@ -213,17 +217,21 @@ function TripEditMap() {
         //   });
         // }
 
-        // if (selectedAccommodations && selectedPlaces) {
-        //   // 지도에 표시할 선을 생성합니다
-        //   var first_linePath = new window.kakao.maps.Polyline({
-        //     path: selectedPlaces, // 선을 구성하는 좌표배열 입니다
-        //     strokeWeight: 3, // 선의 두께 입니다
-        //     strokeColor: "#63D4F2", // 선의 색깔입니다
-        //     strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        //     strokeStyle: "solid", // 선의 스타일입니다
-        //   });
-        //   first_linePath.setMap(map);
-        // }
+        // console.log(mapLatLngArray);
+        // selectedPlan?.map((item) => item.accommodations[0].mapx);
+        // selectedPlan?.map((item) => item.accommodations[0].mapy);
+
+        if (selectedAccommodations && selectedPlaces) {
+          // 지도에 표시할 선을 생성합니다
+          var first_linePath = new window.kakao.maps.Polyline({
+            path: mapLatLngArray, // 선을 구성하는 좌표배열 입니다
+            strokeWeight: 3, // 선의 두께 입니다
+            strokeColor: "#63D4F2", // 선의 색깔입니다
+            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: "solid", // 선의 스타일입니다
+          });
+          first_linePath.setMap(map);
+        }
 
         setMapLatLngArray([]);
       });

@@ -12,6 +12,7 @@ type SelectPlacesStoreType = {
   selectedPlaces: PlaceDataType[][] | null;
   setTripPlacesRange: (range: number) => void;
   setSelctedPlaces: (date: number, id: number) => void;
+  setSelectedPlacesArray: (state: PlaceDataType[][]) => void;
 };
 
 export const LocationPlacesStore = create<LocationPlacesStoreType>((set) => ({
@@ -60,6 +61,8 @@ export const SelectPlacesStore = create(
             selectedPlaces: updatedSelectedPlaces,
           };
         }),
+      setSelectedPlacesArray: (state: PlaceDataType[][]) =>
+        set({ selectedPlaces: state }),
     }),
     {
       name: "tripPlaceStorage",
