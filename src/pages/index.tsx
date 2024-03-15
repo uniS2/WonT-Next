@@ -8,12 +8,12 @@ const OnBoardingPage: React.FC = () => {
     <Layout>
       <section className="bg-gradient-to-t from-white to-blue-200 h-screen flex items-end lg:items-center">
         <motion.div
-          className="flex flex-col items-center justify-center gap-5 lg:flex-row lg:gap-[50px]"
+          className="flex flex-col items-center justify-center gap-5 lg:flex-row lg:gap-[6.25rem]"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <div className="flex flex-col items-center gap-5">
+          <div className="flex flex-col items-center gap-5 2xl:w-[37.5rem] 2xl:gap-10">
             <Image
               src={"/svg/logo.svg"}
               alt="로고"
@@ -21,7 +21,7 @@ const OnBoardingPage: React.FC = () => {
               height={100}
               className="pt-[20px]"
             />
-            <div className="text-[16px] text-black mb-[30px]">
+            <div className="text-[1rem] text-black mb-[1.875rem]">
               <p>행복한 여행을 위해 일정을 세워보세요</p>
             </div>
             <OnBoardingButton
@@ -30,16 +30,16 @@ const OnBoardingPage: React.FC = () => {
               color="primary"
             />
           </div>
-          <div className="flex flex-col items-center justify-center lg:w-[450px] lg:bg-white lg:rounded-2xl lg:shadow-xl lg:h-[300px]">
+          <div className="flex flex-col items-center justify-center lg:w-[28.125rem] lg:bg-white lg:rounded-2xl lg:shadow-xl 2xl:w-[37.5rem]">
             <video
-              src="/video/tst.mp4"
+              src="/video/testVideo.mov"
               width={450}
               height={100}
               autoPlay
               loop
               preload="auto"
               className="hidden lg:block w-full h-auto"
-              style={{ maxWidth: "50%", height: "auto" }}
+              style={{ maxWidth: "70%", height: "auto" }}
             ></video>
             <Image
               src={"/images/test.png"}
