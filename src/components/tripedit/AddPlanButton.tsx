@@ -90,19 +90,18 @@ function AddPlanButton({
       }
     }
 
-    // if (text === "숙소") {
-    //   const newSelectedPlaces = Array.from(selectedAccommodations || []);
-    //   if (
-    //     newSelectedPlaces.length > accommondationIndex &&
-    //     newSelectedPlaces[accommondationIndex].length > accommondationIndex
-    //   ) {
-    //     const item =
-    //       newSelectedPlaces[accommondationIndex][accommondationIndex];
-    //     console.log(item);
-    //     newSelectedPlaces[accommondationIndex].splice(accommondationIndex, 1);
-    //     setSelectedAccommodationsArray(newSelectedPlaces);
-    //   }
-    // }
+    if (text === "숙소") {
+      const newSelectedPlaces = Array.from(selectedAccommodations || []);
+      if (
+        newSelectedPlaces.length > accommondationIndex &&
+        newSelectedPlaces[index].length > accommondationIndex
+      ) {
+        const item = newSelectedPlaces[index][accommondationIndex];
+        console.log(item);
+        newSelectedPlaces[index].splice(accommondationIndex, 1);
+        setSelectedAccommodationsArray(newSelectedPlaces);
+      }
+    }
   };
   console.log("selectedPlaces", selectedPlaces);
   console.log("selectedAccommodations", selectedAccommodations);

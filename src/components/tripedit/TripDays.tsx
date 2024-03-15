@@ -13,7 +13,6 @@ import { DatesStore } from "@/store/DatesStore";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import AddSchedule from "./AddSchedule";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
-import { useIndexStore } from "@/store/useIndexStore";
 
 interface TripDaysProps {
   days?: string;
