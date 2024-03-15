@@ -6,7 +6,7 @@ import Image from "next/image";
 const OnBoardingPage: React.FC = () => {
   return (
     <Layout>
-      <section className="bg-gradient-to-t from-white to-blue-200 h-screen flex items-end lg:items-center">
+      <section className="bg-gradient-to-t from-white to-blue-200 min-h-screen flex items-end lg:items-center">
         <motion.div
           className="flex flex-col items-center justify-center gap-5 lg:flex-row lg:gap-[6.25rem]"
           initial={{ opacity: 0, y: -50 }}
@@ -16,7 +16,7 @@ const OnBoardingPage: React.FC = () => {
           <div className="flex flex-col items-center gap-5 2xl:w-[37.5rem] 2xl:gap-10">
             <Image
               src={"/svg/logo.svg"}
-              alt="로고"
+              alt="원트 로고"
               width={200}
               height={100}
               className="pt-[20px]"
@@ -40,13 +40,15 @@ const OnBoardingPage: React.FC = () => {
               preload="auto"
               className="hidden lg:block w-full h-auto"
               style={{ maxWidth: "70%", height: "auto" }}
+              aria-label="영상 설명: 원트 여행 서비스 소개"
             ></video>
             <Image
-              src={"/images/test.png"}
-              alt="test"
+              src={"/images/onboarding-mockup.png"}
+              alt="원트 목업 이미지"
               width={320}
               height={200}
               className="lg:hidden"
+              aria-label="원트 여행 서비스 목업 이미지"
             />
           </div>
         </motion.div>
