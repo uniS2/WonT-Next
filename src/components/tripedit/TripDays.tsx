@@ -23,8 +23,8 @@ interface TripDaysProps {
 
 function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
-  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
-  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+  const { selectedPlaces, setSelectedPlacesArray } = SelectPlacesStore();
+  const { selectedAccommodations, setSelectedAccommodationsArray } =
     SelectAccommodationsStore();
   const { tripDates } = DatesStore();
 
@@ -36,14 +36,30 @@ function TripDays() {
     const { destination, source } = result;
 
     if (destination && destination.index !== source.index) {
-      // const newSelectedAccommodations = Array.from(selectedAccommodations);
       const newSelectedPlaces = Array.from(selectedPlaces || []);
-      console.log(...newSelectedPlaces, 1);
 
-      const [removed] = newSelectedPlaces.splice(source.index, 1);
-      newSelectedPlaces.splice(destination.index, 0, removed);
+      // 출발지와 목적지의 인덱스 정보
+      const sourceDayIndex = parseInt(source.droppableId.split("-")[1]);
+      const destinationDayIndex = parseInt(
+        destination.droppableId.split("-")[1],
+      );
+      const sourcePlaceIndex = source.index;
+      const destinationPlaceIndex = destination.index;
 
-      // setSelectedPlacesArray(newSelectedPlaces);
+      // 출발지에서 해당 장소를 삭제
+      const [removedPlace] = newSelectedPlaces[sourceDayIndex].splice(
+        sourcePlaceIndex,
+        1,
+      );
+
+      // 목적지로 해당 장소를 삽입
+      newSelectedPlaces[destinationDayIndex].splice(
+        destinationPlaceIndex,
+        0,
+        removedPlace,
+      );
+
+      setSelectedPlacesArray(newSelectedPlaces);
     }
   };
 
@@ -123,7 +139,6 @@ function TripDays() {
                                 key={index}
                                 index={index}
                                 placeIndex={placeIndex}
-                                // handleRemove={handleRemove}
                               />
                             </div>
                           )}

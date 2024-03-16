@@ -41,35 +41,6 @@ function AddPlanButton({
     }
   };
 
-  // const handleRemove = (e: React.MouseEvent, removeIndex: number) => {
-  //   e.stopPropagation();
-  //   console.log(index);
-
-  //   if (typeof index === "number") {
-  //     if (text === "장소") {
-  //       const newSelectedPlaces = Array.from(selectedPlaces || []);
-  //       newSelectedPlaces.forEach((innerArray, outerIndex) => {
-  //         if (
-  //           innerArray &&
-  //           innerArray.length > outerIndex &&
-  //           outerIndex === removeIndex
-  //         ) {
-  //           console.log("여깅", innerArray[outerIndex]); // n번 인덱스 안의 n번째 아이템 출력
-  //           innerArray.splice(outerIndex, 1);
-  //         }
-  //       });
-  //       // setSelectedPlacesArray(newSelectedPlaces);
-  //     }
-
-  //     if (text === "숙소") {
-  //       const newSelectedAccommodations = Array.from(
-  //         selectedAccommodations || [],
-  //       );
-  //       newSelectedAccommodations.splice(index, 1);
-  //       // setSelectedAccommodationArray(newSelectedAccommodations);
-  //     }
-  //   }
-  // };
   const handleRemove = (
     e: React.MouseEvent,
     placeIndex: number,
@@ -84,7 +55,6 @@ function AddPlanButton({
         newSelectedPlaces[index].length > placeIndex
       ) {
         const item = newSelectedPlaces[index][placeIndex];
-        console.log(item);
         newSelectedPlaces[index].splice(placeIndex, 1);
         setSelectedPlacesArray(newSelectedPlaces);
       }
@@ -97,14 +67,11 @@ function AddPlanButton({
         newSelectedPlaces[index].length > accommondationIndex
       ) {
         const item = newSelectedPlaces[index][accommondationIndex];
-        console.log(item);
         newSelectedPlaces[index].splice(accommondationIndex, 1);
         setSelectedAccommodationsArray(newSelectedPlaces);
       }
     }
   };
-  console.log("selectedPlaces", selectedPlaces);
-  console.log("selectedAccommodations", selectedAccommodations);
 
   return (
     <div

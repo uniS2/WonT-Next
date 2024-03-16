@@ -151,8 +151,10 @@ function TripEditMap() {
         }
 
         if (
-          selectedAccommodations?.length === 0 &&
-          selectedPlaces?.length === 0
+          selectedPlan?.map(
+            (item) =>
+              item.places.length === 0 || item.accommodations.length === 0,
+          )
         ) {
           // 주소로 좌표를 검색합니다
           geocoder.addressSearch(
