@@ -40,9 +40,12 @@ function TripDays() {
 
       // 출발지와 목적지의 인덱스 정보
       const sourceDayIndex = parseInt(source.droppableId.split("-")[1]);
+
       const destinationDayIndex = parseInt(
         destination.droppableId.split("-")[1],
       );
+      console.log(destinationDayIndex);
+
       const sourcePlaceIndex = source.index;
       const destinationPlaceIndex = destination.index;
 
@@ -92,7 +95,7 @@ function TripDays() {
       <ul className="flex flex-col my-5 gap-[10px]">
         {tripDates?.length !== 0 && selectedAccommodations && selectedPlaces ? (
           tripDates?.map((item, index) => (
-            <React.Fragment key={item}>
+            <React.Fragment key={index}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
                 <span className="font-light text-contentMuted">
                   {`Day${index + 1} | ${item}`}
@@ -109,7 +112,7 @@ function TripDays() {
                 </button>
               </div>
               <AddSchedule index={index} />
-              <Droppable droppableId={`day-${index}`}>
+              <Droppable droppableId={`selectedPlan-${index}`}>
                 {(provided) => (
                   <motion.div
                     {...provided.droppableProps}
@@ -125,7 +128,7 @@ function TripDays() {
                         <Draggable
                           key={item.title}
                           draggableId={item.title}
-                          index={index}
+                          index={placeIndex}
                         >
                           {(provided) => (
                             <div
