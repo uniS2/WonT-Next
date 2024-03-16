@@ -34,37 +34,57 @@ function TripDays() {
 
   const onDragEnd = (result: { destination: any; source: any }) => {
     const { destination, source } = result;
-
-    if (destination && destination.index !== source.index) {
+    if (source.droppableId === destination.droppableId) {
       const newSelectedPlaces = Array.from(selectedPlaces || []);
-
-      // 출발지와 목적지의 인덱스 정보
-      const sourceDayIndex = parseInt(source.droppableId.split("-")[1]);
-
-      const destinationDayIndex = parseInt(
+      const listIndex = parseInt(source.droppableId.split("-")[1]);
+      const copiedPlace = [...newSelectedPlaces];
+      const items = copiedPlace[listIndex];
+      const [removed] = items.splice(source.index, 1);
+      items.splice(destination.index, 0, removed);
+      setSelectedPlacesArray(copiedPlace);
+    } else {
+      const newSelectedPlaces = Array.from(selectedPlaces || []);
+      const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+      const destinationListIndex = parseInt(
         destination.droppableId.split("-")[1],
       );
-      console.log(destinationDayIndex);
-
-      const sourcePlaceIndex = source.index;
-      const destinationPlaceIndex = destination.index;
-
-      // 출발지에서 해당 장소를 삭제
-      const [removedPlace] = newSelectedPlaces[sourceDayIndex].splice(
-        sourcePlaceIndex,
-        1,
-      );
-
-      // 목적지로 해당 장소를 삽입
-      newSelectedPlaces[destinationDayIndex].splice(
-        destinationPlaceIndex,
-        0,
-        removedPlace,
-      );
-
-      setSelectedPlacesArray(newSelectedPlaces);
+      const copiedPlace = [...newSelectedPlaces];
+      const sourceItems = copiedPlace[sourceListIndex];
+      const destinationItems = copiedPlace[destinationListIndex];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destinationItems.splice(destination.index, 0, removed);
+      setSelectedPlacesArray(copiedPlace);
     }
   };
+  // const onDragEnd = (result: { destination: any; source: any }) => {
+  //   const { destination, source } = result;
+
+  //   if (destination && destination.index !== source.index) {
+  //     const newSelectedPlaces = Array.from(selectedPlaces || []);
+
+  //     const sourceDayIndex = parseInt(source.droppableId.split("-")[1]);
+
+  //     const destinationDayIndex = parseInt(
+  //       destination.droppableId.split("-")[1],
+  //     );
+
+  //     const sourcePlaceIndex = source.index;
+  //     const destinationPlaceIndex = destination.index;
+
+  //     const [removedPlace] = newSelectedPlaces[sourceDayIndex].splice(
+  //       sourcePlaceIndex,
+  //       1,
+  //     );
+
+  //     newSelectedPlaces[destinationDayIndex].splice(
+  //       destinationPlaceIndex,
+  //       0,
+  //       removedPlace,
+  //     );
+
+  //     setSelectedPlacesArray(newSelectedPlaces);
+  //   }
+  // };
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
@@ -154,7 +174,7 @@ function TripDays() {
                           <Draggable
                             key={item?.title}
                             draggableId={item.title}
-                            index={index}
+                            index={accommondationIndex}
                           >
                             {(provided) => (
                               <div
