@@ -32,59 +32,98 @@ function TripDays() {
     setViewPlanStates(new Array(tripDates?.length).fill(true));
   }, []);
 
-  const onDragEnd = (result: { destination: any; source: any }) => {
-    const { destination, source } = result;
-    if (source.droppableId === destination.droppableId) {
-      const newSelectedPlaces = Array.from(selectedPlaces || []);
-      const listIndex = parseInt(source.droppableId.split("-")[1]);
-      const copiedPlace = [...newSelectedPlaces];
-      const items = copiedPlace[listIndex];
-      const [removed] = items.splice(source.index, 1);
-      items.splice(destination.index, 0, removed);
-      setSelectedPlacesArray(copiedPlace);
-    } else {
-      const newSelectedPlaces = Array.from(selectedPlaces || []);
-      const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
-      const destinationListIndex = parseInt(
-        destination.droppableId.split("-")[1],
-      );
-      const copiedPlace = [...newSelectedPlaces];
-      const sourceItems = copiedPlace[sourceListIndex];
-      const destinationItems = copiedPlace[destinationListIndex];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destinationItems.splice(destination.index, 0, removed);
-      setSelectedPlacesArray(copiedPlace);
-    }
-  };
   // const onDragEnd = (result: { destination: any; source: any }) => {
   //   const { destination, source } = result;
 
-  //   if (destination && destination.index !== source.index) {
+  //   if (!destination) return;
+
+  //   const sourceDroppableId = source.droppableId;
+  //   const destinationDroppableId = destination.droppableId;
+  //   const sourceDraggableId = source.draggableId;
+
+  //   // 장소에서 이동한 경우
+  //   if (sourceDraggableId.startsWith("place")) {
+  //     // 이동 전 위치 정보
+  //     const [sourceIndex, sourcePlaceIndex] = sourceDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+  //     // 이동 후 위치 정보
+  //     const [destinationIndex, destinationPlaceIndex] = destinationDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+
   //     const newSelectedPlaces = Array.from(selectedPlaces || []);
-
-  //     const sourceDayIndex = parseInt(source.droppableId.split("-")[1]);
-
-  //     const destinationDayIndex = parseInt(
-  //       destination.droppableId.split("-")[1],
-  //     );
-
-  //     const sourcePlaceIndex = source.index;
-  //     const destinationPlaceIndex = destination.index;
-
-  //     const [removedPlace] = newSelectedPlaces[sourceDayIndex].splice(
+  //     const movedPlace = newSelectedPlaces[sourceIndex].places.splice(
   //       sourcePlaceIndex,
   //       1,
-  //     );
-
-  //     newSelectedPlaces[destinationDayIndex].splice(
+  //     )[0];
+  //     newSelectedPlaces[destinationIndex].places.splice(
   //       destinationPlaceIndex,
   //       0,
-  //       removedPlace,
+  //       movedPlace,
   //     );
-
   //     setSelectedPlacesArray(newSelectedPlaces);
   //   }
+  //   // 숙박시설에서 이동한 경우
+  //   else if (sourceDraggableId.startsWith("accommodation")) {
+  //     // 이동 전 위치 정보
+  //     const [sourceIndex, sourceAccommodationIndex] = sourceDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+  //     // 이동 후 위치 정보
+  //     const [destinationIndex, destinationAccommodationIndex] =
+  //       destinationDraggableId.split("-").slice(1).map(Number);
+
+  //     const newSelectedAccommodations = Array.from(
+  //       selectedAccommodations || [],
+  //     );
+  //     const movedAccommodation = newSelectedAccommodations[sourceIndex].splice(
+  //       sourceAccommodationIndex,
+  //       1,
+  //     )[0];
+  //     newSelectedAccommodations[destinationIndex].splice(
+  //       destinationAccommodationIndex,
+  //       0,
+  //       movedAccommodation,
+  //     );
+  //     setSelectedAccommodationsArray(newSelectedAccommodations);
+  //   }
   // };
+
+  const onDragEnd = (result: { destination: any; source: any }) => {
+    const { destination, source } = result;
+
+    if (!destination) return;
+    const sourceDroppableId = source.droppableId;
+    console.log(sourceDroppableId);
+
+    if (source.droppableId === destination.droppableId) {
+      if (sourceDroppableId === "selectedPlaces") {
+        const newSelectedPlaces = Array.from(selectedPlaces || []);
+        const listIndex = parseInt(source.droppableId.split("-")[1]);
+        const copiedPlace = [...newSelectedPlaces];
+        const items = copiedPlace[listIndex];
+        const [removed] = items.splice(source.index, 1);
+        items.splice(destination.index, 0, removed);
+        setSelectedPlacesArray(copiedPlace);
+      } else {
+        const newSelectedPlaces = Array.from(selectedPlaces || []);
+        const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+        const destinationListIndex = parseInt(
+          destination.droppableId.split("-")[1],
+        );
+        const copiedPlace = [...newSelectedPlaces];
+        const sourceItems = copiedPlace[sourceListIndex];
+        const destinationItems = copiedPlace[destinationListIndex];
+        const [removed] = sourceItems.splice(source.index, 1);
+        destinationItems.splice(destination.index, 0, removed);
+        setSelectedPlacesArray(copiedPlace);
+      }
+    }
+  };
 
   const handleViewPlan = (e: React.MouseEvent, index: number) => {
     const newViewPlanStates = [...viewPlanStates];
