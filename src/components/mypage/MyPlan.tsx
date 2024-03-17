@@ -5,11 +5,9 @@ import { useEffect, useState } from "react";
 import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
-import { useFetchTripDataStore } from "@/store/useFetchTripDataStore";
 import Router from "next/router";
 
 type RegionDataType = {
-  id: Number;
   rnum: number;
   name: string;
   url: string;
@@ -18,9 +16,9 @@ type RegionDataType = {
 function MyPlan() {
   const { userSession, setUserSession } = useSessionStore();
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
+  const [planData, setPlanData] = useState<any[] | null>();
   const [regionData, setRegionData] = useState<RegionDataType[] | null>(null);
   const [tripPlan, setTripPlan] = useState<RegionDataType[]>();
-  const { planData, setPlanData } = useFetchTripDataStore();
 
   useEffect(() => {
     const fetchingPlanData = async () => {
@@ -54,6 +52,7 @@ function MyPlan() {
       setRegionData(dataWithImages);
     })();
   }, []);
+  // console.log(regionData);
 
   useEffect(() => {
     if (regionData && planData) {
@@ -63,36 +62,35 @@ function MyPlan() {
           planData?.map((item) => `${item.region_name}`).toString(),
       );
       setTripPlan(findRegion);
+      console.log(tripPlan?.map((item) => item.url));
     }
   }, [regionData, planData]);
 
-  const handleRoute = (e: React.MouseEvent, id: Number) => {
+  const handleRoute = (e: React.MouseEvent, id: number) => {
     Router.push(`/tripedit/${id}`);
   };
 
   return (
     <div>
       <MyPageTitle text="나의 일정" />
-      <div className="grid my-5 sm:grid-cols-1 md:grid-cols-2  2xl:grid-cols-4 gap-3">
-        {planData?.map((item, index) => (
-          <button
-            key={index}
-            className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg"
-            onClick={(e) => handleRoute(e, item.id)}
-          >
-            {tripPlan?.map((item, index) => (
+      {planData?.map((planItem) => (
+        <div className="grid my-5 sm:grid-cols-1 md:grid-cols-2  2xl:grid-cols-4 gap-3">
+          {tripPlan?.map((item) => (
+            <button
+              className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg"
+              onClick={(e) => handleRoute(e, planItem.id)}
+            >
               <Image
                 width={100}
                 height={100}
                 src={item.url}
                 alt="Plan Image"
                 className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg"
-                key={index}
               />
-            ))}
-          </button>
-        ))}
-      </div>
+            </button>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
