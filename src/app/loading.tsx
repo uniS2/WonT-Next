@@ -1,7 +1,18 @@
 "use client";
+import Lottie from "react-lottie-player";
+import loadingJson from "@/asset/loading/loading.json";
 
 function loading() {
-  return <div>기다리는중</div>;
+  return (
+    <div className="flex items-center flex-col h-screen">
+      <Lottie
+        loop
+        animationData={loadingJson}
+        play
+        style={{ height: "200px", width: "200px" }}
+      />
+    </div>
+  );
 }
 
 export default loading;

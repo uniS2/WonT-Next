@@ -9,8 +9,8 @@ interface AddPlanButtonProps {
   text?: string;
   place?: string;
   index: number;
-  placeIndex?: number;
-  accommondationIndex?: number;
+  placeIndex: number;
+  accommondationIndex: number;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
