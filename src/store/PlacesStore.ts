@@ -1,52 +1,68 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType } from "@/types/DataProps";
+import { setTripRange } from "@/utils/setTripRange";
 
-type PlacesStoreType = {
-  locationPlaces: AccommodationDataType[] | null;
-  selectedPlaces: AccommodationDataType[] | null;
-  setLocationPlaces: (location: AccommodationDataType[]) => void;
-  setSelctedPlaces: (id: number) => void;
-  resetSelectedPlaces: () => void;
+type LocationPlacesStoreType = {
+  locationPlaces: PlaceDataType[] | null;
+  setLocationPlaces: (location: PlaceDataType[]) => void;
 };
 
-export const PlacesStore = create(
-  persist<PlacesStoreType>(
+type SelectPlacesStoreType = {
+  selectedPlaces: PlaceDataType[][] | null;
+  setTripPlacesRange: (range: number) => void;
+  setSelctedPlaces: (date: number, id: number) => void;
+  setSelectedPlacesArray: (state: PlaceDataType[][]) => void;
+};
+
+export const LocationPlacesStore = create<LocationPlacesStoreType>((set) => ({
+  locationPlaces: null,
+  setLocationPlaces: (location: PlaceDataType[]) =>
+    set({ locationPlaces: location }),
+}));
+
+export const SelectPlacesStore = create(
+  persist<SelectPlacesStoreType>(
     (set) => ({
-      locationPlaces: null,
       selectedPlaces: null,
-      setLocationPlaces: (location: AccommodationDataType[]) =>
-        set({ locationPlaces: location }),
-      setSelctedPlaces: (id: number) =>
+      setTripPlacesRange: (range: number) =>
+        set({ selectedPlaces: setTripRange(range) }),
+      setSelctedPlaces: (date: number, id: number) =>
         set((state) => {
-          if (
-            !state.selectedPlaces?.filter((sa) => sa.contentid == id).length
-          ) {
-            return state.selectedPlaces
-              ? {
-                  selectedPlaces: [
-                    ...state.selectedPlaces,
-                    ...state.locationPlaces!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                }
-              : {
-                  selectedPlaces: [
-                    ...state.locationPlaces!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                };
-          } else {
-            return {
-              selectedPlaces: state.selectedPlaces?.filter(
-                (sa) => sa.contentid != id,
-              ),
-            };
+          if (!state.selectedPlaces) {
+            state.selectedPlaces = [];
           }
+          if (!state.selectedPlaces[date]) {
+            state.selectedPlaces[date] = [];
+          }
+
+          const locationPlaces = LocationPlacesStore.getState().locationPlaces;
+          const index = state.selectedPlaces[date].findIndex(
+            (place) => place.contentid === id,
+          );
+
+          const newSelectedPlacesForDate = [...state.selectedPlaces[date]];
+
+          if (index == -1) {
+            const selectPlace = locationPlaces!.find(
+              (place) => place.contentid === id,
+            );
+            if (selectPlace) {
+              newSelectedPlacesForDate.push(selectPlace);
+            }
+          } else {
+            newSelectedPlacesForDate.splice(index, 1);
+          }
+
+          const updatedSelectedPlaces = [...state.selectedPlaces];
+          updatedSelectedPlaces[date] = newSelectedPlacesForDate;
+
+          return {
+            selectedPlaces: updatedSelectedPlaces,
+          };
         }),
-      resetSelectedPlaces: () => set({ selectedPlaces: null }),
+      setSelectedPlacesArray: (state: PlaceDataType[][]) =>
+        set({ selectedPlaces: state }),
     }),
     {
       name: "tripPlaceStorage",

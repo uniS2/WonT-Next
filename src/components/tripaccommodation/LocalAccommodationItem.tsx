@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DefaultImage from "@/components/common/DefaultImage";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 
 type LocalAccommodationItemProps = {
   id: number;
+  index: number;
   title: string;
   addr: string;
   imgSrc: string;
@@ -12,17 +14,27 @@ type LocalAccommodationItemProps = {
 
 const LocalAccommodationItem = ({
   id,
+  index,
   title,
   addr,
   imgSrc,
 }: LocalAccommodationItemProps) => {
   const { selectedAccommodations, setSelectedAccommodations } =
-    AccommodationsStore();
-  const isSelected = Boolean(
-    selectedAccommodations?.filter(
-      (accommodation) => accommodation.contentid == id,
-    ).length,
-  );
+    SelectAccommodationsStore();
+  const [isSelected, SetIsSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedAccommodations && selectedAccommodations[index]) {
+      const i = selectedAccommodations[index].findIndex(
+        (place) => place.contentid == id,
+      );
+      if (i > -1) {
+        SetIsSelected(true);
+      } else {
+        SetIsSelected(false);
+      }
+    }
+  }, [selectedAccommodations]);
 
   return (
     <li className="group flex gap-3 p-3 items-center w-full bg-white rounded-xl">
@@ -38,7 +50,7 @@ const LocalAccommodationItem = ({
       <button
         type="button"
         onClick={() => {
-          setSelectedAccommodations(id);
+          setSelectedAccommodations(index, id);
         }}
       >
         {isSelected ? (

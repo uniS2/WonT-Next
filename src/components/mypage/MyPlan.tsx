@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
 import { TOUR_BASE_AREA } from "@/lib/tour/tour";
+import Router from "next/router";
 
 type RegionDataType = {
   rnum: number;
@@ -65,22 +66,31 @@ function MyPlan() {
     }
   }, [regionData, planData]);
 
+  const handleRoute = (e: React.MouseEvent, id: number) => {
+    Router.push(`/tripedit/${id}`);
+  };
+
   return (
     <div>
       <MyPageTitle text="나의 일정" />
-      <div className="grid my-5 sm:grid-cols-1 md:grid-cols-2  2xl:grid-cols-4 gap-3">
-        {tripPlan?.map((item) => (
-          <button className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg">
-            <Image
-              width={100}
-              height={100}
-              src={item.url}
-              alt="Plan Image"
+      {planData?.map((planItem) => (
+        <div className="grid my-5 sm:grid-cols-1 md:grid-cols-2  2xl:grid-cols-4 gap-3">
+          {tripPlan?.map((item) => (
+            <button
               className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg"
-            />
-          </button>
-        ))}
-      </div>
+              onClick={(e) => handleRoute(e, planItem.id)}
+            >
+              <Image
+                width={100}
+                height={100}
+                src={item.url}
+                alt="Plan Image"
+                className="w-100% h-[200px] sm:h-[280px] w-full object-cover rounded-lg"
+              />
+            </button>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

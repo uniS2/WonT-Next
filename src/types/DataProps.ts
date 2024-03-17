@@ -14,7 +14,7 @@ export default interface DataProps {
   faR3: string;
 }
 
-export type AccommodationDataType = {
+export type PlaceDataType = {
   addr1: string;
   addr2: string;
   areacode: number;
@@ -34,6 +34,6 @@ export type AccommodationDataType = {
   modifiedtime: number;
   sigungucode: number;
   tel: string;
-  title: string;
   zipcode: number;
+  title: string;
 };

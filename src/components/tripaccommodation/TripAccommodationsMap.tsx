@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TOUR_BASE_ACCOMMODATION } from "@/lib/tour/tour";
 import { RegionStore } from "@/store/RegionStore";
-import { AccommodationsStore } from "@/store/AccommodationsStore";
+import { LocationAccommodationsStore } from "@/store/AccommodationsStore";
 
 declare global {
   interface Window {
@@ -11,7 +11,7 @@ declare global {
 
 const TripAccommodationMap = () => {
   const { locationAccommodations, setLocationAccommodations } =
-    AccommodationsStore();
+    LocationAccommodationsStore();
   const { selectedRegionName } = RegionStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState([126.9837456304, 37.563446366]);

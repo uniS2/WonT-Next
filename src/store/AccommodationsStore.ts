@@ -1,53 +1,75 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AccommodationDataType } from "@/types/DataProps";
+import { PlaceDataType } from "@/types/DataProps";
+import { setTripRange } from "@/utils/setTripRange";
 
-type AccommodationsStoreType = {
-  locationAccommodations: AccommodationDataType[] | null;
-  selectedAccommodations: AccommodationDataType[] | null;
-  setLocationAccommodations: (location: AccommodationDataType[]) => void;
-  setSelectedAccommodations: (id: number) => void;
-  resetSelectedAccommodations: () => void;
+type LocationAccommodationsStoreType = {
+  locationAccommodations: PlaceDataType[] | null;
+  setLocationAccommodations: (location: PlaceDataType[]) => void;
 };
 
-export const AccommodationsStore = create(
-  persist<AccommodationsStoreType>(
+type SelectAccommodationsStoreType = {
+  selectedAccommodations: PlaceDataType[][] | null;
+  setTripAccommodationsRange: (range: number) => void;
+  setSelectedAccommodations: (date: number, id: number) => void;
+  setSelectedAccommodationsArray: (state: PlaceDataType[][]) => void;
+};
+
+export const LocationAccommodationsStore =
+  create<LocationAccommodationsStoreType>((set) => ({
+    locationAccommodations: null,
+    setLocationAccommodations: (location: PlaceDataType[]) =>
+      set({ locationAccommodations: location }),
+  }));
+
+export const SelectAccommodationsStore = create(
+  persist<SelectAccommodationsStoreType>(
     (set) => ({
-      locationAccommodations: null,
       selectedAccommodations: null,
-      setLocationAccommodations: (location: AccommodationDataType[]) =>
-        set({ locationAccommodations: location }),
-      setSelectedAccommodations: (id: number) =>
+      setTripAccommodationsRange: (range: number) =>
+        set({ selectedAccommodations: setTripRange(range) }),
+      setSelectedAccommodations: (date: number, id: number) =>
         set((state) => {
           if (
-            !state.selectedAccommodations?.filter((sa) => sa.contentid == id)
-              .length
+            !state.selectedAccommodations ||
+            !state.selectedAccommodations[date]
           ) {
-            return state.selectedAccommodations
-              ? {
-                  selectedAccommodations: [
-                    ...state.selectedAccommodations,
-                    ...state.locationAccommodations!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                }
-              : {
-                  selectedAccommodations: [
-                    ...state.locationAccommodations!.filter(
-                      (location) => location.contentid == id,
-                    ),
-                  ],
-                };
-          } else {
-            return {
-              selectedAccommodations: state.selectedAccommodations?.filter(
-                (sa) => sa.contentid != id,
-              ),
-            };
+            state.selectedAccommodations = [];
+            state.selectedAccommodations[date] = [];
           }
+
+          const locationAccommodations =
+            LocationAccommodationsStore.getState().locationAccommodations;
+          const index = state.selectedAccommodations[date].findIndex(
+            (accommodation) => accommodation.contentid === id,
+          );
+
+          const newSelectedAccomodationsForDate = [
+            ...state.selectedAccommodations[date],
+          ];
+
+          if (index == -1) {
+            const selectAccommodation = locationAccommodations!.find(
+              (accommodation) => accommodation.contentid === id,
+            );
+            if (selectAccommodation) {
+              newSelectedAccomodationsForDate.push(selectAccommodation);
+            }
+          } else {
+            newSelectedAccomodationsForDate.splice(index, 1);
+          }
+
+          const updatedSelectedAccommodation = [
+            ...state.selectedAccommodations,
+          ];
+          updatedSelectedAccommodation[date] = newSelectedAccomodationsForDate;
+
+          return {
+            selectedAccommodations: updatedSelectedAccommodation,
+          };
         }),
-      resetSelectedAccommodations: () => set({ selectedAccommodations: null }),
+      setSelectedAccommodationsArray: (state: PlaceDataType[][]) =>
+        set({ selectedAccommodations: state }),
     }),
     {
       name: "tripAccommodationStorage",
