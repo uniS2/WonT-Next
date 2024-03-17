@@ -2,7 +2,6 @@ import MapPin from "./MapPin";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { BsX } from "react-icons/bs";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
-import { useEffect } from "react";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 
 interface AddPlanButtonProps {
