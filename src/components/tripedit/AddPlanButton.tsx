@@ -4,11 +4,14 @@ import { BsX } from "react-icons/bs";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
 import { useEffect } from "react";
 import { SelectPlacesStore } from "@/store/PlacesStore";
+import Router from "next/router";
 
 interface AddPlanButtonProps {
   text?: string;
   place?: string;
-  index?: number;
+  index: number;
+  placeIndex?: number;
+  accommondationIndex?: number;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
@@ -20,37 +23,52 @@ function AddPlanButton({
   text,
   place,
   index,
-  handleRoute,
-  // handleRemove
+  placeIndex,
+  accommondationIndex,
 }: AddPlanButtonProps) {
-  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+  const { selectedAccommodations, setSelectedAccommodationsArray } =
     SelectAccommodationsStore();
-  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
+  const { selectedPlaces, setSelectedPlacesArray } = SelectPlacesStore();
 
-  // const handleRemove = (e: React.MouseEvent) => {
-  //   const target = e.currentTarget;
-  //   console.log(target);
-  //   console.log("index", index);
-  //   const newSelectedAccommodations = Array.from(selectedAccommodations || []);
-  //   console.log(newSelectedAccommodations);
-  //   resetSelectedAccommodations();
-  // };
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRoute = (e: React.MouseEvent, index: number) => {
+    const target = e.currentTarget.textContent;
+
+    if (target === "장소를 추가해주세요.") {
+      Router.push(`/tripplace/${index + 1}`);
+      // Router.push("/tripplace");
+    } else if (target === "숙소를 추가해주세요.") {
+      Router.push(`/tripaccommodation/${index + 1}`);
+    }
+  };
+
+  const handleRemove = (
+    e: React.MouseEvent,
+    placeIndex: number,
+    accommondationIndex: number,
+  ) => {
     e.stopPropagation();
 
-    if (typeof index === "number") {
-      if (text === "장소") {
-        const newSelectedPlaces = Array.from(selectedPlaces || []);
-        newSelectedPlaces.splice(index, 1);
-        // setSelectedPlacesArray(newSelectedPlaces);
+    if (text === "장소") {
+      const newSelectedPlaces = Array.from(selectedPlaces || []);
+      if (
+        newSelectedPlaces.length > placeIndex &&
+        newSelectedPlaces[index].length > placeIndex
+      ) {
+        const item = newSelectedPlaces[index][placeIndex];
+        newSelectedPlaces[index].splice(placeIndex, 1);
+        setSelectedPlacesArray(newSelectedPlaces);
       }
+    }
 
-      if (text === "숙소") {
-        const newSelectedAccommodations = Array.from(
-          selectedAccommodations || [],
-        );
-        newSelectedAccommodations.splice(index, 1);
-        // setSelectedAccommodationArray(newSelectedAccommodations);
+    if (text === "숙소") {
+      const newSelectedPlaces = Array.from(selectedAccommodations || []);
+      if (
+        newSelectedPlaces.length > accommondationIndex &&
+        newSelectedPlaces[index].length > accommondationIndex
+      ) {
+        const item = newSelectedPlaces[index][accommondationIndex];
+        newSelectedPlaces[index].splice(accommondationIndex, 1);
+        setSelectedAccommodationsArray(newSelectedPlaces);
       }
     }
   };
@@ -58,7 +76,7 @@ function AddPlanButton({
   return (
     <div
       className="flex h-14 border-[1px] border-[#EDF2F2]  bg-[#F3F5F5] items-center justify-between px-5 w-full cursor-pointer"
-      onClick={handleRoute}
+      onClick={(e) => handleRoute(e, index)}
     >
       <div className="flex justify-between w-full items-center">
         {text === "장소" && place ? (
@@ -83,9 +101,11 @@ function AddPlanButton({
           </span>
         )}
       </div>
-      {(text === "장소" && selectedPlaces !== null) ||
-      (text === "숙소" && selectedAccommodations !== null) ? (
-        <button onClick={handleRemove}>
+      {(text === "장소" && selectedPlaces?.length !== 0) ||
+      (text === "숙소" && selectedAccommodations?.length !== 0) ? (
+        <button
+          onClick={(e) => handleRemove(e, placeIndex, accommondationIndex)}
+        >
           <BsX color="#828282" />
         </button>
       ) : (

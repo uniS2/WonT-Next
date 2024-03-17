@@ -12,6 +12,7 @@ type SelectAccommodationsStoreType = {
   selectedAccommodations: PlaceDataType[][] | null;
   setTripAccommodationsRange: (range: number) => void;
   setSelectedAccommodations: (date: number, id: number) => void;
+  setSelectedAccommodationsArray: (state: PlaceDataType[][]) => void;
 };
 
 export const LocationAccommodationsStore =
@@ -67,6 +68,8 @@ export const SelectAccommodationsStore = create(
             selectedAccommodations: updatedSelectedAccommodation,
           };
         }),
+      setSelectedAccommodationsArray: (state: PlaceDataType[][]) =>
+        set({ selectedAccommodations: state }),
     }),
     {
       name: "tripAccommodationStorage",

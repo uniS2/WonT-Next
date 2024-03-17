@@ -22,11 +22,9 @@ function TripEdit() {
   const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
   const router = useRouter();
   console.log("selectedPlan", selectedPlan);
-  // console.log("selectedPlaces", selectedPlaces);
-  // console.log("selectedAccommodations", selectedAccommodations);
+  console.log("selectedPlaces", selectedPlaces);
+  console.log("selectedAccommodations", selectedAccommodations);
 
-  //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
-  // const clearAccommodationIdStorage = SelectAccommodationStore.persist.clearStorage;
 
   useEffect(() => {
     const combinedData = selectedPlaces?.map((places, index) => {
@@ -41,6 +39,7 @@ function TripEdit() {
     });
     setSelectedPlan(combinedData);
   }, [selectedPlaces, selectedAccommodations]);
+  console.log(selectedPlan);
 
   useEffect(() => {
     const getUserSession = async () => {
