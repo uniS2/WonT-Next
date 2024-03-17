@@ -13,7 +13,7 @@ const TripRegionLayout = ({
         <meta name="description" content="여행 지역 선택 페이지입니다." />
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <section className="min-h-screen h-full px-5 mx-auto">{children}</section>
+      <section className="px-5 mx-auto">{children}</section>
     </>
   );
 };

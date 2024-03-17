@@ -2,42 +2,121 @@ import SaveButton from "@/components/tripedit/SaveButton";
 import TripDays from "@/components/tripedit/TripDays";
 import TripEditMap from "@/components/tripedit/TripEditMap";
 import TripEditLayout from "@/layout/tripedit/layout";
+import { RegionStore } from "@/store/RegionStore";
+import React, { useEffect, useState } from "react";
+import { DatesStore } from "@/store/DatesStore";
+import { useRouter } from "next/router";
+import { SelectPlacesStore } from "@/store/PlacesStore";
+import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
+import { useSessionStore } from "@/store/useSessionStore";
+import supabase from "@/lib/supabase/supabase";
+import { SelectedPlanStore } from "@/store/SelectedPlanStore";
 
 function TripEdit() {
-  const tripDate = new Date();
-  console.log(tripDate);
+  const { selectedRegionName, resetRegionName } = RegionStore();
+  const { tripDates, resetTripDates } = DatesStore();
+  const { selectedPlaces } = SelectPlacesStore();
+  const { selectedAccommodations } = SelectAccommodationsStore();
+  const { userSession, setUserSession } = useSessionStore();
+  const [userSessionId, setUserSessionId] = useState<string | undefined>();
+  const { selectedPlan, setSelectedPlan } = SelectedPlanStore();
+  const router = useRouter();
+  console.log("selectedPlan", selectedPlan);
+  // console.log("selectedPlaces", selectedPlaces);
+  // console.log("selectedAccommodations", selectedAccommodations);
 
-  const testTripPlan = ["새별오름", "성산일출봉", "카멜리아 힐"];
+  //TODO@uniS2: 각 일자에 맞는 숙박 선택 정보 제공을 위한 storage 초기화
+  // const clearAccommodationIdStorage = SelectAccommodationStore.persist.clearStorage;
 
-  return (
-    <TripEditLayout>
-      <div>
-        <TripEditMap />
-        <div className="w-full h-[80px] bg-contentSecondary flex justify-between items-center px-5">
-          <div className="flex flex-col">
-            <span className="text-white">제주</span>
-            <span className="text-white">24.01.20 - 24.01.22</span>
+  useEffect(() => {
+    const combinedData = selectedPlaces?.map((places, index) => {
+      if (selectedAccommodations) {
+        const accommodations = selectedAccommodations[index] || [];
+
+        return {
+          places,
+          accommodations,
+        };
+      }
+    });
+    setSelectedPlan(combinedData);
+  }, [selectedPlaces, selectedAccommodations]);
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      setUserSession(data);
+      setUserSessionId(data.session?.user.id);
+    };
+    getUserSession();
+  }, []);
+
+  const handleModify = () => {
+    resetRegionName();
+    resetTripDates();
+
+    router.push("/tripregion");
+  };
+
+  const handleSave = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      if (
+        selectedRegionName &&
+        selectedAccommodations?.length !== 0 &&
+        selectedPlaces?.length !== 0
+      ) {
+        const { error } = await supabase.from("tripplan").insert([
+          {
+            user_email: userSession?.user.email,
+            region_name: selectedRegionName,
+            user_id: userSession?.user.id,
+            places: selectedPlaces,
+            accommodations: selectedAccommodations,
+            plan: selectedPlan,
+          },
+        ]);
+        if (error) {
+          alert("일정 등록에 실패했습니다");
+          console.log(error);
+        } else {
+          alert("일정이 저장되었습니다.");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      alert("리뷰 등록에 실패했습니다");
+    }
+  };
+
+  if (tripDates) {
+    return (
+      <TripEditLayout>
+        <div>
+          <TripEditMap />
+          <div className="w-full h-[80px] bg-contentSecondary flex justify-between items-center px-5">
+            <div className="flex flex-col">
+              <span className="text-white">{selectedRegionName}</span>
+
+              <span className="text-white">{`${tripDates[0]} - ${tripDates[tripDates?.length - 1]}`}</span>
+            </div>
+            <button
+              className="border-[1px] w-[56px] h-7 rounded-md border-contentMuted text-contentMuted text-sm"
+              onClick={handleModify}
+            >
+              수정
+            </button>
           </div>
-          <button className="border-[1px] w-[56px] h-7 rounded-md border-contentMuted text-contentMuted text-sm">
-            수정
-          </button>
+          <section>
+            <div className="mt-7 mb-10">
+              <TripDays />
+              <SaveButton text="저장" handleSave={handleSave} />
+            </div>
+          </section>
         </div>
-        <section>
-          <div className="mt-7 mb-10">
-            <TripDays
-              days="Day 1"
-              date="24.01.20"
-              testTripPlan={testTripPlan}
-            />
-            <TripDays days="Day 2" date="24.01.21" />
-            <TripDays days="Day 3" date="24.01.22" />
-            <TripDays days="Day 4" date="24.01.23" />
-            <SaveButton />
-          </div>
-        </section>
-      </div>
-    </TripEditLayout>
-  );
+      </TripEditLayout>
+    );
+  }
 }
 
 export default TripEdit;

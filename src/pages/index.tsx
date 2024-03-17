@@ -1,40 +1,60 @@
+import { motion } from "framer-motion";
 import OnBoardingButton from "@/components/onboarding/OnBoardingButton";
-import OnBoardingContentBox from "@/components/onboarding/OnBoardingContentBox";
-import OnBoardingSideButton from "@/components/onboarding/OnBoardingSideButton";
 import Layout from "@/layout/onboarding/layout";
-function OnBoardingPage() {
+import Image from "next/image";
+
+const OnBoardingPage: React.FC = () => {
   return (
     <Layout>
-      <main>
-        <div className="mt-[120px]">
-          <div className="text-[30px] mb-[10px]">
-            <p>여행</p>
-            <p>계획부터 시작!</p>
+      <section className="bg-gradient-to-t from-white to-blue-200 min-h-screen flex items-end lg:items-center">
+        <motion.div
+          className="flex flex-col items-center justify-center gap-5 lg:flex-row lg:gap-[6.25rem]"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 1 }}
+        >
+          <div className="flex flex-col items-center gap-5 2xl:w-[37.5rem] 2xl:gap-10">
+            <Image
+              src={"/svg/logo.svg"}
+              alt="원트 로고"
+              width={200}
+              height={100}
+              className="pt-[20px]"
+            />
+            <div className="text-[1rem] text-black mb-[1.875rem]">
+              <p>행복한 여행을 위해 일정을 세워보세요</p>
+            </div>
+            <OnBoardingButton
+              text="WonT 시작하기"
+              href="/signin"
+              color="primary"
+            />
           </div>
-          <div className="text-[16px] text-gray-400">
-            <p>행복한 여행을 위해 WonT에서</p>
-            <p>당신의 일정을 세워보세요.</p>
+          <div className="flex flex-col items-center justify-center lg:w-[28.125rem] lg:bg-white lg:rounded-2xl lg:shadow-xl 2xl:w-[37.5rem]">
+            <video
+              src="/video/testVideo.mov"
+              width={450}
+              height={100}
+              autoPlay
+              loop
+              preload="auto"
+              className="hidden lg:block w-full h-auto"
+              style={{ maxWidth: "70%", height: "auto" }}
+              aria-label="영상 설명: 원트 여행 서비스 소개"
+            ></video>
+            <Image
+              src={"/images/onboarding-mockup.png"}
+              alt="원트 목업 이미지"
+              width={320}
+              height={200}
+              className="lg:hidden"
+              aria-label="원트 여행 서비스 목업 이미지"
+            />
           </div>
-        </div>
-        <div className="mt-[100px] flex">
-          <OnBoardingSideButton />
-          <OnBoardingContentBox />
-        </div>
-        <div className="flex flex-col gap-5 mt-[80px]">
-          <OnBoardingButton
-            text="WonT 시작하기"
-            href="/signin"
-            color="primary"
-          />
-          <OnBoardingButton
-            text="회원가입"
-            color="contentSecondary"
-            href="/signup"
-          />
-        </div>
-      </main>
+        </motion.div>
+      </section>
     </Layout>
   );
-}
+};
 
 export default OnBoardingPage;
