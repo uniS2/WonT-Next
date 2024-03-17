@@ -11,7 +11,7 @@ export const useUploadImage = async (files: File[]) => {
       console.log("파일이 업로드 되지 않습니다.", imageError);
       return;
     }
-    const res = supabase.storage.from("use_image").getPublicUrl(imageData.path);
+    const res = supabase.storage.from("review").getPublicUrl(imageData.path);
 
     return res;
   });

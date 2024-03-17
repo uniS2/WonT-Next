@@ -16,13 +16,16 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 function TripReviewWriting() {
+  SwiperCore.use([Pagination]);
   const { userSession, setUserSession } = useSessionStore();
   const { userSessionId, setUserSessionId } = useUserSessionIdStore();
   const [textContents, setTextContents] = useState("");
+  const [title, setTitle] = useState("");
   const [uploadImage, setUploadImage]: any = useState([]);
   const [imageSrc, setImageSrc]: any = useState([]);
-  SwiperCore.use([Pagination]);
   const swiperRef = useRef<SwiperCore>();
+
+  console.log(title);
 
   useEffect(() => {
     const getUserSession = async () => {
@@ -32,6 +35,10 @@ function TripReviewWriting() {
     };
     getUserSession();
   }, []);
+
+  const titleHandler = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  }, 200);
 
   const handleTextContents = debounce(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -95,6 +102,7 @@ function TripReviewWriting() {
           review_data: textContents,
           review_image: uploadImagePaths || null,
           user_id: userSession?.user.id,
+          title: title,
         },
       ]);
       if (textContents === "") {
@@ -108,7 +116,9 @@ function TripReviewWriting() {
         console.log(error);
       } else {
         alert("리뷰 작성이 완료되었습니다.");
-        // goToReview()
+        setTextContents("");
+        setImageSrc([]);
+        setTitle("");
       }
     } catch (error) {
       console.error(error);
@@ -119,7 +129,7 @@ function TripReviewWriting() {
   return (
     <TripReviewWritingLayout>
       <div className="flex flex-col lg:grid sm:grid-cols-2 mx-9 h-[90%]">
-        <div className="w-full block  mx-auto relative border-[1px] h-auto min-h-[500px] box-content ">
+        <div className="w-full block  mx-auto relative border-[1px] h-[800px] box-content ">
           <form
             action=""
             className={
@@ -175,14 +185,24 @@ function TripReviewWriting() {
             ))}
           </Swiper>
         </div>
-        <textarea
-          name=""
-          id=""
-          cols={30}
-          rows={10}
-          className="border border-gray-300 outline-none resize-none p-3 h-auto"
-          onChange={handleTextContents}
-        ></textarea>
+        <div className="row-span-2 shrink ">
+          <form action="">
+            <input
+              type="text"
+              placeholder="제목을 입력하세요"
+              className="border border-gray-300 outline-none w-full p-3"
+              onChange={titleHandler}
+            />
+          </form>
+          <textarea
+            name=""
+            id=""
+            cols={30}
+            rows={10}
+            className="border border-gray-300 outline-none resize-none p-3 h-full w-full shrink"
+            onChange={handleTextContents}
+          ></textarea>
+        </div>
         <button
           onClick={handleSubmit}
           className="w-full bg-point text-white py-3 px-4 col-span-2 my-4 mb-10"
