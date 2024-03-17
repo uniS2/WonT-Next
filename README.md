@@ -281,10 +281,6 @@ useEffect(() => {
 
 <br />
 
-### 선택한 여행 지역에 맞는 지도 설정과 마커 표시 기능
-
-<br />
-
 ## 7. 협업 방법
 
 ### Github [보러가기](https://github.com/Next-WonT/WonT/issues)
