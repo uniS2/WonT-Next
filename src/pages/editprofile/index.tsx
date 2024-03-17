@@ -36,7 +36,8 @@ function EditProfile() {
     };
 
     getUserSession();
-  }, [imgSrc, userNickname, imgFile, avatar, setavatar]);
+  }, [imgSrc, imgFile, avatar, setavatar]);
+  console.log(userSession);
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
