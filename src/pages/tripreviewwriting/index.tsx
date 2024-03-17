@@ -1,6 +1,6 @@
 import TripReviewWritingLayout from "@/layout/tripreviewwriting/layout";
 import { debounce } from "@/utils/debounce";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsX } from "react-icons/bs";
 import { Swiper, SwiperSlide } from "swiper/react";
 import supabase from "@/lib/supabase/supabase";
@@ -24,12 +24,21 @@ function TripReviewWriting() {
   SwiperCore.use([Pagination]);
   const swiperRef = useRef<SwiperCore>();
 
+  useEffect(() => {
+    const getUserSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      setUserSession(data);
+      setUserSessionId(data.session?.user.id);
+    };
+    getUserSession();
+  }, []);
+
   const handleTextContents = debounce(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const updatedText = e.target.value;
       setTextContents(updatedText);
     },
-    1200,
+    500,
   );
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,8 +118,8 @@ function TripReviewWriting() {
 
   return (
     <TripReviewWritingLayout>
-      <div className="flex flex-col lg:grid sm:grid-cols-2 mx-9 h-auto">
-        <div className="w-full block  mx-auto relative border-[1px] h-[90%] min-h-[500px] box-content ">
+      <div className="flex flex-col lg:grid sm:grid-cols-2 mx-9 h-[90%]">
+        <div className="w-full block  mx-auto relative border-[1px] h-auto min-h-[500px] box-content ">
           <form
             action=""
             className={
@@ -174,6 +183,12 @@ function TripReviewWriting() {
           className="border border-gray-300 outline-none resize-none p-3 h-auto"
           onChange={handleTextContents}
         ></textarea>
+        <button
+          onClick={handleSubmit}
+          className="w-full bg-point text-white py-3 px-4 col-span-2 my-4 mb-10"
+        >
+          리뷰 작성
+        </button>
       </div>
     </TripReviewWritingLayout>
   );
