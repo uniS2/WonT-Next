@@ -17,6 +17,7 @@ const RegionItem = ({
     RegionStore();
   const { toggleRegionName, setToggleRegionName } = RegionToggleStore();
   const [isToggle, setIsToggle] = useState(false);
+  const [isImgError, setIsImgError] = useState<boolean>(false);
 
   const selectRegion = () => {
     if (!selectedRegionName) {
@@ -38,6 +39,22 @@ const RegionItem = ({
     else setIsToggle(false);
   }, [toggleRegionName, regionName]);
 
+  /*   const handleDefaultImage = () => {
+    return (
+      <div
+        className={`relative w-[8.4375rem] h-[8.4375rem] rounded-xl overflow-hidden bg-[#D0CFD7] object-cover ${isToggle && "shadow-md shadow-gray-400"}`}
+      >
+        <Image
+          src="/svg/regionIcon-selected.svg"
+          width={20.5}
+          height={20}
+          alt="선택한 여행 지역"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        />
+      </div>
+    );
+  }; */
+
   return (
     <li
       className={`list-none ${isToggle && "grid col-span-2 sm:col-span-3 lg:col-span-4 2xl:col-span-6 my-3 pt-5 pb-6 border-y-4 border-button mx-3"}`}
@@ -47,17 +64,18 @@ const RegionItem = ({
         onClick={selectRegion}
         className="flex flex-col items-center gap-3 px-3 py-2"
       >
-        <div
-          className={`relative w-[8.4375rem] h-[8.4375rem] rounded-xl overflow-hidden bg-[#D0CFD7] object-cover ${isToggle && "shadow-md shadow-gray-400"}`}
-        >
-          <Image
-            src="/svg/regionIcon-selected.svg"
-            width={20.5}
-            height={20}
-            alt="선택한 여행 지역"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          />
-        </div>
+        <Image
+          src={
+            isImgError
+              ? "/svg/default-image.svg"
+              : `/images/local/local${regionCode}.jpg`
+          }
+          width={200}
+          height={200}
+          alt="선택한 여행 지역"
+          onError={() => setIsImgError(true)}
+          className={`w-[8.4375rem] h-[8.4375rem] rounded-xl object-cover ${isToggle && "shadow-md shadow-gray-400"}`}
+        />
         <p
           className={`mx-3 my-1 text-lg text-contentSecondary font-medium ${isToggle && "px-3 py-1 rounded-xl bg-point text-white shadow-md shadow-gray-400"}`}
         >

@@ -78,7 +78,7 @@ const TripRegionPage = () => {
               return (
                 <RegionItem
                   key={region.rnum}
-                  regionCode={region.code}
+                  regionCode={region.rnum - 1}
                   regionName={region.name}
                 />
               );
