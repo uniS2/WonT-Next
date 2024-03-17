@@ -9,8 +9,8 @@ interface AddPlanButtonProps {
   text?: string;
   place?: string;
   index: number;
-  placeIndex: number;
-  accommondationIndex: number;
+  placeIndex?: number;
+  accommondationIndex?: number;
   onDragStart?: (e: React.DragEvent) => void;
   onDragOver?: (e: React.DragEvent) => void;
   onDrop?: (e: React.DragEvent<Element>) => void;
@@ -103,7 +103,7 @@ function AddPlanButton({
       {(text === "장소" && selectedPlaces?.length !== 0) ||
       (text === "숙소" && selectedAccommodations?.length !== 0) ? (
         <button
-          onClick={(e) => handleRemove(e, placeIndex, accommondationIndex)}
+          onClick={(e) => handleRemove(e, placeIndex!, accommondationIndex!)}
         >
           <BsX color="#828282" />
         </button>
