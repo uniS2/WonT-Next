@@ -2,26 +2,17 @@ import DefaultProfile from "@/components/mypage/DefaultProfile";
 import EditProfileLayout from "@/layout/editprofile/layout";
 import supabase from "@/lib/supabase/supabase";
 import { useSessionStore } from "@/store/useSessionStore";
-import { debounce } from "@/utils/debounce";
 import { uploadUserProfile } from "@/utils/uploadUserProfile";
-import Router from "next/router";
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 function EditProfile() {
-  const [userNickname, setUserNickname] = useState<string>("");
-  // const [nicknameValue, setNicknameValue] = useState<string | null>(
-  //   userNickname,
-  // );
+  const [userNickname, setUserNickname] = useState<string | null>();
   const { userSession, setUserSession } = useSessionStore();
   const [userSessionId, setUserSessionId] = useState<string | undefined>();
   const [imgFile, setImgFile] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("");
   const [avatar, setavatar] = useState<string | undefined>();
-
-  const nickNameInput = useRef<HTMLInputElement>(null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -38,15 +29,9 @@ function EditProfile() {
       if (profilesData && profilesData[0].nickname === null) {
         setUserNickname(profilesData[0].full_name);
         setavatar(profilesData[0].avatar_url);
-        if (nickNameInput.current) {
-          nickNameInput.current.value = profilesData[0].full_name;
-        }
       } else if (profilesData) {
         setUserNickname(profilesData[0]?.nickname);
         setavatar(profilesData[0].avatar_url);
-        if (nickNameInput.current) {
-          nickNameInput.current.value = profilesData[0]?.nickname;
-        }
       }
     };
 
@@ -56,8 +41,7 @@ function EditProfile() {
 
   const handleRename = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reName = e.target.value;
-    debounce(() => setUserNickname(reName), 700)();
-    // setUserNickname(reName);
+    setUserNickname(reName);
   };
 
   const handleDeleteImage = () => {
@@ -174,10 +158,9 @@ function EditProfile() {
               type="text"
               name="nickname"
               placeholder="닉네임"
-              // value={`${userNickname}`}
+              value={`${userNickname}`}
               onChange={handleRename}
               className="bg-[#F3F5F5] border-1 border-[#EDF2F2] w-full h-full rounded-md py-1 px-2"
-              ref={nickNameInput}
             />
           </p>
           <label htmlFor="file" className="h-fit">
