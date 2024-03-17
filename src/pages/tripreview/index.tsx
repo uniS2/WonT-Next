@@ -28,10 +28,10 @@ function TripReview() {
 
   return (
     <TripReviewLayout>
-      <div>
-        {/* <button className=" px-6 py-2 bg-primary text-white cursor-pointer w-8 h-5 rounded-md">
+      <div className="bg-red-100">
+        <button className=" px-6 py-2 bg-primary text-white cursor-pointer w-8 h-5 rounded-md">
           리뷰 작성
-        </button> */}
+        </button>
         <div className="flex flex-col mx-16 gap-5 lg:grid lg:grid-cols-4 lg:mx-16 md:grid-cols-3 md:mx-16 md:grid sm:grid sm:grid-cols-2 sm:mx-16">
           {review?.map((item) => <TripReviewFeed reviewData={item} />)}
         </div>
