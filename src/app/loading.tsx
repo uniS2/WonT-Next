@@ -1,18 +1,11 @@
 "use client";
+import { Suspense } from "react";
 import Lottie from "react-lottie-player";
 import loadingJson from "@/asset/loading/loading.json";
+import Loading from "@/asset/loading/LoadingSpinner";
 
 function loading() {
-  return (
-    <div className="flex items-center flex-col h-screen">
-      <Lottie
-        loop
-        animationData={loadingJson}
-        play
-        style={{ height: "200px", width: "200px" }}
-      />
-    </div>
-  );
+  return <Suspense fallback={<Loading />}></Suspense>;
 }
 
 export default loading;
