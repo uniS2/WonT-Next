@@ -10,7 +10,6 @@ import { CiSquareChevDown, CiSquareChevUp } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { useViewPlanStore } from "@/store/useViewPlanStore";
 import { DatesStore } from "@/store/DatesStore";
-import Router from "next/router";
 import { SelectPlacesStore } from "@/store/PlacesStore";
 import AddSchedule from "./AddSchedule";
 import { SelectAccommodationsStore } from "@/store/AccommodationsStore";
@@ -24,29 +23,105 @@ interface TripDaysProps {
 
 function TripDays() {
   const { viewPlanStates, setViewPlanStates } = useViewPlanStore();
-  const { selectedPlaces /* setSelectedPlacesArray */ } = SelectPlacesStore();
-  const { selectedAccommodations /* setSelectedAccommodationArray */ } =
+  const { selectedPlaces, setSelectedPlacesArray } = SelectPlacesStore();
+  const { selectedAccommodations, setSelectedAccommodationsArray } =
     SelectAccommodationsStore();
   const { tripDates } = DatesStore();
-  console.log(selectedAccommodations);
-  console.log(selectedPlaces);
 
   useEffect(() => {
     setViewPlanStates(new Array(tripDates?.length).fill(true));
   }, []);
 
+  // const onDragEnd = (result: { destination: any; source: any }) => {
+  //   const { destination, source } = result;
+
+  //   if (!destination) return;
+
+  //   const sourceDroppableId = source.droppableId;
+  //   const destinationDroppableId = destination.droppableId;
+  //   const sourceDraggableId = source.draggableId;
+
+  //   // 장소에서 이동한 경우
+  //   if (sourceDraggableId.startsWith("place")) {
+  //     // 이동 전 위치 정보
+  //     const [sourceIndex, sourcePlaceIndex] = sourceDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+  //     // 이동 후 위치 정보
+  //     const [destinationIndex, destinationPlaceIndex] = destinationDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+
+  //     const newSelectedPlaces = Array.from(selectedPlaces || []);
+  //     const movedPlace = newSelectedPlaces[sourceIndex].places.splice(
+  //       sourcePlaceIndex,
+  //       1,
+  //     )[0];
+  //     newSelectedPlaces[destinationIndex].places.splice(
+  //       destinationPlaceIndex,
+  //       0,
+  //       movedPlace,
+  //     );
+  //     setSelectedPlacesArray(newSelectedPlaces);
+  //   }
+  //   // 숙박시설에서 이동한 경우
+  //   else if (sourceDraggableId.startsWith("accommodation")) {
+  //     // 이동 전 위치 정보
+  //     const [sourceIndex, sourceAccommodationIndex] = sourceDraggableId
+  //       .split("-")
+  //       .slice(1)
+  //       .map(Number);
+  //     // 이동 후 위치 정보
+  //     const [destinationIndex, destinationAccommodationIndex] =
+  //       destinationDraggableId.split("-").slice(1).map(Number);
+
+  //     const newSelectedAccommodations = Array.from(
+  //       selectedAccommodations || [],
+  //     );
+  //     const movedAccommodation = newSelectedAccommodations[sourceIndex].splice(
+  //       sourceAccommodationIndex,
+  //       1,
+  //     )[0];
+  //     newSelectedAccommodations[destinationIndex].splice(
+  //       destinationAccommodationIndex,
+  //       0,
+  //       movedAccommodation,
+  //     );
+  //     setSelectedAccommodationsArray(newSelectedAccommodations);
+  //   }
+  // };
+
   const onDragEnd = (result: { destination: any; source: any }) => {
     const { destination, source } = result;
 
-    if (destination && destination.index !== source.index) {
-      // const newSelectedAccommodations = Array.from(selectedAccommodations);
-      const newSelectedPlaces = Array.from(selectedPlaces || []);
-      console.log(...newSelectedPlaces, 1);
+    if (!destination) return;
+    const sourceDroppableId = source.droppableId;
+    console.log(sourceDroppableId);
 
-      const [removed] = newSelectedPlaces.splice(source.index, 1);
-      newSelectedPlaces.splice(destination.index, 0, removed);
-
-      // setSelectedPlacesArray(newSelectedPlaces);
+    if (source.droppableId === destination.droppableId) {
+      if (sourceDroppableId === "selectedPlaces") {
+        const newSelectedPlaces = Array.from(selectedPlaces || []);
+        const listIndex = parseInt(source.droppableId.split("-")[1]);
+        const copiedPlace = [...newSelectedPlaces];
+        const items = copiedPlace[listIndex];
+        const [removed] = items.splice(source.index, 1);
+        items.splice(destination.index, 0, removed);
+        setSelectedPlacesArray(copiedPlace);
+      } else {
+        const newSelectedPlaces = Array.from(selectedPlaces || []);
+        const sourceListIndex = parseInt(source.droppableId.split("-")[1]);
+        const destinationListIndex = parseInt(
+          destination.droppableId.split("-")[1],
+        );
+        const copiedPlace = [...newSelectedPlaces];
+        const sourceItems = copiedPlace[sourceListIndex];
+        const destinationItems = copiedPlace[destinationListIndex];
+        const [removed] = sourceItems.splice(source.index, 1);
+        destinationItems.splice(destination.index, 0, removed);
+        setSelectedPlacesArray(copiedPlace);
+      }
     }
   };
 
@@ -55,18 +130,8 @@ function TripDays() {
     newViewPlanStates[index] = !newViewPlanStates[index];
 
     setViewPlanStates(newViewPlanStates);
+    // setTripIndex(index);
   };
-
-  // const handleRoute = (e: React.MouseEvent) => {
-  //   const target = e.currentTarget.textContent;
-  //   console.log(target);
-
-  //   // if (target === "장소를 추가해주세요.") {
-  //   //   Router.push("/tripplace");
-  //   // } else if (target === "숙소를 추가해주세요.") {
-  //   //   Router.push("/tripaccommodation");
-  //   // }
-  // };
 
   const variants = {
     open: {
@@ -84,17 +149,12 @@ function TripDays() {
     },
   };
 
-  // console.log("selectedPlaces", selectedPlaces);
-  console.log("0번", selectedPlaces && selectedPlaces[0]);
-  // console.log(selectedPlaces?.map((item, index) => index));
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ul className="flex flex-col my-5 gap-[10px]">
-        {(tripDates?.length !== 0 && selectedAccommodations?.length !== 0) ||
-        selectedPlaces?.length !== 0 ? (
+        {tripDates?.length !== 0 && selectedAccommodations && selectedPlaces ? (
           tripDates?.map((item, index) => (
-            <React.Fragment key={item}>
+            <React.Fragment key={index}>
               <div className="bg-secondary flex items-center h-14 px-5 gap-2 font-semibold justify-between">
                 <span className="font-light text-contentMuted">
                   {`Day${index + 1} | ${item}`}
@@ -111,7 +171,7 @@ function TripDays() {
                 </button>
               </div>
               <AddSchedule index={index} />
-              <Droppable droppableId={`day-${index}`}>
+              <Droppable droppableId={`selectedPlan-${index}`}>
                 {(provided) => (
                   <motion.div
                     {...provided.droppableProps}
@@ -123,11 +183,11 @@ function TripDays() {
                     style={{ originY: 0.55 }}
                   >
                     {selectedPlaces &&
-                      selectedPlaces[index]?.map((item, index) => (
+                      selectedPlaces[index]?.map((item, placeIndex) => (
                         <Draggable
                           key={item.title}
                           draggableId={item.title}
-                          index={index}
+                          index={placeIndex}
                         >
                           {(provided) => (
                             <div
@@ -140,7 +200,7 @@ function TripDays() {
                                 place={item.title}
                                 key={index}
                                 index={index}
-                                // handleRemove={handleRemove}
+                                placeIndex={placeIndex}
                               />
                             </div>
                           )}
@@ -148,29 +208,31 @@ function TripDays() {
                       ))}
 
                     {selectedAccommodations &&
-                      selectedAccommodations[index]?.map((item, index) => (
-                        <Draggable
-                          key={item?.title}
-                          draggableId={item.title}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <AddPlanButton
-                                text="숙소"
-                                place={item?.title}
-                                key={index}
-                                index={index}
-                                // handleRemove={handleRemove}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                      selectedAccommodations[index]?.map(
+                        (item, accommondationIndex) => (
+                          <Draggable
+                            key={item?.title}
+                            draggableId={item.title}
+                            index={accommondationIndex}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <AddPlanButton
+                                  text="숙소"
+                                  place={item?.title}
+                                  key={index}
+                                  index={index}
+                                  accommondationIndex={accommondationIndex}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ),
+                      )}
                     {provided.placeholder}
                   </motion.div>
                 )}
@@ -187,17 +249,8 @@ function TripDays() {
                   </span>
                 </div>
 
-                <AddPlanButton
-                  text="장소"
-                  // handleRoute={handleRoute}
-                  // handleRoute={(e) => handleRoute(e, index)}
-                  index={index}
-                />
-                <AddPlanButton
-                  text="숙소"
-                  // handleRoute={(e) => handleRoute(e, index)}
-                  index={index}
-                />
+                <AddPlanButton text="장소" index={index} />
+                <AddPlanButton text="숙소" index={index} />
               </React.Fragment>
             ))}
           </>
