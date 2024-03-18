@@ -2,6 +2,8 @@
 
 > @uniS2의 WonT 리드미로 포트폴리오 제출을 위해 미리 작성되었습니다. <br /> [WonT 팀 개발 진행 레포 바로가기](https://github.com/Next-WonT/WonT)
 
+<br />
+
 ## 1. WonT 소개
 
 ![WonT 로고](/public/svg/logo.svg)
@@ -11,6 +13,8 @@ WonT는 **행복한 여행을 위한 여행 일정 관리**를 손쉽게 여행 
 WonT 사용자들은 여행 지역, 날짜, 관광 장소와 숙소 선택이 가능합니다. 메인 페이지에서 여행 일정 만들기를 클릭하면 여행 일정을 생성할 수 있습니다. 사용자는 자신만의 일정, 리뷰, 북마크를 관리할 수 있습니다.
 
 > **We On Trip ✈️**
+
+<br />
 
 ## ✨ [배포 URL](wontnext.vercel.app)
 
@@ -28,8 +32,10 @@ pnpm dev
 ```
 
 **테스트 계정** (사용자 ID)
+```markdown
 ID: uninaver@naver.com
 PW: Naver1234!
+```
 
 <br />
 
@@ -53,15 +59,9 @@ Frontend 개발자, 3명
 
 - SSR(Server Side Rendering) 사용 방식을 알고 CSR(Client Side Rendering) 방식과 성능 차이를 경험해 보고 싶어서 Next.js를 사용하였습니다.
 
-  <br />
-
 - 타입 지정을 통해 API에서 호출되는 데이터를 명시적으로 나타냄으로서 협업 효율을 높이고 컴파일 에러를 방지하기 위해 사용하였습니다.
 
-  <br />
-
 - 리액트 prop drilling 문제를 해결하기 위해 상태를 유연하게 관리할 수 있는 Zustand를 사용하였습니다.
-
-  <br />
 
 - 데이터베이스와 API를 구축하는 데 필요한 복잡한 설정과 관리를 최소화하기 위해 Supabase를 사용하였습니다.
 
@@ -84,25 +84,21 @@ Frontend 개발자, 3명
 **공동**
 
 - 협업 방법 결정 및 초기 환경 설정 / 디자인 작업
-  <br />
-
+  
 **Tour API Read 작업**
 
 - Tour API 기본 REST (URI) 작성
-  <br />
 
 **여행 지역 선택** ([TripRegion 이슈](https://github.com/Next-WonT/WonT/issues/44))
 
 - useState 훅과 Input 요소의 value 값을 이용한 검색 기능 구현
 - Tour API를 이용한 관광 지역명과 지역 이미지 렌더링 작업
 - Zustand storage 이용하여 선택 여행지 state, 선택 여행지 저장과 초기화 action 로직 구현 (`persist` 적용)
-  <br />
 
 **여행 날짜 선택** ([TripDate 이슈](https://github.com/Next-WonT/WonT/issues/24))
 
 - react-calendar 패키지 이용하여 현재 날짜 기준으로 선택 가능한 달력 기능 구현
 - Zustand storage 이용하여 선택 날짜 state, 선택 날짜 저장과 초기화 action 로직 구현 (`persist` 적용)
-  <br />
 
 **여행 (관광) 장소 / 숙소 선택** ([TripPlace 이슈](https://github.com/Next-WonT/WonT/issues/57), [TripAccommodation 이슈](https://github.com/Next-WonT/WonT/issues/55))
 
@@ -285,10 +281,6 @@ useEffect(() => {
 
 <br />
 
-### 선택한 여행 지역에 맞는 지도 설정과 마커 표시 기능
-
-<br />
-
 ## 7. 협업 방법
 
 ### Github [보러가기](https://github.com/Next-WonT/WonT/issues)
@@ -322,6 +314,7 @@ useEffect(() => {
 
 <details>
 <summary>📁 WonT</summary>
+  
 ```
 src
  ┣ app
