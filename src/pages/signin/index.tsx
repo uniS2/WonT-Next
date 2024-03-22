@@ -8,6 +8,7 @@ import { useState } from "react";
 import useSignInStore from "@/store/useSignInStore";
 import supabase from "@/lib/supabase/supabase";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
