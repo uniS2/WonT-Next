@@ -294,6 +294,7 @@ useEffect(() => {
 - 풀 리퀘를 통해 작업 진행 과정을 요약하여 설명하고, 리뷰를 통해 작업을 확인하였음을 기록했습니다.
 - Next.js의 사용법과 React와의 차이점을 명확하게 이해하기 위하여 Next 공식문서 스터디를 진행했습니다.
 
+
 ### Discord
 
 |          정기 회의           |     디스코드-깃헙 연동      |             실시간 채팅              |
@@ -303,6 +304,7 @@ useEffect(() => {
 - 일주일 단위로 디스코드를 통해 스크럼을 진행했습니다.
 - 디스코드 훅 알림을 설정하여 작업 상황을 공유했습니다.
 - 작업을 진행하다가 협업이 필요할 경우 디스코드 채팅방을 이용하여 실시간으로 공유하며 작업하였습니다.
+
 
 ### Figma [보러가기](https://www.figma.com/file/iAqtRP2YUHdbmxIOL0jJTv/Wont?type=design&node-id=214%3A1595&mode=design&t=ee6duWMua5r0XJJh-1)
 
