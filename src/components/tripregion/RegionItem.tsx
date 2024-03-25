@@ -16,8 +16,7 @@ const RegionItem = ({
   regionName = "지역이름",
   regionCode,
 }: RegionItemProps) => {
-  const { selectedRegionName, setRegionCode, setRegionName, resetRegionName } =
-    RegionStore();
+  const { selectedRegionName, setRegionName, resetRegionName } = RegionStore();
   const { toggleRegionName, setToggleRegionName } = RegionToggleStore();
   const [isToggle, setIsToggle] = useState(false);
   const [isImgError, setIsImgError] = useState<boolean>(false);
@@ -25,7 +24,6 @@ const RegionItem = ({
 
   const selectRegion = () => {
     if (!selectedRegionName) {
-      setRegionCode(regionCode);
       setRegionName(regionName);
     } else {
       setToggleRegionName("");
@@ -33,7 +31,6 @@ const RegionItem = ({
     if (!toggleRegionName) {
       setToggleRegionName(regionName);
     } else {
-      setRegionCode(null);
       resetRegionName();
     }
   };
@@ -44,7 +41,6 @@ const RegionItem = ({
   }, [toggleRegionName, regionName]);
 
   // 지역 상세 정보
-
   useEffect(() => {
     (async () => {
       if (isToggle) {
